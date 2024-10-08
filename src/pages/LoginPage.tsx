@@ -44,6 +44,7 @@ const LoginPage = () => {
       setToken(res.data.token);
       navigate("/dashboard");
       setUserData({
+        usuario: res.data.datos.usuario,
         nombre: res.data.datos.nombre,
         apellido: res.data.datos.apellido,
         correo: res.data.datos.correo,

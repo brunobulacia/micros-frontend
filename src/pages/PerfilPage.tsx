@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { updateUserRequest } from "@/api/auth";
 
 function PerfilPage() {
-  const { userData } = useAuthStore();
+  const { userData, token, setUserData } = useAuthStore();
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       nombre: "",
@@ -44,9 +44,21 @@ function PerfilPage() {
 
   const onSubmit = async (data) => {
     console.log("Datos actualizados:", data);
-    // Aquí puedes manejar la actualización de los datos, por ejemplo, enviarlos a una API
+    data.token = token;
+    data.usuario = userData?.usuario;
+    console.log(data);
     const res = await updateUserRequest(data);
     console.log(res);
+    setUserData({
+      usuario: res.data.datos.usuario,
+      nombre: res.data.datos.nombre,
+      apellido: res.data.datos.apellido,
+      correo: res.data.datos.correo,
+      sexo: res.data.datos.sexo,
+      fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
+      direccion: res.data.datos.direccion,
+      carnet: res.data.datos.carnet,
+    });
   };
 
   // Obteniendo el valor actual del sexo

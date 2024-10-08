@@ -1,43 +1,8 @@
-/* // MODULO PARA MANEJAR ESTADOS GLOBALES Y GUARDAR EL TOKEN EN EL LOCAL STORAGE
-
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-type State = {
-  token: string;
-  isAuth: boolean;
-};
-
-type Actions = {
-  setToken: (token: string) => void;
-  logout: () => void;
-};
-export const useAuthStore = create(
-  persist<State & Actions>(
-    (set) => ({
-      token: "",
-      isAuth: false,
-      setToken: (token: string) =>
-        set((state) => ({
-          token,
-          isAuth: true,
-        })),
-      logout: () =>
-        set((state) => ({
-          token: "",
-          isAuth: false,
-        })),
-    }),
-    {
-      name: "auth",
-    }
-  )
-);
- */
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type UserData = {
+  usuario: string;
   nombre: string;
   apellido: string;
   correo: string;
