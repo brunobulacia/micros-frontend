@@ -1,8 +1,4 @@
 
-#Ejecuta: npm i 
-#Para instalar todas las dependencias
-
-
 
 # React + TypeScript + Vite
 
