@@ -11,8 +11,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          {/* RUTAS PUBLICAS */}
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          {/* COMPONENTE PADRE PARA PROTEGER LAS RUTAS PRIMO */}
           <Route element={<ProtectedRoute isAllowed={isAuth} />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>

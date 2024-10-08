@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Card,
@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate, Link } from "react-router-dom";
+import { signupRequest } from "@/api/auth";
+import { useAuthStore } from "@/store/auth";
 
 type FormData = {
   usuario: string;
@@ -47,8 +49,38 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const setToken = useAuthStore((state) => state.setToken);
+  const { userData } = useAuthStore();
+  const { setUserData } = useAuthStore();
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {};
+  useEffect(() => {
+    if (userData) {
+      console.log("Datos del usuario:", userData); // Mostrar datos por consola
+    }
+  }, [userData]); // Se ejecuta cada vez que `userData` cambia
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setLoading(true); // Habilita el loading
+    try {
+      const res = await signupRequest(data);
+      console.log(res);
+      setToken(res.data.token);
+      navigate("/dashboard");
+      // setUserData({
+      //   nombre: res.data.datos.nombre,
+      //   apellido: res.data.datos.apellido,
+      //   correo: res.data.datos.correo,
+      //   sexo: res.data.datos.sexo,
+      //   fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
+      //   direccion: res.data.datos.direccion,
+      //   carnet: res.data.datos.carnet,
+      // });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // Deshabilita el loading cuando la petición termina
+    }
+  };
 
   const password = watch("contraseña"); //comprueba si las contras son iguales
 

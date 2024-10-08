@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/api/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
@@ -29,14 +29,29 @@ const LoginPage = () => {
   } = useForm<FormData>();
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
-
+  const { userData } = useAuthStore();
+  const { setUserData } = useAuthStore();
+  useEffect(() => {
+    if (userData) {
+      console.log("Datos del usuario:", userData); // Mostrar datos por consola
+    }
+  }, [userData]); // Se ejecuta cada vez que `userData` cambia
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true); // Habilita el loading
     try {
       const res = await loginRequest(data);
-      console.log(res.data.datos);
+      console.log(res);
       setToken(res.data.token);
       navigate("/dashboard");
+      setUserData({
+        nombre: res.data.datos.nombre,
+        apellido: res.data.datos.apellido,
+        correo: res.data.datos.correo,
+        sexo: res.data.datos.sexo,
+        fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
+        direccion: res.data.datos.direccion,
+        carnet: res.data.datos.carnet,
+      });
     } catch (error) {
       console.error(error);
     } finally {
