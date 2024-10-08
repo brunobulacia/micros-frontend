@@ -62,19 +62,23 @@ export default function RegisterPage() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true); // Habilita el loading
     try {
+      //PARA CONVERTIR LOS TELEFONOS A UN ARRAY
+      if (!Array.isArray(data.telefonos)) {
+        data.telefonos = [data.telefonos];
+      }
       const res = await signupRequest(data);
       console.log(res);
       setToken(res.data.token);
       navigate("/dashboard");
-      // setUserData({
-      //   nombre: res.data.datos.nombre,
-      //   apellido: res.data.datos.apellido,
-      //   correo: res.data.datos.correo,
-      //   sexo: res.data.datos.sexo,
-      //   fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
-      //   direccion: res.data.datos.direccion,
-      //   carnet: res.data.datos.carnet,
-      // });
+      setUserData({
+        nombre: res.data.datos.nombre,
+        apellido: res.data.datos.apellido,
+        correo: res.data.datos.correo,
+        sexo: res.data.datos.sexo,
+        fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
+        direccion: res.data.datos.direccion,
+        carnet: res.data.datos.carnet,
+      });
     } catch (error) {
       console.error(error);
     } finally {
@@ -244,8 +248,8 @@ export default function RegisterPage() {
                     <SelectValue placeholder="Selecciona  " />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="M">M</SelectItem>
-                    <SelectItem value="F">F</SelectItem>
+                    <SelectItem value="M">Masculino</SelectItem>
+                    <SelectItem value="F">Femenino</SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.sexo && (

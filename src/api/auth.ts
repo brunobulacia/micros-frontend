@@ -6,3 +6,5 @@ export const profileRequest = async () => axios.get("/perfil");
 
 export const signupRequest = async (user) => axios.post("/register", user);
 export const verifyTokenRequest = () => axios.get("/verify");
+export const updateUserRequest = async (user) =>
+  axios.put("/usuarios/update", user);
