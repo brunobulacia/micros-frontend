@@ -1,3 +1,7 @@
 import axios from "./axios";
 
-export const choferRes = async () => axios.get("/usuarios/choferes");
+export const choferRes = async (token: string) => axios.post("/usuarios/choferes", 
+    {
+        token: token
+    }
+);

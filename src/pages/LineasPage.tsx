@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { BusFront } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { rutasLineasResponse } from "../api/rutas";
 // Interfaz de la línea
 interface Line {
@@ -18,9 +17,12 @@ const LineCard = ({ line }: { line: Line }) => {
     Trabajando: "bg-yellow-500",
     "No Disponible": "bg-red-500",
   };
+  const navigate = useNavigate()
 
   return (
-    <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-100">
+    <button 
+    className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-100"
+    onClick={ () => navigate('/dashboard/linea', { state: line }) }>
       <BusFront className="w-20 h-20 mr-4" />
       <div>
         <h3 className="font-bold">{line.nombre_linea}</h3>
@@ -30,7 +32,7 @@ const LineCard = ({ line }: { line: Line }) => {
         className={`ml-auto w-3 h-3 rounded-full ${statusColor["Trabajando"]}`}
       ></div>
       <span className="ml-2">TRABAJANDO</span>
-    </div>
+    </button>
   );
 };
 

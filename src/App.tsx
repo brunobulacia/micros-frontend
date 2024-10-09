@@ -8,6 +8,8 @@ import PerfilPage from "./pages/PerfilPage.tsx";
 import LineasPage from "./pages/LineasPage.tsx";
 import RutasPage from "./pages/RutasPage.tsx";
 import LineaPage from "./pages/LineaPage.tsx";
+import { Rotate3D } from "lucide-react";
+import RutaPage from "./pages/RutaPage.tsx";
 function App() {
   const isAuth = useAuthStore((state) => state.isAuth);
   return (
@@ -25,6 +27,7 @@ function App() {
               <Route path="lineas" element={<LineasPage />} />
               <Route path="rutas" element={<RutasPage />} />
               <Route path="linea" element={<LineaPage />} />
+              <Route path="ruta" element={<RutaPage />} />
             </Route>
           </Route>
         </Routes>

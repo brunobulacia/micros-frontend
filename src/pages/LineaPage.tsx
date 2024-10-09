@@ -80,8 +80,14 @@ import { choferRes } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
 
 interface Driver {
-  usuario_chofer: string;
+  usuario: string;
   licencia_categoria: string;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  carnet: string;
+  sexo: "M" | "F";
+  telefonos: Array<string>
 }
 
 interface Route {
@@ -93,25 +99,31 @@ interface Route {
 
 const DriverCard = ({ driver }: { driver: Driver }) => {
   return (
-    <div className="border rounded-lg p-4 mb-4 flex items-center">
+    <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
       <CircleUserRound className="w-16 h-16 mr-4" />
       <div>
-        <h3 className="font-bold">{driver.usuario_chofer}</h3>
-        <p>Licencia: {driver.licencia_categoria}</p>
+        <h3 className="font-bold">{driver.usuario}</h3>
+        <p><b>Nombre: </b>{driver.nombre} {driver.apellido}</p>
+        <p><b>CI:</b> {driver.carnet}</p>
+        <p><b>Licencia:</b> {driver.licencia_categoria}</p>
+        <p><b>Sexo:</b> {driver.sexo}</p>
+        <p><b>Correo:</b> {driver.correo}</p>
+        
+
       </div>
-      <span className="ml-2">TRABAJANDO</span>
+      <span className="ml-auto">🟡 TRABAJANDO</span>
     </div>
   );
 };
 
 const RouteCard = ({ route }: { route: Route }) => {
   return (
-    <div className="border rounded-lg p-4 mb-4">
+    <button className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-200 m-4">
       <div className="flex items-center">
         <Route className="w-20 h-20 mr-10" />
         <h3 className="font-bold text-5xl">{route.id_ruta}</h3>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -128,11 +140,13 @@ export default function LineaPage() {
     async function fetchData() {
       try {
         // Llamadas a la API
-        const resChoferes = await choferRes();
+        console.log(token)
+        console.log(id_linea)
+        const resChoferes = await choferRes(token);
         const resRutas = await rutas(id_linea);
-
         // Actualizar estado con los datos obtenidos
-        setDrivers(resChoferes.data.choferes);
+        setDrivers(resChoferes.data.listaDeChoferes);
+        
         setRoutes(resRutas.data);
       } catch (error) {
         console.error("Error al cargar los datos:", error);
@@ -140,10 +154,10 @@ export default function LineaPage() {
     }
 
     fetchData();
-  }, [id_linea]);
+  }, [id_linea, token]);
 
   const filteredDrivers = drivers.filter((driver) =>
-    driver.usuario_chofer.toLowerCase().includes(searchTerm.toLowerCase())
+    driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -165,13 +179,13 @@ export default function LineaPage() {
         <div className="w-full md:w-2/3 pr-0 md:pr-4 mb-8 md:mb-0">
           <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
           {filteredDrivers.map((driver) => (
-            <DriverCard key={driver.usuario_chofer} driver={driver} />
+            <DriverCard key={driver.usuario} driver={driver} />
           ))}
         </div>
         <div className="w-full md:w-1/3 pl-0 md:pl-4">
           <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
           {routes.map((route) => (
-            <RouteCard key={route.id_ruta} route={route} />
+              <RouteCard key={route.id_ruta} route={route} />
           ))}
         </div>
       </div>
