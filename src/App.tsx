@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import PerfilPage from "./pages/PerfilPage.tsx";
 import LineasPage from "./pages/LineasPage.tsx";
+import LineaPage from "./pages/LineaPage.tsx";
+
 function App() {
   const isAuth = useAuthStore((state) => state.isAuth);
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="perfil" element={<PerfilPage />} />
               <Route path="lineas" element={<LineasPage />} />
+              <Route path="linea" element={<LineaPage />} />
             </Route>
           </Route>
         </Routes>
