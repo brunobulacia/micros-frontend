@@ -8,5 +8,6 @@ interface Coords {
 export interface Stop {
     nombre_parada: string,
     orden_parada: number,
-    coordenadas: Coords
+    coordenadas: Coords,
+    token: string, //todo Hay que quitar esto cuando arreglemos la webada de las cookies
   }
