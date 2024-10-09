@@ -1,3 +1,4 @@
+import { Stop } from "@/types";
 import axios from "./axios";
 
 export const rutasLineasResponse = async () => axios.post("/rutas/lineas");
@@ -13,11 +14,15 @@ export const paradas = async (id_ruta: number) => {
     return await axios.get(url)
 }
     
-export const crearParada = async (data) => {
+export const crearParada = async (stop: Stop, ruta: number) => {
 
-    return await axios.post("/paradas/crear", 
+    return await axios.post("rutas/paradas/crear", 
         {
-            data
+            nombre: stop.nombre_parada,
+            orden: stop.orden_parada,
+            latitud: stop.coordenadas.lat,
+            longitud: stop.coordenadas.lon,
+            ruta
         }
     )
 }

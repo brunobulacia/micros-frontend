@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { initMap, dibujarParadas } from '../lib/map'; // Asegúrate de importar correctamente las funciones del archivo donde se encuentran
 import { OctagonMinus } from 'lucide-react'
-import { paradas } from "@/api/rutas";
+import { crearParada, paradas } from "@/api/rutas";
 import { useLocation } from "react-router-dom";
 import { Stop } from "../types"
+import { useAuthStore } from "@/store/auth";
+import { useForm } from "react-hook-form";
 
 const StopCard = ({ stop }: { stop: Stop }) => {
     return (
@@ -18,12 +20,115 @@ const StopCard = ({ stop }: { stop: Stop }) => {
     );
   };
 
+const CreateStopForm = () => {
+    const { token } = useAuthStore();
+    const location = useLocation()
+    const { id_ruta } = location.state
+
+    const { register, handleSubmit } = useForm({
+        defaultValues: {
+        nombre: "",
+        orden: "",
+        ruta: "",
+        latitud: "",
+        longitud: ""
+        },
+    });
+    
+    const onSubmit = async (data) => {
+        try {
+            data.token = token
+            
+            const stop: Stop = {
+                nombre_parada: data.nombre,
+                orden_parada: data.orden,
+                coordenadas: {
+                    lon: data.longitud,
+                    lat: data.latitud
+                },
+                token: token
+            }
+            await crearParada(stop, id_ruta)
+
+            alert("Parada creada con exito")
+            window.location.reload();
+
+        }
+        catch (error) {
+            alert("Error al crear parada")
+            console.error(error)
+        }
+    }
+    return (
+        <>
+            <h2 className="text-2xl font-bold mb-4 mt-10">CREAR PARADA</h2>
+            <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-[100%] border-2 border-gray-950 mt-5"
+            >
+            <div className="w-full md:w-full px-2 mb-4 bg">
+                <label
+                    htmlFor="nombre"
+                    className="text-gray-700 dark:text-gray-300 text-lg"
+                >
+                    Nombre
+                </label>
+                <input
+                    id="nombre"
+                    {...register("nombre")}
+                    placeholder="Ingresa el nombre de la parada"
+                    className="dark:bg-gray-700 dark:text-white text-base w-full md:w-full mt-2 p-2"
+                />
+            </div>
+            <div className="w-full md:w-full px-2 mb-4">
+                <label
+                    htmlFor="orden"
+                    className="text-gray-700 dark:text-gray-300 text-lg"
+                >
+                    Orden
+                </label>
+                <input
+                    id="orden"
+                    {...register("orden")}
+                    placeholder="Ingresa el orden de la parada"
+                    className="dark:bg-gray-700 dark:text-white text-base w-full md:w-full mt-2 p-2"
+                />
+            </div>
+            <div className="w-full md:w-full px-2 mb-4">
+                <label
+                    htmlFor="longitud"
+                    className="text-gray-700 dark:text-gray-300 text-lg"
+                >
+                    Coordenadas
+                </label>
+                <div>
+                <input
+                    id="latitud"
+                    {...register("latitud")}
+                    placeholder="Latitud"
+                    className="dark:bg-gray-700 dark:text-white text-base w-full md:w-1/3 mt-2 mr-8 p-2"
+                />
+                <input
+                    id="longitud"
+                    {...register("longitud")}
+                    placeholder="Longitud"
+                    className="dark:bg-gray-700 dark:text-white text-base w-full md:w-1/3 mt-2 p-2"
+                />    
+                </div>
+                <button type="submit" className="w-full md:w-auto mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 w-60 text-center ">
+                    Crear Parada
+                </button>
+            </div>
+        </form>
+      </>
+    )
+}
 function RutaPage() {
     const [stops, setStops] = useState<Stop[]>([]);
     const location = useLocation()
     const { id_ruta } = location.state
   useEffect(() => {
-    const startCoordinates = [-17.847643049293538, -63.15881657845468];
+    const startCoordinates = [-17.78373015039757, -63.18042200265567];
     const initializeMap = async () => {
 
         initMap(startCoordinates);
@@ -62,6 +167,9 @@ function RutaPage() {
                 <h2 className="text-2xl font-bold mb-4">MAPA</h2>
                 <div className="overflow-auto md:w-full pl-4">
                     <div id="map" style={{ width: '100%', height: '500px' }}></div>
+                </div>
+                <div>
+                    <CreateStopForm />
                 </div>
             </div>
             <div className="w-full md:w-full lg-w-1/3 flex flex-col m-5 ml-8">
