@@ -21,7 +21,7 @@ const LineCard = ({ line }: { line: Line }) => {
 
   return (
     <button 
-    className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-100"
+    className="border rounded-lg p-4 mb-4 flex items-center w-[99%] bg-white hover:bg-zinc-100"
     onClick={ () => navigate('/dashboard/linea', { state: line }) }>
       <BusFront className="w-20 h-20 mr-4" />
       <div>
@@ -56,14 +56,16 @@ function LineasPage() {
   }, []); // Ejecuta el efecto solo si el token cambia
 
   return (
-    <div className="overflow-auto max-h-[calc(100vh-8rem)]">
+    <>
       <h1 className="text-xl font-bold mb-4">Líneas Disponibles</h1>
-      {lines.length > 0 ? (
-        lines.map((line) => <LineCard key={line.id_linea} line={line} />)
-      ) : (
-        <p>No hay líneas disponibles.</p>
-      )}
-    </div>
+      <div className=" border rounded-lg bg-white overflow-y-auto max-h-[calc(95vh-8rem)] p-5">
+        {lines.length > 0 ? (
+          lines.map((line) => <LineCard key={line.id_linea} line={line} />)
+        ) : (
+          <p>No hay líneas disponibles.</p>
+        )}
+      </div>
+    </>
   );
 }
 
