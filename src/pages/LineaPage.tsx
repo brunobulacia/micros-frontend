@@ -74,7 +74,7 @@ export default LineaPage;
 "use client";
 import { useState, useEffect } from "react";
 import { Search, CircleUserRound, Route } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { choferRes } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
@@ -117,8 +117,12 @@ const DriverCard = ({ driver }: { driver: Driver }) => {
 };
 
 const RouteCard = ({ route }: { route: Route }) => {
+  const navigate = useNavigate()
+  console.log(route.id_ruta)
   return (
-    <button className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-200 m-4">
+    <button
+      className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-200 m-4"
+      onClick={ () => navigate('/dashboard/ruta', { state: {id_ruta: route.id_ruta }}) }>
       <div className="flex items-center">
         <Route className="w-20 h-20 mr-10" />
         <h3 className="font-bold text-5xl">{route.id_ruta}</h3>
