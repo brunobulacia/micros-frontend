@@ -23,8 +23,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="perfil" element={<PerfilPage />} />
               <Route path="lineas" element={<LineasPage />} />
-              <Route path="lineas" element={<RutasPage />} />
-              <Route path="lineas" element={<LineaPage />} />
+              <Route path="rutas" element={<RutasPage />} />
+              <Route path="linea" element={<LineaPage />} />
             </Route>
           </Route>
         </Routes>
