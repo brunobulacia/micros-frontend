@@ -90,7 +90,7 @@ export default function RegisterPage() {
   const password = watch("contraseña"); //comprueba si las contras son iguales
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-300">
       <Card className="w-full max-w-xl mt-6 px-4 ">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-bold text-center">

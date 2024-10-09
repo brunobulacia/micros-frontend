@@ -1,4 +1,4 @@
-import axios from "axios";
+/* import axios from "axios";
 const API_URL = "https://proyecto-micros.onrender.com";
 
 const instance = axios.create({
@@ -7,3 +7,25 @@ const instance = axios.create({
 });
 
 export default instance;
+ */
+
+const API_URL = "https://proyecto-micros.onrender.com";
+
+import axios from "axios";
+import { useAuthStore } from "../store/auth";
+
+const authApi = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+});
+
+authApi.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().token;
+  if (config.headers) {
+    config.headers.set("Authorization", `Bearer ${token}`);
+    config.headers.set("Content-Type", "application/json");
+  }
+  return config;
+});
+
+export default authApi;
