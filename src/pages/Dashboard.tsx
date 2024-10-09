@@ -62,7 +62,7 @@ export default function Dashboard() {
             navigate("/");
           }}
           variant="default"
-          className="w-60 text-center m-2 mb-4"
+          className="w-[90%] text-center m-2 mb-4"
         >
           Cerrar sesión
         </Button>
