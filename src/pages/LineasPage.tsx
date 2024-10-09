@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Search, BusFront } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 interface Line {
   id_linea: number;
   nombre_linea: string;
@@ -86,7 +85,7 @@ export default function LineaPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-8xl font-bold mb-8 text-center">LINEAS</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">LINEAS</h1>
       <div className="mb-8 relative">
         <input
           type="text"
