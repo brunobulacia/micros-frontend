@@ -8,7 +8,6 @@ import PerfilPage from "./pages/PerfilPage.tsx";
 import LineasPage from "./pages/LineasPage.tsx";
 import RutasPage from "./pages/RutasPage.tsx";
 import LineaPage from "./pages/LineaPage.tsx";
-import { Rotate3D } from "lucide-react";
 import RutaPage from "./pages/RutaPage.tsx";
 function App() {
   const isAuth = useAuthStore((state) => state.isAuth);
