@@ -62,7 +62,7 @@ export default function Dashboard() {
             navigate("/");
           }}
           variant="default"
-          className="w-full text-center"
+          className="w-60 text-center m-2 mb-4"
         >
           Cerrar sesión
         </Button>
@@ -77,11 +77,11 @@ export default function Dashboard() {
   return (
     <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
       <div className="w-full flex flex-col md:flex-row">
-        <aside className="hidden md:flex md:flex-col w-64 bg-white dark:bg-gray-800 p-6 shadow-md">
+        <aside className="hidden h-screen md:flex md:flex-col w-64 bg-white dark:bg-gray-800 p-6 shadow-md">
           <Sidebar />
         </aside>
 
-        <main className="flex-1 p-4 md:p-8 overflow-auto">
+        <main className="flex-1 p-4 md:p-8 overflow-auto h-screen">
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center">
               <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
