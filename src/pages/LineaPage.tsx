@@ -73,10 +73,10 @@ export default LineaPage;
  */
 "use client";
 import { useState, useEffect } from "react";
-import { Search, CircleUserRound, Route } from "lucide-react";
+import { Search, CircleUserRound, Route, UserPlus } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
-import { choferRes } from "@/api/chofer";
+import { choferRes, crearChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
 
 interface Driver {
@@ -136,6 +136,10 @@ export default function LineaPage() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [newDriver, setNewDriver] = useState({
+    usuario: "",
+    licencia_categoria: "",
+  });
   const location = useLocation();
   const { state } = location;
   const id_linea = state.id_linea;
@@ -159,6 +163,31 @@ export default function LineaPage() {
 
     fetchData();
   }, [id_linea, token]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewDriver({
+      ...newDriver,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleCreateDriver = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await crearChofer(
+        {
+          usuario: newDriver.usuario,
+          licencia: newDriver.licencia_categoria,
+        },
+        token // Asegúrate de tener el token disponible aquí
+      );
+      alert("Chofer creado con éxito!");
+      setDrivers([...drivers, res]); // O la propiedad que necesites del response
+    } catch (error) {
+      console.error("Error al crear el chofer:", error);
+      alert("Hubo un error al crear el chofer.");
+    }
+  };
 
   const filteredDrivers = drivers.filter((driver) =>
     driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
@@ -191,6 +220,35 @@ export default function LineaPage() {
           {routes.map((route) => (
               <RouteCard key={route.id_ruta} route={route} />
           ))}
+          <h2 className="text-2xl font-bold mb-4">Agregar Chofer</h2>
+          <form onSubmit={handleCreateDriver} className="flex space-x-4 items-center">
+            <div className="flex-grow">
+              <input
+                type="text"
+                name="usuario"
+                placeholder="Usuario"
+                value={newDriver.usuario}
+                onChange={handleInputChange}
+                className="mb-4 p-2 border rounded-lg w-full"
+                required
+              />
+              <input
+                type="text"
+                name="licencia_categoria"
+                placeholder="Licencia"
+                value={newDriver.licencia_categoria}
+                onChange={handleInputChange}
+                className="p-2 border rounded-lg w-full"
+                required
+              />
+            </div>
+              <button
+              type="submit"
+              className="bg-black text-white p-4 rounded-lg hover:bg-gray-600 flex items-center justify-center w-24 h-24"
+            >
+              <UserPlus className="w-16 h-16" />
+            </button>
+          </form>
         </div>
       </div>
     </div>
