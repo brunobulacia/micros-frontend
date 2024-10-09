@@ -1,6 +1,6 @@
 import axios from "./axios";
 
-export const rutasLineasResponse = async () => axios.get("/rutas/lineas");
+export const rutasLineasResponse = async () => axios.post("/rutas/lineas");
 
 export const rutas = async (linea: number) => axios.post("/rutas", 
     {
@@ -8,10 +8,16 @@ export const rutas = async (linea: number) => axios.post("/rutas",
     }
 );
 
-export const paradas = async (id_ruta: number) => axios.get("rutas/paradas", 
-    {
-        params: {
-          id_ruta
+export const paradas = async (id_ruta: number) => {
+    const url = `/rutas/paradas/${id_ruta}`
+    return await axios.get(url)
+}
+    
+export const crearParada = async (data) => {
+
+    return await axios.post("/paradas/crear", 
+        {
+            data
         }
-    }
-)
+    )
+}
