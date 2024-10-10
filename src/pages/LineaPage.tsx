@@ -78,24 +78,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { choferRes, crearChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
+import { jwtDecode } from "jwt-decode"
+import { Driver, RouteType } from "@/types";
 
-interface Driver {
-  usuario: string;
-  licencia_categoria: string;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  carnet: string;
-  sexo: "M" | "F";
-  telefonos: Array<string>
-}
-
-interface Route {
-  duracion_estimada: string;
-  id_linea: number;
-  id_ruta: number;
-  longitud_total: string;
-}
 
 const DriverCard = ({ driver }: { driver: Driver }) => {
   return (
@@ -116,7 +101,7 @@ const DriverCard = ({ driver }: { driver: Driver }) => {
   );
 };
 
-const RouteCard = ({ route }: { route: Route }) => {
+const RouteCard = ({ route }: { route: RouteType }) => {
   const navigate = useNavigate()
   console.log(route.id_ruta)
   return (
@@ -133,8 +118,9 @@ const RouteCard = ({ route }: { route: Route }) => {
 
 export default function LineaPage() {
   const { token } = useAuthStore();
+  const decoded = jwtDecode(token);
   const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [routes, setRoutes] = useState<Route[]>([]);
+  const [routes, setRoutes] = useState<RouteType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [newDriver, setNewDriver] = useState({
     usuario: "",
@@ -150,10 +136,13 @@ export default function LineaPage() {
         // Llamadas a la API
         console.log(token)
         console.log(id_linea)
-        const resChoferes = await choferRes(token);
+        if( decoded.role === "Operador"){
+          const resChoferes = await choferRes(token);
+          setDrivers(resChoferes.data.listaDeChoferes);
+        }
         const resRutas = await rutas(id_linea);
         // Actualizar estado con los datos obtenidos
-        setDrivers(resChoferes.data.listaDeChoferes);
+        
         
         setRoutes(resRutas.data);
       } catch (error) {
@@ -182,7 +171,7 @@ export default function LineaPage() {
         token // Asegúrate de tener el token disponible aquí
       );
       alert("Chofer creado con éxito!");
-      setDrivers([...drivers, res]); // O la propiedad que necesites del response
+      window.location.reload()
     } catch (error) {
       console.error("Error al crear el chofer:", error);
       alert("Hubo un error al crear el chofer.");
@@ -209,18 +198,16 @@ export default function LineaPage() {
         <Search className="absolute left-3 top-2.5 text-gray-400" />
       </div>
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-2/3 pr-0 md:pr-4 mb-8 md:mb-0">
-          <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
-          {filteredDrivers.map((driver) => (
-            <DriverCard key={driver.usuario} driver={driver} />
-          ))}
-        </div>
+      { decoded.role == "Operador" ? (<div className="flex flex-col md:flex-col md:w-[66%]">
+            <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
+            <div className="w-full md:w-full pr-0 md:pr-4 mb-8 md:mb-0 max-h-[calc(75vh-8rem)] overflow-auto">        
+              {filteredDrivers.map((driver) => (
+                <DriverCard key={driver.usuario} driver={driver} />
+              ))}
+            </div>
+          </div>) : null }
         <div className="w-full md:w-1/3 pl-0 md:pl-4">
-          <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
-          {routes.map((route) => (
-              <RouteCard key={route.id_ruta} route={route} />
-          ))}
-          <h2 className="text-2xl font-bold mb-4">Agregar Chofer</h2>
+        { decoded.role == "Operador" ? ( <> <h2 className="text-2xl font-bold mb-4">Agregar Chofer</h2>
           <form onSubmit={handleCreateDriver} className="flex space-x-4 items-center">
             <div className="flex-grow">
               <input
@@ -248,9 +235,17 @@ export default function LineaPage() {
             >
               <UserPlus className="w-16 h-16" />
             </button>
-          </form>
+          </form> </>) : null }
+
+        <h2 className="text-2xl font-bold mb-4 mt-8">RUTAS</h2>
+        <div className="flex flex-col md:flex-col md:w-full">
+          {routes.map((route) => (
+              <RouteCard key={route.id_ruta} route={route} />
+          ))}
+        </div>
+          
         </div>
       </div>
     </div>
-  );
+  ); 
 }
