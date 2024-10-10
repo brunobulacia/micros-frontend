@@ -28,3 +28,14 @@ export interface RouteType {
     id_ruta: number;
     longitud_total: string;
 }
+
+export interface DecodedToken {
+    id: string
+    role: string
+}
+
+export interface Line {
+    id_linea: number;
+    nombre_linea: string;
+    id_sindicato: number;
+  }

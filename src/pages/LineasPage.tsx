@@ -4,12 +4,8 @@ import { useState, useEffect } from "react";
 import { BusFront } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { rutasLineasResponse } from "../api/rutas";
-// Interfaz de la línea
-interface Line {
-  id_linea: number;
-  nombre_linea: string;
-  id_sindicato: number;
-}
+import { handleAxiosError } from "@/utils/handleErrors";
+import { Line } from "@/types";
 
 const LineCard = ({ line }: { line: Line }) => {
   const statusColor = {
@@ -37,30 +33,33 @@ const LineCard = ({ line }: { line: Line }) => {
 };
 
 function LineasPage() {
-  // Estado para almacenar las líneas obtenidas
-  const [lines, setLines] = useState<Line[]>([]);
 
-  // Efecto para obtener las líneas al montar el componente
+  const [lines, setLines] = useState<Line[]>([]);
+  const [linesCharged, setLinesCharged] = useState<boolean>(false)
+
   useEffect(() => {
     async function fetchLines() {
       try {
-        // Solicitud a la API para obtener las líneas
-        const lineasRes = await rutasLineasResponse(); // Asegúrate de pasar el token si es necesario
-        setLines(lineasRes.data); // Asumiendo que el formato de la respuesta es lineasRes.data
+        const lineasRes = await rutasLineasResponse(); 
+        setLines(lineasRes.data); 
+        setLinesCharged(true)
       } catch (error) {
-        console.error("Error al obtener las líneas:", error);
+        setLinesCharged(false);
+        handleAxiosError(error);
       }
     }
 
     fetchLines();
-  }, []); // Ejecuta el efecto solo si el token cambia
+  }, []);
 
   return (
     <>
-      <h1 className="text-xl font-bold mb-4">Líneas Disponibles</h1>
+      <h1 className="text-xl font-bold mb-4">LINEAS DISPONIBLES</h1>
       <div className=" border rounded-lg bg-white overflow-y-auto max-h-[calc(95vh-8rem)] p-5">
         {lines.length > 0 ? (
           lines.map((line) => <LineCard key={line.id_linea} line={line} />)
+        ) : !linesCharged ? (
+          <p>Cargando lineas...</p>
         ) : (
           <p>No hay líneas disponibles.</p>
         )}

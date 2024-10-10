@@ -79,7 +79,8 @@ import { useAuthStore } from "@/store/auth";
 import { choferRes, crearChofer, eliminarChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
 import { jwtDecode } from "jwt-decode"
-import { Driver, RouteType } from "@/types";
+import { DecodedToken, Driver, RouteType } from "@/types";
+import { handleAxiosError } from "@/utils/handleErrors";
 
 
 const DriverCard = ({ driver }: { driver: Driver }) => {
@@ -105,7 +106,6 @@ const DriverCard = ({ driver }: { driver: Driver }) => {
   );
 };
 
-
 const handleDeleteConfirmation = async (driver: Driver, token: string) => {
   const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este chofer?");
   
@@ -125,14 +125,13 @@ const DeleteDriver = async (driver: Driver, token: string) => {
           console.error("No se pudo obtener el usuario del chofer")
       }
   } catch (error) {
-      console.error(error)
+    handleAxiosError(error)
   }
 
 }
 
 const RouteCard = ({ route, id_linea }: { route: RouteType, id_linea: string }) => {
   const navigate = useNavigate()
-  console.log(route.id_ruta)
   return (
     <button
       className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-200 m-4"
@@ -147,7 +146,7 @@ const RouteCard = ({ route, id_linea }: { route: RouteType, id_linea: string }) 
 
 export default function LineaPage() {
   const { token } = useAuthStore();
-  const decoded = jwtDecode(token);
+  const decoded = jwtDecode(token) as DecodedToken;
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [routes, setRoutes] = useState<RouteType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -161,26 +160,21 @@ export default function LineaPage() {
 
   useEffect(() => {
     async function fetchData() {
+      const { role } = decoded 
       try {
-        // Llamadas a la API
-        console.log(token)
-        console.log(id_linea)
-        if( decoded.role === "Operador"){
+        if(role === "Operador") {
           const resChoferes = await choferRes(token);
           setDrivers(resChoferes.data.listaDeChoferes);
         }
-        const resRutas = await rutas(id_linea);
-        // Actualizar estado con los datos obtenidos
-        
-        
+        const resRutas = await rutas(id_linea);             
         setRoutes(resRutas.data);
       } catch (error) {
-        console.error("Error al cargar los datos:", error);
+        handleAxiosError(error)
       }
     }
 
     fetchData();
-  }, [id_linea, token]);
+  }, [id_linea, token, decoded]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDriver({
@@ -192,29 +186,28 @@ export default function LineaPage() {
   const handleCreateDriver = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await crearChofer(
+      await crearChofer(
         {
           usuario: newDriver.usuario,
           licencia: newDriver.licencia_categoria,
         },
-        token // Asegúrate de tener el token disponible aquí
+        token
       );
       alert("Chofer creado con éxito!");
       window.location.reload()
     } catch (error) {
-      console.error("Error al crear el chofer:", error);
-      alert("Hubo un error al crear el chofer.");
+      handleAxiosError(error)
     }
   };
 
   const filteredDrivers = drivers.filter((driver) =>
-    driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
+    driver.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-8 text-center">
-        {state.nombre_linea}
+        {state.nombre_linea.toUpperCase()}
       </h1>
       <div className="mb-8 relative">
         <input
@@ -236,7 +229,7 @@ export default function LineaPage() {
             </div>
           </div>) : null }
         <div className="w-full md:w-1/3 pl-0 md:pl-4">
-        { decoded.role == "Operador" ? ( <> <h2 className="text-2xl font-bold mb-4">Agregar Chofer</h2>
+        { decoded.role == "Operador" ? ( <> <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
           <form onSubmit={handleCreateDriver} className="flex space-x-4 items-center">
             <div className="flex-grow">
               <input
