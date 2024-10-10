@@ -26,3 +26,8 @@ export const crearChofer = async (
       throw error; 
     }
   };
+
+  export const eliminarChofer = async (usuario: string, token: string) => {
+    const url = `/usuarios/choferes/eliminar/${usuario}`
+    return await axios.post(url, { token })
+}
