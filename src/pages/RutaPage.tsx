@@ -157,7 +157,7 @@ const CreateStopForm = () => {
 function RutaPage() {
     const [stops, setStops] = useState<Stop[]>([]);
     const location = useLocation()
-    const { id_ruta } = location.state
+    const { id_ruta, id_linea } = location.state
     const { token } = useAuthStore();
     const decoded = jwtDecode(token);
 
@@ -194,8 +194,8 @@ function RutaPage() {
   return (
     <div className="max-h-[calc(90vh-8rem)]">
         <h1 className="text-4xl font-bold mb-8 text-center">
-                RUTA {id_ruta}
-            </h1>
+            {id_linea} - Ruta {id_ruta} 
+        </h1>
         <div className="container mx-auto p-4 h-full flex flex-col md:flex-row ">
             
             <div className="flex flex-col md:flex-row w-full h-full md:w-full lg-w-2/3 ">

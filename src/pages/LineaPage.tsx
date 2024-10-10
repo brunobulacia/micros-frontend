@@ -130,13 +130,13 @@ const DeleteDriver = async (driver: Driver, token: string) => {
 
 }
 
-const RouteCard = ({ route }: { route: RouteType }) => {
+const RouteCard = ({ route, id_linea }: { route: RouteType, id_linea: string }) => {
   const navigate = useNavigate()
   console.log(route.id_ruta)
   return (
     <button
       className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-200 m-4"
-      onClick={ () => navigate('/dashboard/ruta', { state: {id_ruta: route.id_ruta }}) }>
+      onClick={ () => navigate('/dashboard/ruta', { state: {id_ruta: route.id_ruta, id_linea }}) }>
       <div className="flex items-center">
         <Route className="w-20 h-20 mr-10" />
         <h3 className="font-bold text-5xl">{route.id_ruta}</h3>
@@ -269,7 +269,7 @@ export default function LineaPage() {
         <h2 className="text-2xl font-bold mb-4 mt-8">RUTAS</h2>
         <div className="flex flex-col md:flex-col md:w-full">
           {routes.map((route) => (
-              <RouteCard key={route.id_ruta} route={route} />
+              <RouteCard key={route.id_ruta} route={route} id_linea={state.nombre_linea} />
           ))}
         </div>
           
