@@ -98,11 +98,20 @@ const DriverCard = ({ driver }: { driver: Driver }) => {
 
       </div>
       <span className="ml-auto">🟡 TRABAJANDO</span>
-      <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { DeleteDriver(driver, token) }}> 
+      <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { handleDeleteConfirmation(driver, token) }}> 
             <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white"/>
         </button>
     </div>
   );
+};
+
+
+const handleDeleteConfirmation = async (driver: Driver, token: string) => {
+  const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este chofer?");
+  
+  if (isConfirmed) {
+    await DeleteDriver(driver, token);
+  }
 };
 
 const DeleteDriver = async (driver: Driver, token: string) => {

@@ -43,7 +43,8 @@ function PerfilPage() {
   }, [userData, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("Datos actualizados:", data);
+    
+    if (window.confirm("¿Estás seguro de que quieres actualizar los datos?")){
     data.token = token;
     data.usuario = userData?.usuario;
     console.log(data);
@@ -59,6 +60,9 @@ function PerfilPage() {
       direccion: res.data.datos.direccion,
       carnet: res.data.datos.carnet,
     });
+    alert("Los datos se han actualizado correctamente.");
+    console.log("Datos actualizados:", data);
+  }
   };
 
   // Obteniendo el valor actual del sexo
@@ -81,13 +85,14 @@ function PerfilPage() {
                 >
                   Nombre
                 </Label>
-                <Input
+                <input
                   id="nombre"
                   {...register("nombre")}
                   placeholder="Ingresa tu nombre"
-                  className="dark:bg-gray-700 dark:text-white text-base"
+                  className="dark:bg-gray-700 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600"
                 />
               </div>
+
               <div className="w-full md:w-1/2 px-2 mb-4">
                 <Label
                   htmlFor="apellido"
@@ -95,13 +100,15 @@ function PerfilPage() {
                 >
                   Apellido
                 </Label>
-                <Input
+                <input
                   id="apellido"
                   {...register("apellido")}
                   placeholder="Ingrese su apellido"
-                  className="dark:bg-gray-700 dark:text-white text-base"
+                  className="dark:bg-gray-700 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600"
                 />
               </div>
+
+              {/* Correo no editable */}
               <div className="w-full md:w-1/2 px-2 mb-4">
                 <Label
                   htmlFor="correo"
@@ -109,65 +116,25 @@ function PerfilPage() {
                 >
                   Correo
                 </Label>
-                <Input
-                  id="correo"
-                  {...register("correo")}
-                  type="email"
-                  placeholder="Ingrese su correo"
-                  className="dark:bg-gray-700 dark:text-white text-base"
-                />
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                  {userData?.correo}
+                </p>
               </div>
-              <div className="w-full md:w-1/2 px-2 mb-4">
-                <Label
-                  htmlFor="sexo"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
-                >
-                  Sexo
-                </Label>
-                <Select
-                  onValueChange={(value) => setValue("sexo", value)} // Actualiza el valor de sexo
-                  value={selectedSexo} // Valor actual del campo "sexo"
-                >
-                  <SelectTrigger
-                    id="sexo"
-                    className="dark:bg-gray-700 dark:text-white text-base"
-                  >
-                    <SelectValue placeholder="Seleccionar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="M">Masculino</SelectItem>
-                    <SelectItem value="F">Femenino</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+
+              {/* Cumpleaños no editable */}
               <div className="w-full md:w-1/2 px-2 mb-4">
                 <Label
                   htmlFor="fecha_de_nacimiento"
                   className="text-gray-700 dark:text-gray-300 text-lg"
                 >
-                  Cumpleaños
+                  Fecha de nacimiento
                 </Label>
-                <Input
-                  id="fecha_de_nacimiento"
-                  {...register("fecha_de_nacimiento")}
-                  type="date"
-                  className="dark:bg-gray-700 dark:text-white text-base"
-                />
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                  {userData?.fecha_de_nacimiento}
+                </p>
               </div>
-              <div className="w-full md:w-1/2 px-2 mb-4">
-                <Label
-                  htmlFor="direccion"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
-                >
-                  Dirección
-                </Label>
-                <Input
-                  id="direccion"
-                  {...register("direccion")}
-                  placeholder="Ingrese su dirección"
-                  className="dark:bg-gray-700 dark:text-white text-base"
-                />
-              </div>
+
+              {/* Carnet no editable */}
               <div className="w-full md:w-1/2 px-2 mb-4">
                 <Label
                   htmlFor="carnet"
@@ -175,11 +142,36 @@ function PerfilPage() {
                 >
                   Carnet
                 </Label>
-                <Input
-                  id="carnet"
-                  {...register("carnet")}
-                  placeholder="Ingrese su número de carnet"
-                  className="dark:bg-gray-700 dark:text-white text-base"
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                  {userData?.carnet}
+                </p>
+              </div>
+
+              {/* Sexo no editable */}
+              <div className="w-full md:w-1/2 px-2 mb-4">
+                <Label
+                  htmlFor="sexo"
+                  className="text-gray-700 dark:text-gray-300 text-lg"
+                >
+                  Sexo
+                </Label>
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                  {userData?.sexo === "M" ? "Masculino" : "Femenino"}
+                </p>
+              </div>
+
+              <div className="w-full md:w-1/2 px-2 mb-4">
+                <Label
+                  htmlFor="direccion"
+                  className="text-gray-700 dark:text-gray-300 text-lg"
+                >
+                  Dirección
+                </Label>
+                <input
+                  id="direccion"
+                  {...register("direccion")}
+                  placeholder="Ingrese su dirección"
+                  className="dark:bg-gray-700 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600"
                 />
               </div>
             </div>
@@ -197,7 +189,7 @@ function PerfilPage() {
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <Button variant="outline" size="lg">
-                Edit
+                Editar
               </Button>
             </div>
           </div>
@@ -209,5 +201,4 @@ function PerfilPage() {
     </div>
   );
 }
-
 export default PerfilPage;

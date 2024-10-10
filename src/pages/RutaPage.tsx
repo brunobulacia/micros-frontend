@@ -20,14 +20,20 @@ const StopCard = ({ stop, role }: { stop: Stop, role: string}) => {
           <p className="font-bold text-xl">{stop.nombre_parada}</p>
         </div>
         { role === "Operador" ? (
-        <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { DeleteStop(stop, token) }}> 
+        <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { handleDeleteConfirmation(stop, token) }}> 
             <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white"/>
         </button>
         ) : null }   
       </div>
     );
   };
-
+  const handleDeleteConfirmation = async (stop: Stop, token: string) => {
+    const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este chofer?");
+    
+    if (isConfirmed) {
+      await DeleteStop(stop, token);
+    }
+  };
 const DeleteStop = async (stop: Stop, token: string) => {
     const id_parada = stop.id_parada
     try {
