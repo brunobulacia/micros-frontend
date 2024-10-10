@@ -2,23 +2,47 @@
 
 import { useEffect, useState } from "react";
 import { initMap, dibujarParadas } from '../lib/map'; // Asegúrate de importar correctamente las funciones del archivo donde se encuentran
-import { OctagonMinus } from 'lucide-react'
-import { crearParada, paradas } from "@/api/rutas";
+import { OctagonMinus, Trash2 } from 'lucide-react'
+import { crearParada, eliminarParada, paradas } from "@/api/rutas";
 import { useLocation } from "react-router-dom";
 import { Stop } from "../types"
 import { useAuthStore } from "@/store/auth";
 import { useForm } from "react-hook-form";
+import { jwtDecode } from "jwt-decode"
 
-const StopCard = ({ stop }: { stop: Stop }) => {
+
+const StopCard = ({ stop, role }: { stop: Stop, role: string}) => {
+    const {token} = useAuthStore()
     return (
-      <button className="border rounded-lg p-4 mb-4 flex items-center w-full lg:w-5/6 bg-white hover:bg-zinc-200">
+      <div className="border rounded-lg p-4 mb-4 flex items-center w-full lg:w-5/6 bg-white hover:bg-zinc-200">
         <div className="flex items-center">
         <OctagonMinus className="w-17px h-17px mr-10" />
           <p className="font-bold text-xl">{stop.nombre_parada}</p>
         </div>
-      </button>
+        { role === "Operador" ? (
+        <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { DeleteStop(stop, token) }}> 
+            <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white"/>
+        </button>
+        ) : null }   
+      </div>
     );
   };
+
+const DeleteStop = async (stop: Stop, token: string) => {
+    const id_parada = stop.id_parada
+    try {
+        if(id_parada){
+            await eliminarParada(id_parada, token)
+            alert("Parada eliminada con exito")
+            window.location.reload()
+        } else {
+            console.error("No se pudo obtener el uuid de la parada")
+        }
+    } catch (error) {
+        console.error(error)
+    }
+
+}
 
 const CreateStopForm = () => {
     const { token } = useAuthStore();
@@ -40,11 +64,12 @@ const CreateStopForm = () => {
             data.token = token
             
             const stop: Stop = {
+                id_parada: null,
                 nombre_parada: data.nombre,
-                orden_parada: data.orden,
+                orden_parada: Number(data.orden),
                 coordenadas: {
-                    lon: data.longitud,
-                    lat: data.latitud
+                    lon: Number(data.longitud),
+                    lat: Number(data.latitud)
                 },
                 token: token
             }
@@ -127,6 +152,9 @@ function RutaPage() {
     const [stops, setStops] = useState<Stop[]>([]);
     const location = useLocation()
     const { id_ruta } = location.state
+    const { token } = useAuthStore();
+    const decoded = jwtDecode(token);
+
   useEffect(() => {
     const startCoordinates = [-17.78373015039757, -63.18042200265567];
     const initializeMap = async () => {
@@ -158,28 +186,29 @@ function RutaPage() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4 h-full">
-        <h1 className="text-3xl font-bold mb-8 text-center">
-            RUTA {id_ruta}
-        </h1>
-        <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-full lg-w-2/3 flex flex-col m-5">
-                <h2 className="text-2xl font-bold mb-4">MAPA</h2>
-                <div className="overflow-auto md:w-full pl-4">
-                    <div id="map" style={{ width: '100%', height: '500px' }}></div>
+    <div className="max-h-[calc(90vh-8rem)]">
+        <h1 className="text-4xl font-bold mb-8 text-center">
+                RUTA {id_ruta}
+            </h1>
+        <div className="container mx-auto p-4 h-full flex flex-col md:flex-row ">
+            
+            <div className="flex flex-col md:flex-row w-full h-full md:w-full lg-w-2/3 ">
+                <div className="w-full md:w-full lg-w-2/3 flex flex-col m-5">
+                    <h2 className="text-2xl font-bold mb-4">MAPA</h2>
+                    <div className="overflow-auto md:w-full pl-4">
+                        <div id="map" style={{ width: '100%', height: '500px' }}></div>
+                    </div>
+                    { decoded.role == "Operador" ? (<CreateStopForm /> ) : null }
                 </div>
-                <div>
-                    <CreateStopForm />
                 </div>
-            </div>
-            <div className="w-full md:w-full lg-w-1/3 flex flex-col m-5 ml-8">
-                <h2 className="text-2xl font-bold mb-4">PARADAS</h2>
-                <div className="w-full h-3/4 overflow-y-auto md:w-full pl-4" >           
-                    {stops.map((stop) => (
-                        <StopCard key={stop.nombre_parada} stop={stop} />
-                    ))}
+                <div className="w-full max-h-[calc(87vh-8rem)] md:w-full lg-w-1/3 flex flex-col m-5 ml-8">
+                    <h2 className="text-2xl font-bold mb-4">PARADAS</h2>
+                    <div className="w-full overflow-y-auto md:w-full pl-4" >           
+                        {stops.map((stop) => (
+                            <StopCard key={stop.nombre_parada} stop={stop} role={decoded.role} />
+                        ))}
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
   );
