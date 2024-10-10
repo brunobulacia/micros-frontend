@@ -13,12 +13,13 @@ const LineCard = ({ line }: { line: Line }) => {
     Trabajando: "bg-yellow-500",
     "No Disponible": "bg-red-500",
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <button 
-    className="border rounded-lg p-4 mb-4 flex items-center w-[99%] bg-white hover:bg-zinc-100"
-    onClick={ () => navigate('/dashboard/linea', { state: line }) }>
+    <button
+      className="border rounded-lg p-4 mb-4 flex items-center w-[99%] bg-white hover:bg-zinc-100"
+      onClick={() => navigate("/dashboard/linea", { state: line })}
+    >
       <BusFront className="w-20 h-20 mr-4" />
       <div>
         <h3 className="font-bold">{line.nombre_linea}</h3>
@@ -33,16 +34,15 @@ const LineCard = ({ line }: { line: Line }) => {
 };
 
 function LineasPage() {
-
   const [lines, setLines] = useState<Line[]>([]);
-  const [linesCharged, setLinesCharged] = useState<boolean>(false)
+  const [linesCharged, setLinesCharged] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchLines() {
       try {
-        const lineasRes = await rutasLineasResponse(); 
-        setLines(lineasRes.data); 
-        setLinesCharged(true)
+        const lineasRes = await rutasLineasResponse();
+        setLines(lineasRes.data);
+        setLinesCharged(true);
       } catch (error) {
         setLinesCharged(false);
         handleAxiosError(error);

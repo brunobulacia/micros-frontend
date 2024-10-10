@@ -78,64 +78,89 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { choferRes, crearChofer, eliminarChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
-import { jwtDecode } from "jwt-decode"
+import { jwtDecode } from "jwt-decode";
 import { DecodedToken, Driver, RouteType } from "@/types";
 import { handleAxiosError } from "@/utils/handleErrors";
 
-
 const DriverCard = ({ driver }: { driver: Driver }) => {
-  const {token} = useAuthStore()
+  const { token } = useAuthStore();
   return (
     <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
       <CircleUserRound className="w-16 h-16 mr-4" />
       <div>
         <h3 className="font-bold">{driver.usuario}</h3>
-        <p><b>Nombre: </b>{driver.nombre} {driver.apellido}</p>
-        <p><b>CI:</b> {driver.carnet}</p>
-        <p><b>Licencia:</b> {driver.licencia_categoria}</p>
-        <p><b>Sexo:</b> {driver.sexo}</p>
-        <p><b>Correo:</b> {driver.correo}</p>
-        
-
+        <p>
+          <b>Nombre: </b>
+          {driver.nombre} {driver.apellido}
+        </p>
+        <p>
+          <b>CI:</b> {driver.carnet}
+        </p>
+        <p>
+          <b>Licencia:</b> {driver.licencia_categoria}
+        </p>
+        <p>
+          <b>Sexo:</b> {driver.sexo}
+        </p>
+        <p>
+          <b>Correo:</b> {driver.correo}
+        </p>
       </div>
       <span className="ml-auto">🟡 TRABAJANDO</span>
-      <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { handleDeleteConfirmation(driver, token) }}> 
-            <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white"/>
-        </button>
+      <button
+        className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500"
+        onClick={() => {
+          handleDeleteConfirmation(driver, token);
+        }}
+      >
+        <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white" />
+      </button>
     </div>
   );
 };
 
 const handleDeleteConfirmation = async (driver: Driver, token: string) => {
-  const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este chofer?");
-  
+  const isConfirmed = window.confirm(
+    "¿Estás seguro de que quieres eliminar este chofer?"
+  );
+
   if (isConfirmed) {
     await DeleteDriver(driver, token);
   }
 };
 
 const DeleteDriver = async (driver: Driver, token: string) => {
-  const usuario_chofer = driver.usuario
+  const usuario_chofer = driver.usuario;
   try {
-      if(usuario_chofer){
-          await eliminarChofer(usuario_chofer, token)
-          alert("Chofer eliminado con exito")
-          window.location.reload()
-      } else {
-          console.error("No se pudo obtener el usuario del chofer")
-      }
+    if (usuario_chofer) {
+      await eliminarChofer(usuario_chofer, token);
+      alert("Chofer eliminado con exito");
+      window.location.reload();
+    } else {
+      console.error("No se pudo obtener el usuario del chofer");
+    }
   } catch (error) {
-    handleAxiosError(error)
+    handleAxiosError(error);
   }
+};
 
-}
-
-const RouteCard = ({ route, id_linea }: { route: RouteType, id_linea: string }) => {
-  const navigate = useNavigate()
+const RouteCard = ({
+  route,
+  id_linea,
+}: {
+  route: RouteType;
+  id_linea: string;
+}) => {
+  const navigate = useNavigate();
   return (
     <button
       className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white hover:bg-zinc-200 m-4"
-      onClick={ () => navigate('/dashboard/ruta', { state: {id_ruta: route.id_ruta, id_linea }}) }>
+      onClick={() =>
+        navigate("/dashboard/ruta", {
+          state: { id_ruta: route.id_ruta, id_linea },
+        })
+      }
+    >
       <div className="flex items-center">
         <Route className="w-20 h-20 mr-10" />
         <h3 className="font-bold text-5xl">{route.id_ruta}</h3>
@@ -160,16 +185,16 @@ export default function LineaPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const { role } = decoded 
+      const { role } = decoded;
       try {
-        if(role === "Operador") {
+        if (role === "Operador") {
           const resChoferes = await choferRes(token);
           setDrivers(resChoferes.data.listaDeChoferes);
         }
-        const resRutas = await rutas(id_linea);             
+        const resRutas = await rutas(id_linea);
         setRoutes(resRutas.data);
       } catch (error) {
-        handleAxiosError(error)
+        handleAxiosError(error);
       }
     }
 
@@ -194,14 +219,16 @@ export default function LineaPage() {
         token
       );
       alert("Chofer creado con éxito!");
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
-      handleAxiosError(error)
+      handleAxiosError(error);
     }
   };
 
-  const filteredDrivers = drivers.filter((driver) =>
-    driver.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredDrivers = drivers.filter(
+    (driver) =>
+      driver.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -220,54 +247,67 @@ export default function LineaPage() {
         <Search className="absolute left-3 top-2.5 text-gray-400" />
       </div>
       <div className="flex flex-col md:flex-row">
-      { decoded.role == "Operador" ? (<div className="flex flex-col md:flex-col md:w-[66%]">
+        {decoded.role == "Operador" ? (
+          <div className="flex flex-col md:flex-col md:w-[66%]">
             <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
-            <div className="w-full md:w-full pr-0 md:pr-4 mb-8 md:mb-0 max-h-[calc(75vh-8rem)] overflow-auto">        
+            <div className="w-full md:w-full pr-0 md:pr-4 mb-8 md:mb-0 max-h-[calc(75vh-8rem)] overflow-auto">
               {filteredDrivers.map((driver) => (
                 <DriverCard key={driver.usuario} driver={driver} />
               ))}
             </div>
-          </div>) : null }
+          </div>
+        ) : null}
         <div className="w-full md:w-1/3 pl-0 md:pl-4">
-        { decoded.role == "Operador" ? ( <> <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
-          <form onSubmit={handleCreateDriver} className="flex space-x-4 items-center">
-            <div className="flex-grow">
-              <input
-                type="text"
-                name="usuario"
-                placeholder="Usuario"
-                value={newDriver.usuario}
-                onChange={handleInputChange}
-                className="mb-4 p-2 border rounded-lg w-full"
-                required
-              />
-              <input
-                type="text"
-                name="licencia_categoria"
-                placeholder="Licencia"
-                value={newDriver.licencia_categoria}
-                onChange={handleInputChange}
-                className="p-2 border rounded-lg w-full"
-                required
-              />
-            </div>
-              <button
-              type="submit"
-              className="bg-black text-white p-4 rounded-lg hover:bg-gray-600 flex items-center justify-center w-24 h-24"
-            >
-              <UserPlus className="w-16 h-16" />
-            </button>
-          </form> </>) : null }
+          {decoded.role == "Operador" ? (
+            <>
+              {" "}
+              <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
+              <form
+                onSubmit={handleCreateDriver}
+                className="flex space-x-4 items-center"
+              >
+                <div className="flex-grow">
+                  <input
+                    type="text"
+                    name="usuario"
+                    placeholder="Usuario"
+                    value={newDriver.usuario}
+                    onChange={handleInputChange}
+                    className="mb-4 p-2 border rounded-lg w-full"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="licencia_categoria"
+                    placeholder="Licencia"
+                    value={newDriver.licencia_categoria}
+                    onChange={handleInputChange}
+                    className="p-2 border rounded-lg w-full"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-black text-white p-4 rounded-lg hover:bg-gray-600 flex items-center justify-center w-24 h-24"
+                >
+                  <UserPlus className="w-16 h-16" />
+                </button>
+              </form>{" "}
+            </>
+          ) : null}
 
-        <h2 className="text-2xl font-bold mb-4 mt-8">RUTAS</h2>
-        <div className="flex flex-col md:flex-col md:w-full">
-          {routes.map((route) => (
-              <RouteCard key={route.id_ruta} route={route} id_linea={state.nombre_linea} />
-          ))}
-        </div>
-          
+          <h2 className="text-2xl font-bold mb-4 mt-8">RUTAS</h2>
+          <div className="flex flex-col md:flex-col md:w-full">
+            {routes.map((route) => (
+              <RouteCard
+                key={route.id_ruta}
+                route={route}
+                id_linea={state.nombre_linea}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  ); 
+  );
 }
