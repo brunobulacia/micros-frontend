@@ -73,16 +73,17 @@ export default LineaPage;
  */
 "use client";
 import { useState, useEffect } from "react";
-import { Search, CircleUserRound, Route, UserPlus } from "lucide-react";
+import { Search, CircleUserRound, Route, UserPlus, Trash2 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
-import { choferRes, crearChofer } from "@/api/chofer";
+import { choferRes, crearChofer, eliminarChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
 import { jwtDecode } from "jwt-decode"
 import { Driver, RouteType } from "@/types";
 
 
 const DriverCard = ({ driver }: { driver: Driver }) => {
+  const {token} = useAuthStore()
   return (
     <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
       <CircleUserRound className="w-16 h-16 mr-4" />
@@ -97,9 +98,28 @@ const DriverCard = ({ driver }: { driver: Driver }) => {
 
       </div>
       <span className="ml-auto">🟡 TRABAJANDO</span>
+      <button className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500" onClick={ () => { DeleteDriver(driver, token) }}> 
+            <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white"/>
+        </button>
     </div>
   );
 };
+
+const DeleteDriver = async (driver: Driver, token: string) => {
+  const usuario_chofer = driver.usuario
+  try {
+      if(usuario_chofer){
+          await eliminarChofer(usuario_chofer, token)
+          alert("Chofer eliminado con exito")
+          window.location.reload()
+      } else {
+          console.error("No se pudo obtener el usuario del chofer")
+      }
+  } catch (error) {
+      console.error(error)
+  }
+
+}
 
 const RouteCard = ({ route }: { route: RouteType }) => {
   const navigate = useNavigate()
