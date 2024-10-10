@@ -14,11 +14,10 @@ export const crearChofer = async (
     try {
       const response = await axios.post(
         "/usuarios/crearChofer", 
-        choferData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
+            usuario: choferData.usuario,
+            licencia: choferData.licencia,
+            token
         }
       );
       return response.data;
