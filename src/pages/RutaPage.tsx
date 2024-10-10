@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode"
 const StopCard = ({ stop, role }: { stop: Stop, role: string}) => {
     const {token} = useAuthStore()
     return (
-      <div className="border rounded-lg p-4 mb-4 flex items-center w-full lg:w-5/6 bg-white hover:bg-zinc-200">
+      <div className="border rounded-lg p-4 mb-4 flex items-center w-full lg:w-5/6 bg-white">
         <div className="flex items-center">
         <OctagonMinus className="w-17px h-17px mr-10" />
           <p className="font-bold text-xl">{stop.nombre_parada}</p>
