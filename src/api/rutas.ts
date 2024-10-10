@@ -26,3 +26,8 @@ export const crearParada = async (stop: Stop, ruta: number) => {
         }
     )
 }
+
+export const eliminarParada = async (id_parada: string, token: string) => {
+    const url = `/rutas/paradas/eliminar/${id_parada}`
+    return await axios.post(url, { token })
+}
