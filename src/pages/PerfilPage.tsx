@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { handleAxiosError } from "@/utils/handleErrors";
 
 type FormData = {
   contraseña: string;
@@ -35,8 +36,7 @@ const UpdatePassword = () => {
       alert(res.data.message)
       window.location.reload()
     } catch (error) {
-      alert(error.response.data.message)
-      console.error(error.response.data);
+      handleAxiosError(error)
     } finally {
       setLoading(false); // Deshabilita el loading cuando la petición termina
     }

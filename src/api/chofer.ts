@@ -6,7 +6,6 @@ export const choferRes = async (token: string) => axios.post("/usuarios/choferes
     }
 );
 
-
 export const crearChofer = async (
     choferData: { usuario: string; licencia: string },
     token: string
@@ -27,7 +26,7 @@ export const crearChofer = async (
     }
   };
 
-  export const eliminarChofer = async (usuario: string, token: string) => {
-    const url = `/usuarios/choferes/eliminar/${usuario}`
-    return await axios.post(url, { token })
+export const eliminarChofer = async (usuario: string, token: string) => {
+  const url = `/usuarios/choferes/eliminar/${usuario}`
+  return await axios.post(url, { token })
 }

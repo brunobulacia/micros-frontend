@@ -31,16 +31,16 @@ export const useAuthStore = create(
       isAuth: false,
       userData: null,
       setToken: (token: string) =>
-        set((state) => ({
+        set(() => ({
           token,
           isAuth: true,
         })),
       setUserData: (userData: UserData) =>
-        set((state) => ({
+        set(() => ({
           userData,
         })),
       logout: () =>
-        set((state) => ({
+        set(() => ({
           token: "",
           isAuth: false,
           userData: null, // Limpiar los datos del usuario al hacer logout

@@ -22,20 +22,8 @@ import {
 import { useNavigate, Link } from "react-router-dom";
 import { signupRequest } from "@/api/auth";
 import { useAuthStore } from "@/store/auth";
+import { FormData } from "@/types";
 
-type FormData = {
-  usuario: string;
-  contraseña: string;
-  confirmar_contraseña: string;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  sexo: string;
-  fecha_de_nacimiento: string;
-  direccion: string;
-  telefonos: string;
-  carnet: string;
-};
 
 export default function RegisterPage() {
   const {
@@ -45,9 +33,8 @@ export default function RegisterPage() {
     setValue,
     watch,
   } = useForm<FormData>();
-
+  const error = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const { userData } = useAuthStore();
@@ -67,7 +54,6 @@ export default function RegisterPage() {
         data.telefonos = [data.telefonos];
       }
       const res = await signupRequest(data);
-      console.log(res);
       setToken(res.data.token);
       navigate("/dashboard");
       setUserData({
@@ -325,7 +311,7 @@ export default function RegisterPage() {
                 {loading ? "Registrando..." : "Registrarse"}
               </Button>
             </div>
-            {error && <p className="text-center text-red-500 mt-4">{error}</p>}
+            {error && <p className="text-center text-red-500 mt-4">{error.toString()}</p>}
           </form>
         </CardContent>
         <CardFooter className="justify-center">

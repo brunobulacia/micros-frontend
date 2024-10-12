@@ -106,15 +106,17 @@ const DriverCard = ({ driver }: { driver: Driver }) => {
           <b>Correo:</b> {driver.correo}
         </p>
       </div>
-      <span className="ml-auto">🟡 TRABAJANDO</span>
-      <button
-        className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500"
-        onClick={() => {
-          handleDeleteConfirmation(driver, token);
-        }}
-      >
-        <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white" />
-      </button>
+      <div className="flex flex-col md:flex-row ml-auto h-full">
+        <span className="ml-auto md:mr-10">🟡 TRABAJANDO</span>
+        <button
+          className="h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500"
+          onClick={() => {
+            handleDeleteConfirmation(driver, token);
+          }}
+        >
+          <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white" />
+        </button>
+      </div>
     </div>
   );
 };
@@ -199,7 +201,7 @@ export default function LineaPage() {
     }
 
     fetchData();
-  }, [id_linea, token, decoded]);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDriver({

@@ -39,3 +39,17 @@ export interface Line {
     nombre_linea: string;
     id_sindicato: number;
   }
+
+export type FormData = {
+    usuario: string;
+    contraseña: string;
+    confirmar_contraseña: string;
+    nombre: string;
+    apellido: string;
+    correo: string;
+    sexo: string;
+    fecha_de_nacimiento: string;
+    direccion: string;
+    telefonos: Array<string>;
+    carnet: string;
+  };

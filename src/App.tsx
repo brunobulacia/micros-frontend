@@ -6,7 +6,6 @@ import Dashboard from "./pages/Dashboard.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import PerfilPage from "./pages/PerfilPage.tsx";
 import LineasPage from "./pages/LineasPage.tsx";
-import RutasPage from "./pages/RutasPage.tsx";
 import LineaPage from "./pages/LineaPage.tsx";
 import RutaPage from "./pages/RutaPage.tsx";
 function App() {
@@ -24,7 +23,6 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="perfil" element={<PerfilPage />} />
               <Route path="lineas" element={<LineasPage />} />
-              <Route path="rutas" element={<RutasPage />} />
               <Route path="linea" element={<LineaPage />} />
               <Route path="ruta" element={<RutaPage />} />
             </Route>

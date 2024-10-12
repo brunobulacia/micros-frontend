@@ -44,7 +44,7 @@ function LineasPage() {
         setLines(lineasRes.data);
         setLinesCharged(true);
       } catch (error) {
-        setLinesCharged(false);
+        setLinesCharged(true);
         handleAxiosError(error);
       }
     }
@@ -55,7 +55,7 @@ function LineasPage() {
   return (
     <>
       <h1 className="text-xl font-bold mb-4">LINEAS DISPONIBLES</h1>
-      <div className=" border rounded-lg bg-white overflow-y-auto max-h-[calc(95vh-8rem)] p-5">
+      <div className="border rounded-lg bg-white overflow-y-auto max-h-[calc(95vh-8rem)] p-5">
         {lines.length > 0 ? (
           lines.map((line) => <LineCard key={line.id_linea} line={line} />)
         ) : !linesCharged ? (
