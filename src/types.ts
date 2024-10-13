@@ -40,16 +40,28 @@ export interface Line {
     id_sindicato: number;
   }
 
-export type FormData = {
-    usuario: string;
+export type UserData = {
+    usuario: string | null;
+    contraseña: string | null;
+    confirmar_contraseña: string | null;
+    nombre: string | null;
+    apellido: string | null;
+    correo: string | null;
+    sexo: string | null;
+    fecha_de_nacimiento: string | null;
+    direccion: string | null;
+    telefonos: Array<string> | null;
+    carnet: string | null;
+    token: string | null
+  };
+
+  export type updatePasswordData = {
     contraseña: string;
     confirmar_contraseña: string;
-    nombre: string;
-    apellido: string;
-    correo: string;
-    sexo: string;
-    fecha_de_nacimiento: string;
-    direccion: string;
-    telefonos: Array<string>;
-    carnet: string;
+    nueva_contraseña: string;
   };
+
+  export interface LoginData {
+    usuario: string;
+    contraseña: string;
+  }

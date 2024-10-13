@@ -14,11 +14,8 @@ import { loginRequest } from "@/api/auth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
+import { LoginData } from "@/types";
 
-interface FormData {
-  usuario: string;
-  contraseña: string;
-}
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +23,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<LoginData>();
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const { userData } = useAuthStore();
@@ -36,7 +33,7 @@ const LoginPage = () => {
       console.log("Datos del usuario:", userData); // Mostrar datos por consola
     }
   }, [userData]); // Se ejecuta cada vez que `userData` cambia
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<LoginData> = async (data) => {
     setLoading(true); // Habilita el loading
     try {
       const res = await loginRequest(data);

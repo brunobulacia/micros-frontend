@@ -22,7 +22,7 @@ import {
 import { useNavigate, Link } from "react-router-dom";
 import { signupRequest } from "@/api/auth";
 import { useAuthStore } from "@/store/auth";
-import { FormData } from "@/types";
+import {  UserData } from "@/types";
 
 
 export default function RegisterPage() {
@@ -32,7 +32,7 @@ export default function RegisterPage() {
     formState: { errors },
     setValue,
     watch,
-  } = useForm<FormData>();
+  } = useForm<UserData>();
   const error = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -46,11 +46,11 @@ export default function RegisterPage() {
     }
   }, [userData]); // Se ejecuta cada vez que `userData` cambia
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<UserData> = async (data) => {
     setLoading(true); // Habilita el loading
     try {
       //PARA CONVERTIR LOS TELEFONOS A UN ARRAY
-      if (!Array.isArray(data.telefonos)) {
+      if (!Array.isArray(data.telefonos) && data.telefonos ){
         data.telefonos = [data.telefonos];
       }
       const res = await signupRequest(data);
