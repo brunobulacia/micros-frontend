@@ -73,7 +73,7 @@ export default LineaPage;
  */
 "use client";
 import { useState, useEffect } from "react";
-import { Search,UserPlus } from "lucide-react";
+import { Search, UserPlus } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { choferRes, crearChofer } from "@/api/chofer";
@@ -82,8 +82,7 @@ import { jwtDecode } from "jwt-decode";
 import { DecodedToken, Driver, RouteType } from "@/types";
 import { handleAxiosError } from "@/utils/handleErrors";
 import { DriverCard } from "@/components/DiverCard";
-
-
+import { RouteCard } from "@/components/RouteCard";
 
 export default function LineaPage() {
   const { token } = useAuthStore();

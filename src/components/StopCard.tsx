@@ -29,23 +29,23 @@ const DeleteStop = async (stop: Stop, token: string) => {
 };
 
 export const StopCard = ({ stop, role }: { stop: Stop; role: string }) => {
-    const { token } = useAuthStore();
-    return (
-      <div className="border rounded-lg p-4 mb-4 flex items-center w-full lg:w-5/6 bg-white">
-        <div className="flex items-center">
-          <OctagonMinus className="w-17px h-17px mr-10" />
-          <p className="font-bold text-xl">{stop.nombre_parada}</p>
-        </div>
-        {role === "Operador" ? (
-          <button
-            className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500"
-            onClick={() => {
-              handleDeleteConfirmation(stop, token);
-            }}
-          >
-            <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white" />
-          </button>
-        ) : null}
+  const { token } = useAuthStore();
+  return (
+    <div className="border rounded-lg p-4 mb-4 flex items-center w-full lg:w-5/6 bg-white">
+      <div className="flex items-center">
+        <OctagonMinus className="w-17px h-17px mr-10" />
+        <p className="font-bold text-xl">{stop.nombre_parada}</p>
       </div>
-    );
+      {role === "Operador" ? (
+        <button
+          className="flex h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500"
+          onClick={() => {
+            handleDeleteConfirmation(stop, token);
+          }}
+        >
+          <Trash2 className="h-10 w-10 rounded-md text-2xl bg-white hover:bg-red-500 hover:text-white" />
+        </button>
+      ) : null}
+    </div>
+  );
 };
