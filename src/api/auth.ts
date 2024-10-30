@@ -11,6 +11,11 @@ export const verifyTokenRequest = () => axios.get("/verify");
 export const updateUserRequest = async (user) =>
   axios.put("/usuarios/update", user);
 
+export const bitacoraRequest = async (token: string) =>
+  axios.post("/usuarios/bitacora", {
+    token,
+  });
+
 export const updatePassword = async (
   pass: string,
   newPass: string,

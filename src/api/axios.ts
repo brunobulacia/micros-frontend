@@ -1,8 +1,5 @@
 const API_URL = "https://proyecto-micros.onrender.com";
 
-//APIS DE BRUNO
-// const API_URL = "http://localhost:3000";
-
 import axios from "axios";
 import { useAuthStore } from "../store/auth";
 

@@ -8,12 +8,20 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
+//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/types";
+
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
+
+  const { token } = useAuthStore();
+  const decoded = jwtDecode(token) as DecodedToken;
+  const { role } = decoded;
 
   useEffect(() => {
     setMounted(true);
@@ -53,15 +61,17 @@ export default function Dashboard() {
             <Bus className="mr-2 h-4 w-4" />
             LINEAS
           </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start"
-            aria-label="View lines"
-            onClick={() => navigate("/dashboard/bitacora")}
-          >
-            <Archive className="mr-2 h-4 w-4" />
-            VER BITACORA
-          </Button>
+          {role === "Operador" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start"
+              aria-label="View lines"
+              onClick={() => navigate("/dashboard/bitacora")}
+            >
+              <Archive className="mr-2 h-4 w-4" />
+              VER BITACORA
+            </Button>
+          )}
         </nav>
       </div>
       <div className="mt-auto">
