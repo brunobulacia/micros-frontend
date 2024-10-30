@@ -22,8 +22,7 @@ import {
 import { useNavigate, Link } from "react-router-dom";
 import { signupRequest } from "@/api/auth";
 import { useAuthStore } from "@/store/auth";
-import {  UserData } from "@/types";
-
+import { UserData } from "@/types";
 
 export default function RegisterPage() {
   const {
@@ -33,7 +32,9 @@ export default function RegisterPage() {
     setValue,
     watch,
   } = useForm<UserData>();
-  const error = useState<string | null>(null);
+  // const error = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
@@ -50,7 +51,7 @@ export default function RegisterPage() {
     setLoading(true); // Habilita el loading
     try {
       //PARA CONVERTIR LOS TELEFONOS A UN ARRAY
-      if (!Array.isArray(data.telefonos) && data.telefonos ){
+      if (!Array.isArray(data.telefonos) && data.telefonos) {
         data.telefonos = [data.telefonos];
       }
       const res = await signupRequest(data);
@@ -311,7 +312,7 @@ export default function RegisterPage() {
                 {loading ? "Registrando..." : "Registrarse"}
               </Button>
             </div>
-            {error && <p className="text-center text-red-500 mt-4">{error.toString()}</p>}
+            {error && <p className="text-center text-red-500 mt-4">{error}</p>}
           </form>
         </CardContent>
         <CardFooter className="justify-center">

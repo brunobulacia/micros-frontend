@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Menu, Settings, User, Bus } from "lucide-react";
+import { Bell, Menu, Settings, User, Bus, Archive } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -52,6 +52,15 @@ export default function Dashboard() {
           >
             <Bus className="mr-2 h-4 w-4" />
             LINEAS
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
+            aria-label="View lines"
+            onClick={() => navigate("/dashboard/bitacora")}
+          >
+            <Archive className="mr-2 h-4 w-4" />
+            VER BITACORA
           </Button>
         </nav>
       </div>

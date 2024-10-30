@@ -1,79 +1,7 @@
-/* "use client";
-import { useState, useEffect } from "react";
-import { Search, CircleUserRound, Route } from "lucide-react";
-import { useLocation } from "react-router-dom";
-import { useAuthStore } from "@/store/auth";
-import { choferRes } from "@/api/chofer";
-import { rutas } from "@/api/rutas";
-
-interface Driver {
-  usuario_chofer: string;
-  licencia_categoria: string;
-}
-
-interface Route {
-  duracion_estimada: string;
-  id_linea: number;
-  id_ruta: number;
-  longitud_total: string;
-}
-
-const DriverCard = ({ driver }: { driver: Driver }) => {
-  const statusColor = {
-    Disponible: "bg-green-500",
-    Trabajando: "bg-yellow-500",
-    "No Disponible": "bg-red-500",
-  };
-
-  return (
-    <div className="border rounded-lg p-4 mb-4 flex items-center">
-      <CircleUserRound className="w-16 h-16 mr-4" />
-      <div>
-        <h3 className="font-bold">{driver.usuario_chofer}</h3>
-        <p>Licencia: {driver.licencia_categoria}</p>
-      </div>
-      <div className={`ml-auto w-3 h-3 rounded-full`}></div>
-      <span className="ml-2">TRABAJANDO</span>
-    </div>
-  );
-};
-
-const RouteCard = ({ route }: { route: Route }) => {
-  return (
-    <div className="border rounded-lg p-4 mb-4">
-      <div className="flex items-center">
-        <Route className="w-20 h-20 mr-10" />
-        <h3 className="font-bold text-5xl">{route.id_ruta}</h3>
-      </div>
-    </div>
-  );
-};
-
-function LineaPage() {
-  const { token } = useAuthStore();
-  const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [routes, setRoutes] = useState<Route[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const location = useLocation();
-  const { state } = location;
-  const id_linea = state.id_linea;
-  console.log(id_linea);
-  useEffect(() => {
-    async function fetchLines() {
-      const resChoferes = await choferRes();
-      const resRutas = await rutas(id);
-    }
-
-    fetchLines();
-  }, []);
-  return <div>Hola</div>;
-}
-
-export default LineaPage;
- */
 "use client";
+
 import { useState, useEffect } from "react";
-import { Search, UserPlus } from "lucide-react";
+import { Search, UserPlus, Clock, Truck } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { choferRes, crearChofer } from "@/api/chofer";
@@ -93,6 +21,21 @@ export default function LineaPage() {
   const [newDriver, setNewDriver] = useState({
     usuario: "",
     licencia_categoria: "",
+  });
+  const [newSchedule, setNewSchedule] = useState({
+    horaSalida: "",
+    horaLlegada: "",
+    puntoSalida: "",
+    fecha: "",
+    chofer: "",
+    interno: "",
+  });
+  const [newBus, setNewBus] = useState({
+    placa: "",
+    interno: "",
+    modelo: "",
+    ano: "",
+    seguro: "",
   });
   const location = useLocation();
   const { state } = location;
@@ -123,6 +66,22 @@ export default function LineaPage() {
     });
   };
 
+  const handleScheduleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setNewSchedule({
+      ...newSchedule,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleBusInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewBus({
+      ...newBus,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleCreateDriver = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -138,6 +97,20 @@ export default function LineaPage() {
     } catch (error) {
       handleAxiosError(error);
     }
+  };
+
+  const handleCreateSchedule = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implement the API call to create a new schedule here
+    console.log("New schedule:", newSchedule);
+    alert("Horario creado con éxito!"); // Replace with actual API call and error handling
+  };
+
+  const handleCreateBus = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implement the API call to create a new bus here
+    console.log("New bus:", newBus);
+    alert("Micro registrado con éxito!"); // Replace with actual API call and error handling
   };
 
   const filteredDrivers = drivers.filter(
@@ -161,58 +134,239 @@ export default function LineaPage() {
         />
         <Search className="absolute left-3 top-2.5 text-gray-400" />
       </div>
-      <div className="flex flex-col md:flex-row">
-        {decoded.role == "Operador" ? (
-          <div className="flex flex-col md:flex-col md:w-[66%]">
-            <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
-            <div className="w-full md:w-full pr-0 md:pr-4 mb-8 md:mb-0 max-h-[calc(75vh-8rem)] overflow-auto">
-              {filteredDrivers.map((driver) => (
-                <DriverCard key={driver.usuario} driver={driver} />
-              ))}
-            </div>
-          </div>
-        ) : null}
-        <div className="w-full md:w-1/3 pl-0 md:pl-4">
-          {decoded.role == "Operador" ? (
-            <>
-              {" "}
-              <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
-              <form
-                onSubmit={handleCreateDriver}
-                className="flex space-x-4 items-center"
-              >
-                <div className="flex-grow">
-                  <input
-                    type="text"
-                    name="usuario"
-                    placeholder="Usuario"
-                    value={newDriver.usuario}
-                    onChange={handleInputChange}
-                    className="mb-4 p-2 border rounded-lg w-full"
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="licencia_categoria"
-                    placeholder="Licencia"
-                    value={newDriver.licencia_categoria}
-                    onChange={handleInputChange}
-                    className="p-2 border rounded-lg w-full"
-                    required
-                  />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {decoded.role === "Operador" && (
+          <>
+            <div className="lg:col-span-2">
+              <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
+              <div className="bg-white rounded-lg shadow-md p-4 mb-8 max-h-[50vh] overflow-y-auto">
+                {filteredDrivers.map((driver) => (
+                  <DriverCard key={driver.usuario} driver={driver} />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
+                  <form
+                    onSubmit={handleCreateDriver}
+                    className="flex flex-col gap-4"
+                  >
+                    <input
+                      type="text"
+                      name="usuario"
+                      placeholder="Usuario"
+                      value={newDriver.usuario}
+                      onChange={handleInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="licencia_categoria"
+                      placeholder="Licencia"
+                      value={newDriver.licencia_categoria}
+                      onChange={handleInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"
+                    >
+                      <UserPlus className="w-6 h-6 mr-2" />
+                      <span>Agregar Chofer</span>
+                    </button>
+                  </form>
                 </div>
-                <button
-                  type="submit"
-                  className="bg-black text-white p-4 rounded-lg hover:bg-gray-600 flex items-center justify-center w-24 h-24"
-                >
-                  <UserPlus className="w-16 h-16" />
-                </button>
-              </form>{" "}
-            </>
-          ) : null}
-
-          <h2 className="text-2xl font-bold mb-4 mt-8">RUTAS</h2>
-          <div className="flex flex-col md:flex-col md:w-full">
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h2 className="text-2xl font-bold mb-4">REGISTRAR MICRO</h2>
+                  <form
+                    onSubmit={handleCreateBus}
+                    className="flex flex-col gap-4"
+                  >
+                    <input
+                      type="text"
+                      name="placa"
+                      placeholder="Placa"
+                      value={newBus.placa}
+                      onChange={handleBusInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="interno"
+                      placeholder="Interno"
+                      value={newBus.interno}
+                      onChange={handleBusInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="modelo"
+                      placeholder="Modelo"
+                      value={newBus.modelo}
+                      onChange={handleBusInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <input
+                      type="number"
+                      name="ano"
+                      placeholder="Año"
+                      value={newBus.ano}
+                      onChange={handleBusInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="seguro"
+                      placeholder="Seguro"
+                      value={newBus.seguro}
+                      onChange={handleBusInputChange}
+                      className="p-2 border rounded-lg w-full"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"
+                    >
+                      <Truck className="w-6 h-6 mr-2" />
+                      <span>Registrar Micro</span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-2xl font-bold mb-4">AGREGAR HORARIO</h2>
+                <form onSubmit={handleCreateSchedule} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        htmlFor="horaSalida"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Hora de salida
+                      </label>
+                      <input
+                        type="time"
+                        id="horaSalida"
+                        name="horaSalida"
+                        value={newSchedule.horaSalida}
+                        onChange={handleScheduleInputChange}
+                        className="p-2 border rounded-lg w-full"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="horaLlegada"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Hora de llegada
+                      </label>
+                      <input
+                        type="time"
+                        id="horaLlegada"
+                        name="horaLlegada"
+                        value={newSchedule.horaLlegada}
+                        onChange={handleScheduleInputChange}
+                        className="p-2 border rounded-lg w-full"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="puntoSalida"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Punto de salida
+                      </label>
+                      <input
+                        type="text"
+                        id="puntoSalida"
+                        name="puntoSalida"
+                        value={newSchedule.puntoSalida}
+                        onChange={handleScheduleInputChange}
+                        className="p-2 border rounded-lg w-full"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="fecha"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Fecha
+                      </label>
+                      <input
+                        type="date"
+                        id="fecha"
+                        name="fecha"
+                        value={newSchedule.fecha}
+                        onChange={handleScheduleInputChange}
+                        className="p-2 border rounded-lg w-full"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="chofer"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Chofer
+                      </label>
+                      <select
+                        id="chofer"
+                        name="chofer"
+                        value={newSchedule.chofer}
+                        onChange={handleScheduleInputChange}
+                        className="p-2 border rounded-lg w-full"
+                        required
+                      >
+                        <option value="">Seleccionar chofer</option>
+                        {drivers.map((driver) => (
+                          <option key={driver.usuario} value={driver.usuario}>
+                            {driver.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="interno"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Interno
+                      </label>
+                      <input
+                        type="text"
+                        id="interno"
+                        name="interno"
+                        value={newSchedule.interno}
+                        onChange={handleScheduleInputChange}
+                        className="p-2 border rounded-lg w-full"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center w-full"
+                  >
+                    <Clock className="w-6 h-6 mr-2" />
+                    <span>Agregar Horario</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </>
+        )}
+        <div className="lg:col-span-1">
+          <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
+          <div className="space-y-4 bg-white rounded-lg shadow-md p-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
             {routes.map((route) => (
               <RouteCard
                 key={route.id_ruta}
