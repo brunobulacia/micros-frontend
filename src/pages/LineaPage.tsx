@@ -74,35 +74,46 @@ export default function LineaPage() {
         <Search className="absolute left-3 top-2.5 text-gray-400" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {decoded.role === "Operador" && (
-          <>
-            <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold mb-4">TURNOS ACTIVOS</h2>
-              <div className="bg-white rounded-lg shadow-md p-4 mb-8 max-h-[50vh] overflow-y-auto">
-                {filteredTurnos.map((turno) => (
-                  <TurnoCard key={turno.id_turno} turno={turno} />
-                ))}
+        <div className="w-full flex flex-col space-y-4 lg:col-span-2">
+          {decoded.role === "Operador" && (
+            <>
+              <div className="lg:col-span-2">
+                <h2 className="text-2xl font-bold mb-4">TURNOS ACTIVOS</h2>
+                <div className="bg-white rounded-lg shadow-md p-4 mb-8 max-h-[50vh] overflow-y-auto">
+                  {filteredTurnos.map((turno) => (
+                    <TurnoCard key={turno.id_turno} turno={turno} />
+                  ))}
+                </div>
               </div>
-            </div>
-          </>
-        )}
-        <div className="lg:col-span-1">
-          <button
-            className="w-full h-20 bg-white hover:bg-zinc-100 border rounded-lg p-0 mb-2 transition-colors duration-200 text-center mt-12"
-            onClick={() =>
-              navigate("/dashboard/micros", {
-                state: { id_linea },
-              })
-            }
-          >
-            <div className="flex items-center justify-center w-full h-full">
-              <Bus />
-              <h1 className="font-semibold text-xl text-center m-4">
-                <b>MICROS</b>
-              </h1>
-            </div>
-          </button>
-          <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
+
+              <div className="flex flex-row space-x-4">
+                <CrearHorario />
+                <CrearMicro linea={id_linea} />
+              </div>
+            </>
+          )}
+        </div>
+        <div className={`lg:col-span-1 ${decoded.role !== "Operador" && "lg:col-span-3"}`}>
+          {decoded.role === "Operador" && (
+            <button
+              className="w-full h-20 bg-white hover:bg-zinc-100 border rounded-lg p-0 mb-2 transition-colors duration-200 text-center mt-12"
+              onClick={() =>
+                navigate("/dashboard/micros", {
+                  state: { id_linea },
+                })
+              }
+            >
+              <div className="flex items-center justify-center w-full h-full">
+                <Bus />
+                <h1 className="font-semibold text-xl text-center m-4">
+                  <b>MICROS</b>
+                </h1>
+              </div>
+            </button>
+          )}
+          {decoded.role !== "Operador" && (
+            <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
+          )}
           <div className="space-y-4 bg-white rounded-lg shadow-md p-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
             {routes.map((route) => (
               <RouteCard
@@ -114,8 +125,6 @@ export default function LineaPage() {
           </div>
           {decoded.role === "Operador" && (
             <>
-              <CrearHorario />
-              <CrearMicro linea={id_linea} />
               <CrearChoferFrom />
             </>
           )}

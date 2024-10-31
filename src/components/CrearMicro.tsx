@@ -1,12 +1,20 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Bus } from "lucide-react";
 import { crearMicro } from "../api/micro";
+import { getOwners } from "../api/owners.ts"; // Importa la función para obtener la lista de dueños
 import { handleAxiosError } from "@/utils/handleErrors";
 import { MicroData } from "@/types";
 
-function CrearMicro({ linea: linea }: { linea: number }) {
+interface Owner {
+  id: string;
+  nombre: string;
+  apellido: string;
+}
+
+function CrearMicro({ linea }: { linea: number }) {
   const {
     register,
     handleSubmit,
@@ -20,29 +28,40 @@ function CrearMicro({ linea: linea }: { linea: number }) {
       año: 1900,
       seguro: "",
       linea: linea,
-      dueño: 0,
+      dueño: "", // Cambiado a una cadena vacía para almacenar el id del dueño seleccionado
     },
   });
 
-  const onSubmit = async (data: MicroData) => {
-    const payload = {
-      ...data,
-    };
+  const [owners, setOwners] = useState<Owner[]>([]);
 
+  // Obtener la lista de dueños cuando el componente se monta
+  useEffect(() => {
+    async function fetchOwners() {
+      try {
+        const res = await getOwners();
+        setOwners(res.data);
+      } catch (error) {
+        handleAxiosError(error);
+      }
+    }
+
+    fetchOwners();
+  }, []);
+
+  const onSubmit = async (data: MicroData) => {
     try {
-      const res = await crearMicro(payload);
-      console.log(res);
-      console.log("Payload:", payload);
+      await crearMicro(data); // Enviar la data directamente
+      alert("Micro registrado con éxito.");
       reset();
     } catch (error) {
-      handleAxiosError(error); //Bruno si lees esto usa esta mamada para ver mejor los errores en la consola del navegador
+      handleAxiosError(error);
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mt-4">
+    <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-1/2">
       <h2 className="text-2xl font-bold mb-4">
-        REGISTRAR MICRO - Línea {linea}
+        REGISTRAR MICRO - LÍNEA {linea}
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <input
@@ -56,14 +75,10 @@ function CrearMicro({ linea: linea }: { linea: number }) {
         <input
           type="text"
           placeholder="Interno"
-          {...register("interno", {
-            required: "El número interno es obligatorio",
-          })}
+          {...register("interno", { required: "El número interno es obligatorio" })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.interno && (
-          <p className="text-red-500">{errors.interno.message}</p>
-        )}
+        {errors.interno && <p className="text-red-500">{errors.interno.message}</p>}
 
         <input
           type="text"
@@ -71,9 +86,7 @@ function CrearMicro({ linea: linea }: { linea: number }) {
           {...register("modelo", { required: "El modelo es obligatorio" })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.modelo && (
-          <p className="text-red-500">{errors.modelo.message}</p>
-        )}
+        {errors.modelo && <p className="text-red-500">{errors.modelo.message}</p>}
 
         <input
           type="text"
@@ -92,16 +105,21 @@ function CrearMicro({ linea: linea }: { linea: number }) {
           {...register("seguro", { required: "El seguro es obligatorio" })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.seguro && (
-          <p className="text-red-500">{errors.seguro.message}</p>
-        )}
-        <input
-          type="number"
-          placeholder="Dueño"
-          {...register("dueño", { required: "El seguro es obligatorio" })}
+        {errors.seguro && <p className="text-red-500">{errors.seguro.message}</p>}
+
+        <select
+          {...register("dueño", { required: "El dueño es obligatorio" })}
           className="p-2 border rounded-lg w-full"
-        />
+        >
+          <option value="">Seleccionar dueño</option>
+          {owners.map((owner) => (
+            <option key={owner.id} value={owner.id}>
+              {owner.nombre} {owner.apellido}
+            </option>
+          ))}
+        </select>
         {errors.dueño && <p className="text-red-500">{errors.dueño.message}</p>}
+
         <button
           type="submit"
           className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"

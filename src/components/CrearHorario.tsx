@@ -200,11 +200,13 @@ export const CrearHorario = () => {
   };
   return (
     <>
-      <h2 className="text-2xl font-bold mb-4 mt-10">CREAR TURNO</h2>
+      
       <form
+      
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-[100%] border-2 border-gray-100 mt-5"
+        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-full md:w-1/2 border-2 border-gray-100"
       >
+        <h2 className="text-2xl font-bold mb-4">CREAR TURNO</h2>
         <div className="w-full md:w-full px-2 mb-4 bg">
           <label
             htmlFor="chofer"
@@ -250,7 +252,7 @@ export const CrearHorario = () => {
           </div>
           <button
             type="submit"
-            className="w-full mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
+            className="w-full mt-16 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
           >
             <Clock className="w-6 h-6 mr-2" />
             Crear Turno
