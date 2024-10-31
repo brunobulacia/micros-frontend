@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { LoginData } from "@/types";
 
-
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const {
@@ -39,7 +38,7 @@ const LoginPage = () => {
       const res = await loginRequest(data);
       console.log(res);
       setToken(res.data.token);
-      navigate("/dashboard");
+      navigate("/dashboard/perfil");
       setUserData({
         usuario: res.data.datos.usuario,
         nombre: res.data.datos.nombre,

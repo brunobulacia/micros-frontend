@@ -1,5 +1,3 @@
-// MicrosPage.tsx
-
 function MicrosPage() {
   return (
     <div className="p-6 max-w-md mx-auto bg-zinc-50 rounded-xl shadow-md space-y-4">
