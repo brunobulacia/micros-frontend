@@ -34,7 +34,7 @@ export const TurnoCard = ({ turno }: { turno: Turno }) => {
   const { token } = useAuthStore();
   return (
     <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
-      <CircleUserRound className="w-16 h-16 mr-4" />
+      <CircleUserRound className="w-16 h-16 mr-4 hidden md:block" />
       <div className="flex">
         <div className="mr-4">
             <h3 className="font-bold">INTERNO {turno.interno}</h3>
@@ -59,7 +59,6 @@ export const TurnoCard = ({ turno }: { turno: Turno }) => {
         </div>
       </div>
       <div className="flex flex-col md:flex-row ml-auto h-full">
-        <span className="ml-auto md:mr-10">🟡 TRABAJANDO</span>
         <button
           className="h-10 w-10 rounded-md ml-auto bg-white items-center justify-items-center hover:bg-red-500"
           onClick={() => {

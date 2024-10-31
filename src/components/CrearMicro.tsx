@@ -69,11 +69,11 @@ function CrearMicro({ linea }: { linea: number }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-1/2">
+    <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-1/2 mt-6 ml-0 md:mt-0 !ml-0">
       <h2 className="text-2xl font-bold mb-4">
         REGISTRAR MICRO - LÍNEA {linea}
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 !ml-0">
         <input
           type="text"
           placeholder="Placa"

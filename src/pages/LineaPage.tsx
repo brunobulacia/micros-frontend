@@ -74,19 +74,19 @@ export default function LineaPage() {
         <Search className="absolute left-3 top-2.5 text-gray-400" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="w-full flex flex-col space-y-4 lg:col-span-2">
+        <div className="w-full flex flex-col md:space-y-4 lg:col-span-2">
           {decoded.role === "Operador" && (
             <>
               <div className="lg:col-span-2">
                 <h2 className="text-2xl font-bold mb-4">TURNOS ACTIVOS</h2>
-                <div className="bg-white rounded-lg shadow-md p-4 mb-8 max-h-[50vh] overflow-y-auto">
+                <div className="bg-white rounded-lg shadow-md p-4 mb-0 md:mb-4 max-h-[50vh] overflow-y-auto">
                   {filteredTurnos.map((turno) => (
                     <TurnoCard key={turno.id_turno} turno={turno} />
                   ))}
                 </div>
               </div>
 
-              <div className="flex flex-row space-x-4">
+              <div className="flex flex-col md:flex-row space-x-4 md:space-x-0 md:col-span-2 !ml-0">
                 <CrearHorario />
                 <CrearMicro linea={id_linea} />
               </div>
@@ -96,7 +96,7 @@ export default function LineaPage() {
         <div className={`lg:col-span-1 ${decoded.role !== "Operador" && "lg:col-span-3"}`}>
           {decoded.role === "Operador" && (
             <button
-              className="w-full h-20 bg-white hover:bg-zinc-100 border rounded-lg p-0 mb-2 transition-colors duration-200 text-center mt-12"
+              className="w-full h-20 bg-white hover:bg-zinc-100 border rounded-lg p-0 mb-2 transition-colors duration-200 text-center mt-0 md:mt-12"
               onClick={() =>
                 navigate("/dashboard/micros", {
                   state: { id_linea },

@@ -204,7 +204,7 @@ export const CrearHorario = () => {
       <form
       
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-full md:w-1/2 border-2 border-gray-100"
+        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-full border-2 border-gray-100 md:w-1/2 mt-6 ml-0 md:mt-0"
       >
         <h2 className="text-2xl font-bold mb-4">CREAR TURNO</h2>
         <div className="w-full md:w-full px-2 mb-4 bg">

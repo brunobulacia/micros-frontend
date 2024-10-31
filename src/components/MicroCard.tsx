@@ -3,6 +3,7 @@ import { Micro } from "@/types";
 import { setEstado } from "@/api/estado";
 import { programarMantenimiento } from "@/api/mantenimiento";
 import { handleAxiosError } from "@/utils/handleErrors";
+import { Check, Wrench } from "lucide-react";
 
 interface MicroCardProps {
   micro: Micro;
@@ -63,10 +64,11 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
     <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
       <div className="flex items-center">
         <div
-          className={`h-16 w-4 m-0 rounded-full ${estadoColor[estado]}`}
+          className={`h-32 md:h-16 w-4 m-0 rounded-full ${estadoColor[estado]}`}
         ></div>
         <span className="font-semibold mr-4">{}</span>
       </div>
+      <div className="flex flex-col md:flex-row ml-auto h-full">
       <div className="ml-4 mr-4">
         <h3 className="font-bold">{micro.modelo}</h3>
         <p>
@@ -86,9 +88,9 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
         </p>
       </div>
       <div className="ml-auto flex flex-col space-y-2 items-end">
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-row items-center space-x-2">
           <select
-            className="w-full mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-900 bg-zinc-50 text-zinc-900 shadow hover:bg-zinc-200/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center border-2 border-gray-950"
+            className="w-full mt-6 inline-flex items-center justify-start whitespace-nowrap text-left rounded-md text-xs md:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-900 bg-zinc-50 text-zinc-900 shadow hover:bg-zinc-200/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 border-2 border-gray-950"
             value={nuevoEstado}
             onChange={handleEstadoChange}
           >
@@ -98,20 +100,20 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
             <option value="NO DISPONIBLE">NO DISPONIBLE</option>
           </select>
           <button
-            className="w-1/3 mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
+            className="ml-auto w-1/3 mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
             onClick={handleConfirmEstado}
           >
-            Confirmar
+            <Check />
           </button>
         </div>
         <button
           className="w-full mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center"
           onClick={() => setMantenimientoModal(true)}
         >
-          Programar Mantenimiento
+            <Wrench />
         </button>
       </div>
-
+      </div>
       {mantenimientoModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-80">
