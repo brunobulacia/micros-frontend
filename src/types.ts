@@ -65,3 +65,13 @@ export type UserData = {
     usuario: string;
     contraseña: string;
   }
+
+  export interface MicroData {
+    placa: string;
+    interno: string;
+    modelo: string;
+    año: number;
+    seguro: string;
+    linea: number;
+    dueño: number;
+  }

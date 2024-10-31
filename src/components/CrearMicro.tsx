@@ -2,11 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { Bus } from "lucide-react";
-import { useAuthStore } from "../store/auth";
 import { crearMicro } from "../api/micro";
+import { handleAxiosError } from "@/utils/handleErrors";
+import { MicroData } from "@/types";
 
-function CrearMicro({ linea }) {
-  const { token } = useAuthStore();
+function CrearMicro({ linea: linea }: { linea: number }) {
   const {
     register,
     handleSubmit,
@@ -17,16 +17,16 @@ function CrearMicro({ linea }) {
       placa: "",
       interno: "",
       modelo: "",
-      año: "",
+      año: 1900,
       seguro: "",
+      linea: linea,
+      dueño: 0,
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: MicroData) => {
     const payload = {
       ...data,
-      linea,
-      token,
     };
 
     try {
@@ -35,7 +35,7 @@ function CrearMicro({ linea }) {
       console.log("Payload:", payload);
       reset();
     } catch (error) {
-      console.error("Error al enviar el formulario:", error);
+      handleAxiosError(error); //Bruno si lees esto usa esta mamada para ver mejor los errores en la consola del navegador
     }
   };
 
@@ -76,12 +76,11 @@ function CrearMicro({ linea }) {
         )}
 
         <input
-          type="number"
+          type="text"
           placeholder="Año"
           {...register("año", {
             required: "El año es obligatorio",
-            valueAsNumber: true,
-            min: { value: 1900, message: "Año no válido" },
+            valueAsNumber: false,
           })}
           className="p-2 border rounded-lg w-full"
         />
@@ -96,7 +95,15 @@ function CrearMicro({ linea }) {
         {errors.seguro && (
           <p className="text-red-500">{errors.seguro.message}</p>
         )}
-
+        <input
+          type="number"
+          placeholder="Dueño"
+          {...register("dueño", { required: "El seguro es obligatorio" })}
+          className="p-2 border rounded-lg w-full"
+        />
+        {errors.dueño && (
+          <p className="text-red-500">{errors.dueño.message}</p>
+        )}
         <button
           type="submit"
           className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"
