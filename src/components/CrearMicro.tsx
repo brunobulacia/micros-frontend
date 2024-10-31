@@ -40,7 +40,7 @@ function CrearMicro({ linea: linea }: { linea: number }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 mt-4">
       <h2 className="text-2xl font-bold mb-4">
         REGISTRAR MICRO - Línea {linea}
       </h2>

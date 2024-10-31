@@ -1,19 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, UserPlus } from "lucide-react";
+import { Search } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
-import { choferRes, crearChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
 import { jwtDecode } from "jwt-decode";
-import { DecodedToken, Driver, RouteType, Turno } from "@/types";
+import { DecodedToken, RouteType, Turno } from "@/types";
 import { handleAxiosError } from "@/utils/handleErrors";
 import { RouteCard } from "@/components/RouteCard";
 import CrearHorario from "@/components/CrearHorario";
 import CrearMicro from "@/components/CrearMicro";
 import { turnos } from "@/api/turno";
 import { TurnoCard } from "@/components/TurnoCard";
+import CrearChoferFrom from "@/components/CrearChoferForm";
+
 export default function LineaPage() {
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
@@ -23,10 +24,6 @@ export default function LineaPage() {
   const [turnosList, setTurnosList] = useState<Turno[]>([]);
   const [routes, setRoutes] = useState<RouteType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [newDriver, setNewDriver] = useState({
-    usuario: "",
-    licencia_categoria: "",
-  });
 
   const location = useLocation();
   const { state } = location;
@@ -37,8 +34,8 @@ export default function LineaPage() {
       const { role } = decoded;
       try {
         if (role === "Operador") {
-        //const resChoferes = await choferRes(token);
-         // setDrivers(resChoferes.data.listaDeChoferes);
+          //const resChoferes = await choferRes(token);
+          // setDrivers(resChoferes.data.listaDeChoferes);
 
           const resTurnos = await turnos(token, id_linea);
           console.log(resTurnos.data);
@@ -53,30 +50,6 @@ export default function LineaPage() {
 
     fetchData();
   }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDriver({
-      ...newDriver,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleCreateDriver = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await crearChofer(
-        {
-          usuario: newDriver.usuario,
-          licencia: newDriver.licencia_categoria,
-        },
-        token
-      );
-      alert("Chofer creado con éxito!");
-      window.location.reload();
-    } catch (error) {
-      handleAxiosError(error);
-    }
-  };
 
   const filteredTurnos = turnosList.filter(
     (turno) =>
@@ -123,45 +96,13 @@ export default function LineaPage() {
               />
             ))}
           </div>
-          <CrearHorario />
-          <div className="mt-4">
-          <CrearMicro linea={id_linea} />
-          </div>
-          <div className="mt-4">
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
-                  <form
-                    onSubmit={handleCreateDriver}
-                    className="flex flex-col gap-4"
-                  >
-                    <input
-                      type="text"
-                      name="usuario"
-                      placeholder="Usuario"
-                      value={newDriver.usuario}
-                      onChange={handleInputChange}
-                      className="p-2 border rounded-lg w-full"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="licencia_categoria"
-                      placeholder="Licencia"
-                      value={newDriver.licencia_categoria}
-                      onChange={handleInputChange}
-                      className="p-2 border rounded-lg w-full"
-                      required
-                    />
-                    <button
-                      type="submit"
-                      className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"
-                    >
-                      <UserPlus className="w-6 h-6 mr-2" />
-                      <span>Agregar Chofer</span>
-                    </button>
-                  </form>
-                </div>
-              </div>
+          {decoded.role === "Operador" && (
+            <>
+              <CrearHorario />
+              <CrearMicro linea={id_linea} />
+              <CrearChoferFrom />
+            </>
+          )}
         </div>
       </div>
     </div>
