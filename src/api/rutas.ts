@@ -1,7 +1,12 @@
 import { Stop } from "@/types";
 import axios from "./axios";
+import { useAuthStore } from "@/store/auth";
 
-export const rutasLineasResponse = async () => axios.post("/rutas/lineas");
+export const rutasLineasResponse = async () => axios.post("/rutas/lineas",
+    {
+        token: useAuthStore.getState().token
+    }
+);
 
 export const rutas = async (linea: number) => axios.post("/rutas", 
     {
