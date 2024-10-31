@@ -84,7 +84,7 @@ function CrearMicro({ linea: linea }: { linea: number }) {
           })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.ano && <p className="text-red-500">{errors.ano.message}</p>}
+        {errors.año && <p className="text-red-500">{errors.año.message}</p>}
 
         <input
           type="text"
@@ -101,9 +101,7 @@ function CrearMicro({ linea: linea }: { linea: number }) {
           {...register("dueño", { required: "El seguro es obligatorio" })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.dueño && (
-          <p className="text-red-500">{errors.dueño.message}</p>
-        )}
+        {errors.dueño && <p className="text-red-500">{errors.dueño.message}</p>}
         <button
           type="submit"
           className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"

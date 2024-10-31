@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
 import { updateUserRequest } from "@/api/auth";
-import { useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,7 @@ function PerfilPage() {
     defaultValues: {
       usuario: "",
       contraseña: "",
-      confirmar_contraseña:"",
+      confirmar_contraseña: "",
       nombre: "",
       apellido: "",
       correo: "",
@@ -26,7 +26,7 @@ function PerfilPage() {
       direccion: "",
       telefonos: null,
       carnet: "",
-      token: ""
+      token: "",
     },
   });
 
@@ -43,45 +43,43 @@ function PerfilPage() {
   }, [userData, setValue]);
 
   const onSubmit = async (data: UserData) => {
-    
-    if (window.confirm("¿Estás seguro de que quieres actualizar los datos?")){
-    data.token = token;
-    if (userData) 
-    data.usuario = userData.usuario;
-    console.log(data);
-    const res = await updateUserRequest(data);
-    console.log(res);
-    setUserData({
-      usuario: res.data.datos.usuario,
-      nombre: res.data.datos.nombre,
-      apellido: res.data.datos.apellido,
-      correo: res.data.datos.correo,
-      sexo: res.data.datos.sexo,
-      fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
-      direccion: res.data.datos.direccion,
-      carnet: res.data.datos.carnet,
-    });
-    alert("Los datos se han actualizado correctamente.");
-    console.log("Datos actualizados:", data);
-  }
+    if (window.confirm("¿Estás seguro de que quieres actualizar los datos?")) {
+      data.token = token;
+      if (userData) data.usuario = userData.usuario;
+      console.log(data);
+      const res = await updateUserRequest(data);
+      console.log(res);
+      setUserData({
+        usuario: res.data.datos.usuario,
+        nombre: res.data.datos.nombre,
+        apellido: res.data.datos.apellido,
+        correo: res.data.datos.correo,
+        sexo: res.data.datos.sexo,
+        fecha_de_nacimiento: res.data.datos.fecha_de_nacimiento,
+        direccion: res.data.datos.direccion,
+        carnet: res.data.datos.carnet,
+      });
+      alert("Los datos se han actualizado correctamente.");
+      console.log("Datos actualizados:", data);
+    }
   };
 
-  // Obteniendo el valor actual del sexo
-
   return (
-    <div>
-      <h1 className="text-3xl mb-1 font-semibold">ACTUALIZAR DATOS</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl mb-6 font-semibold text-center sm:text-left">
+        ACTUALIZAR DATOS
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-[90%]"
+        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md"
       >
-        <div className="flex flex-wrap -mx-2 w-full">
-          <div className="w-full md:w-2/3 px-2">
-            <div className="flex flex-wrap -mx-2">
-              <div className="w-full md:w-1/2 px-2 mb-4">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-2/3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label
                   htmlFor="nombre"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Nombre
                 </Label>
@@ -89,14 +87,14 @@ function PerfilPage() {
                   id="nombre"
                   {...register("nombre")}
                   placeholder="Ingresa tu nombre"
-                  className="dark:bg-gray-700 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+                  className="dark:bg-gray-700 dark:text-white"
                 />
               </div>
 
-              <div className="w-full md:w-1/2 px-2 mb-4">
+              <div className="space-y-2">
                 <Label
                   htmlFor="apellido"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Apellido
                 </Label>
@@ -104,66 +102,62 @@ function PerfilPage() {
                   id="apellido"
                   {...register("apellido")}
                   placeholder="Ingrese su apellido"
-                  className="dark:bg-gray-700 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+                  className="dark:bg-gray-700 dark:text-white"
                 />
               </div>
 
-              {/* Correo no editable */}
-              <div className="w-full md:w-1/2 px-2 mb-4">
+              <div className="space-y-2">
                 <Label
                   htmlFor="correo"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Correo
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.correo}
                 </p>
               </div>
 
-              {/* Cumpleaños no editable */}
-              <div className="w-full md:w-1/2 px-2 mb-4">
+              <div className="space-y-2">
                 <Label
                   htmlFor="fecha_de_nacimiento"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Fecha de nacimiento
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.fecha_de_nacimiento}
                 </p>
               </div>
 
-              {/* Carnet no editable */}
-              <div className="w-full md:w-1/2 px-2 mb-4">
+              <div className="space-y-2">
                 <Label
                   htmlFor="carnet"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Carnet
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.carnet}
                 </p>
               </div>
 
-              {/* Sexo no editable */}
-              <div className="w-full md:w-1/2 px-2 mb-4">
+              <div className="space-y-2">
                 <Label
                   htmlFor="sexo"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Sexo
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.sexo === "M" ? "Masculino" : "Femenino"}
                 </p>
               </div>
 
-              <div className="w-full md:w-1/2 px-2 mb-4">
+              <div className="space-y-2 sm:col-span-2">
                 <Label
                   htmlFor="direccion"
-                  className="text-gray-700 dark:text-gray-300 text-lg"
+                  className="text-gray-700 dark:text-gray-300"
                 >
                   Dirección
                 </Label>
@@ -171,35 +165,36 @@ function PerfilPage() {
                   id="direccion"
                   {...register("direccion")}
                   placeholder="Ingrese su dirección"
-                  className="dark:bg-gray-700 dark:text-white text-base w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+                  className="dark:bg-gray-700 dark:text-white w-full sm:w-3/4 md:w-1/2"
                 />
               </div>
             </div>
           </div>
-          <div className="w-full md:w-1/3 px-2">
-            <div className="text-center">
-              <p className="mb-2 text-gray-700 dark:text-gray-300 text-lg font-semibold">
-                Foto de perfil
-              </p>
-              <Avatar className="h-32 w-32 mb-2 mx-auto">
-                <AvatarImage
-                  src="/placeholder.svg?height=128&width=128"
-                  alt="Profile picture"
-                />
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-              <Button variant="outline" size="lg">
-                Editar
-              </Button>
-            </div>
+          <div className="w-full lg:w-1/3 flex flex-col items-center justify-start">
+            <p className="mb-2 text-gray-700 dark:text-gray-300 text-lg font-semibold">
+              Foto de perfil
+            </p>
+            <Avatar className="h-32 w-32 mb-4">
+              <AvatarImage
+                src="/placeholder.svg?height=128&width=128"
+                alt="Profile picture"
+              />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
+            <Button variant="outline" size="lg" className="w-full sm:w-auto">
+              Editar
+            </Button>
           </div>
         </div>
-        <Button type="submit" className="w-full md:w-auto mt-6">
+        <Button type="submit" className="w-full sm:w-auto mt-6">
           Actualizar información
         </Button>
       </form>
-      <UpdatePassword />
+      <div className="mt-8">
+        <UpdatePassword />
+      </div>
     </div>
   );
 }
+
 export default PerfilPage;
