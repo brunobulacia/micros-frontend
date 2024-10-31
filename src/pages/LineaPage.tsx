@@ -14,11 +14,12 @@ import CrearMicro from "@/components/CrearMicro";
 import { turnos } from "@/api/turno";
 import { TurnoCard } from "@/components/TurnoCard";
 import CrearChoferFrom from "@/components/CrearChoferForm";
-
+import { useNavigate } from "react-router-dom";
+import { Bus } from "lucide-react";
 export default function LineaPage() {
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
-
+  const navigate = useNavigate();
   //const [drivers, setDrivers] = useState<Driver[]>([]);
 
   const [turnosList, setTurnosList] = useState<Turno[]>([]);
@@ -86,6 +87,21 @@ export default function LineaPage() {
           </>
         )}
         <div className="lg:col-span-1">
+          <button
+            className="w-full h-20 bg-white hover:bg-zinc-100 border rounded-lg p-0 mb-2 transition-colors duration-200 text-center mt-12"
+            onClick={() =>
+              navigate("/dashboard/micros", {
+                state: { id_linea },
+              })
+            }
+          >
+            <div className="flex items-center justify-center w-full h-full">
+              <Bus />
+              <h1 className="font-semibold text-xl text-center m-4">
+                <b>MICROS</b>
+              </h1>
+            </div>
+          </button>
           <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
           <div className="space-y-4 bg-white rounded-lg shadow-md p-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
             {routes.map((route) => (
