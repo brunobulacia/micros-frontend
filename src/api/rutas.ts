@@ -10,6 +10,7 @@ export const rutasLineasResponse = async () => axios.post("/rutas/lineas",
 
 export const rutas = async (linea: number) => axios.post("/rutas", 
     {
+        token: useAuthStore.getState().token,
         id_linea: linea
     }
 );
@@ -27,7 +28,8 @@ export const crearParada = async (stop: Stop, ruta: number) => {
             orden: stop.orden_parada,
             latitud: stop.coordenadas.lat,
             longitud: stop.coordenadas.lon,
-            ruta
+            ruta,
+            token: useAuthStore.getState().token
         }
     )
 }
