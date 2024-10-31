@@ -200,7 +200,7 @@ export const CrearHorario = () => {
   };
   return (
     <>
-      <h2 className="text-2xl font-bold mb-4 mt-10">CREAR PARADA</h2>
+      <h2 className="text-2xl font-bold mb-4 mt-10">CREAR TURNO</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md w-[100%] border-2 border-gray-100 mt-5"
@@ -215,7 +215,7 @@ export const CrearHorario = () => {
           <input
             id="chofer"
             {...register("chofer")}
-            placeholder="Ingresa el nombre de la parada"
+            placeholder="Ingresa el chofer"
             className="dark:bg-gray-700 dark:text-white text-base w-full md:w-full mt-2 p-2 border rounded-lg"
           />
         </div>
@@ -229,7 +229,7 @@ export const CrearHorario = () => {
           <input
             id="interno"
             {...register("interno")}
-            placeholder="Ingresa el orden de la parada"
+            placeholder="Ingresa el interno"
             className="dark:bg-gray-700 dark:text-white text-base md:w-full mt-2 p-2 border rounded-lg w-full"
           />
         </div>

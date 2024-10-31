@@ -94,3 +94,25 @@ export interface TurnoData {
   interno: string;
   partida: string;
 }
+
+// Interface para el estado de un micro
+export interface Estado {
+  id_estado: string;
+  estado: "DISPONIBLE" | "TRABAJANDO" | "INCIDENTE" | "NO DISPONIBLE";
+  fecha: string; // formato "YYYY-MM-DD"
+  hora: string; // formato "HH:mm:ss"
+  id_micro: string;
+}
+
+// Interface para Micro
+export interface Micro {
+  id_micro: number;
+  placa: string;
+  interno: string;
+  modelo: string;
+  año: string;
+  seguro: string;
+  id_dueño: string;
+  id_linea: string;
+  estados: Estado[];
+}
