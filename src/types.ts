@@ -75,3 +75,21 @@ export type UserData = {
     linea: number;
     dueño: number;
   }
+
+  export interface Turno {
+    id_turno: string;
+    chofer: string;
+    interno: string;
+    placa: string;
+    id_horario: string;
+    fecha_horario: string;
+    hora_salida: string;
+    hora_llegada: string;
+    punto_salida: string;
+  }
+
+  export interface TurnoData {
+    chofer: string;
+    interno: string;
+    partida: string;
+  }

@@ -7,17 +7,20 @@ import { useAuthStore } from "@/store/auth";
 import { choferRes, crearChofer } from "@/api/chofer";
 import { rutas } from "@/api/rutas";
 import { jwtDecode } from "jwt-decode";
-import { DecodedToken, Driver, RouteType } from "@/types";
+import { DecodedToken, Driver, RouteType, Turno } from "@/types";
 import { handleAxiosError } from "@/utils/handleErrors";
-import { DriverCard } from "@/components/DiverCard";
 import { RouteCard } from "@/components/RouteCard";
 import CrearHorario from "@/components/CrearHorario";
 import CrearMicro from "@/components/CrearMicro";
-
+import { turnos } from "@/api/turno";
+import { TurnoCard } from "@/components/TurnoCard";
 export default function LineaPage() {
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
-  const [drivers, setDrivers] = useState<Driver[]>([]);
+
+  //const [drivers, setDrivers] = useState<Driver[]>([]);
+
+  const [turnosList, setTurnosList] = useState<Turno[]>([]);
   const [routes, setRoutes] = useState<RouteType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [newDriver, setNewDriver] = useState({
@@ -34,8 +37,12 @@ export default function LineaPage() {
       const { role } = decoded;
       try {
         if (role === "Operador") {
-          const resChoferes = await choferRes(token);
-          setDrivers(resChoferes.data.listaDeChoferes);
+        //const resChoferes = await choferRes(token);
+         // setDrivers(resChoferes.data.listaDeChoferes);
+
+          const resTurnos = await turnos(token, id_linea);
+          console.log(resTurnos.data);
+          setTurnosList(resTurnos.data);
         }
         const resRutas = await rutas(id_linea);
         setRoutes(resRutas.data);
@@ -71,10 +78,10 @@ export default function LineaPage() {
     }
   };
 
-  const filteredDrivers = drivers.filter(
-    (driver) =>
-      driver.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      driver.usuario.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTurnos = turnosList.filter(
+    (turno) =>
+      turno.chofer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      turno.interno.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -96,13 +103,31 @@ export default function LineaPage() {
         {decoded.role === "Operador" && (
           <>
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold mb-4">CHOFERES</h2>
+              <h2 className="text-2xl font-bold mb-4">TURNOS ACTIVOS</h2>
               <div className="bg-white rounded-lg shadow-md p-4 mb-8 max-h-[50vh] overflow-y-auto">
-                {filteredDrivers.map((driver) => (
-                  <DriverCard key={driver.usuario} driver={driver} />
+                {filteredTurnos.map((turno) => (
+                  <TurnoCard key={turno.id_turno} turno={turno} />
                 ))}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            </div>
+          </>
+        )}
+        <div className="lg:col-span-1">
+          <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
+          <div className="space-y-4 bg-white rounded-lg shadow-md p-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
+            {routes.map((route) => (
+              <RouteCard
+                key={route.id_ruta}
+                route={route}
+                id_linea={state.nombre_linea}
+              />
+            ))}
+          </div>
+          <CrearHorario />
+          <div className="mt-4">
+          <CrearMicro linea={id_linea} />
+          </div>
+          <div className="mt-4">
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <h2 className="text-2xl font-bold mb-4">AGREGAR CHOFER</h2>
                   <form
@@ -136,23 +161,7 @@ export default function LineaPage() {
                     </button>
                   </form>
                 </div>
-                <CrearMicro linea={id_linea} />
               </div>
-              <CrearHorario />
-            </div>
-          </>
-        )}
-        <div className="lg:col-span-1">
-          <h2 className="text-2xl font-bold mb-4">RUTAS</h2>
-          <div className="space-y-4 bg-white rounded-lg shadow-md p-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
-            {routes.map((route) => (
-              <RouteCard
-                key={route.id_ruta}
-                route={route}
-                id_linea={state.nombre_linea}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </div>
