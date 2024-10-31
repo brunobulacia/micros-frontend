@@ -33,7 +33,7 @@ export default function RegisterPage() {
     watch,
   } = useForm<UserData>();
   // const error = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();

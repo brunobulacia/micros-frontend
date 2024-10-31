@@ -1,8 +1,3 @@
-// EstadoMicroPage.tsx
-
-import React from "react";
-import { button, input, label, form, div } from "shadcn";
-
 function EstadoMicroPage() {
   return (
     <div className="p-6 max-w-md mx-auto bg-zinc-900 rounded-xl shadow-md text-zinc-200">

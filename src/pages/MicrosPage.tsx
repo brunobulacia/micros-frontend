@@ -1,8 +1,5 @@
 // MicrosPage.tsx
 
-import React from "react";
-import { input, textarea, label, button } from "shadcn";
-
 function MicrosPage() {
   return (
     <div className="p-6 max-w-md mx-auto bg-zinc-50 rounded-xl shadow-md space-y-4">
