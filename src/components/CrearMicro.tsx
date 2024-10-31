@@ -6,7 +6,15 @@ import { Bus } from "lucide-react";
 import { crearMicro } from "../api/micro";
 import { getOwners } from "../api/owners.ts"; // Importa la función para obtener la lista de dueños
 import { handleAxiosError } from "@/utils/handleErrors";
-import { MicroData } from "@/types";
+export interface MicroData {
+  placa: string;
+  interno: string;
+  modelo: string;
+  año: number;
+  seguro: string;
+  linea: number;
+  dueño: string;
+}
 
 interface Owner {
   id: string;
@@ -50,7 +58,9 @@ function CrearMicro({ linea }: { linea: number }) {
 
   const onSubmit = async (data: MicroData) => {
     try {
-      await crearMicro(data); // Enviar la data directamente
+      // Convertir 'dueño' a número antes de enviar la data
+      const dataToSend = { ...data, dueño: parseInt(data.dueño) };
+      await crearMicro(dataToSend);
       alert("Micro registrado con éxito.");
       reset();
     } catch (error) {
@@ -75,10 +85,14 @@ function CrearMicro({ linea }: { linea: number }) {
         <input
           type="text"
           placeholder="Interno"
-          {...register("interno", { required: "El número interno es obligatorio" })}
+          {...register("interno", {
+            required: "El número interno es obligatorio",
+          })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.interno && <p className="text-red-500">{errors.interno.message}</p>}
+        {errors.interno && (
+          <p className="text-red-500">{errors.interno.message}</p>
+        )}
 
         <input
           type="text"
@@ -86,7 +100,9 @@ function CrearMicro({ linea }: { linea: number }) {
           {...register("modelo", { required: "El modelo es obligatorio" })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.modelo && <p className="text-red-500">{errors.modelo.message}</p>}
+        {errors.modelo && (
+          <p className="text-red-500">{errors.modelo.message}</p>
+        )}
 
         <input
           type="text"
@@ -105,7 +121,9 @@ function CrearMicro({ linea }: { linea: number }) {
           {...register("seguro", { required: "El seguro es obligatorio" })}
           className="p-2 border rounded-lg w-full"
         />
-        {errors.seguro && <p className="text-red-500">{errors.seguro.message}</p>}
+        {errors.seguro && (
+          <p className="text-red-500">{errors.seguro.message}</p>
+        )}
 
         <select
           {...register("dueño", { required: "El dueño es obligatorio" })}

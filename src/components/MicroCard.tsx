@@ -10,7 +10,9 @@ interface MicroCardProps {
 }
 
 export const MicroCard = ({ micro, token }: MicroCardProps) => {
-  const [estado, setEstadoLocal] = useState(micro.estados[0]?.estado || "NO DISPONIBLE");
+  const [estado, setEstadoLocal] = useState(
+    micro.estados[0]?.estado || "NO DISPONIBLE"
+  );
   const [nuevoEstado, setNuevoEstado] = useState(estado);
   const [mantenimientoModal, setMantenimientoModal] = useState(false);
   const [descripcion, setDescripcion] = useState("");
@@ -24,7 +26,12 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
   };
 
   const handleEstadoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setNuevoEstado(e.target.value);
+    const value = e.target.value as
+      | "DISPONIBLE"
+      | "TRABAJANDO"
+      | "INCIDENTE"
+      | "NO DISPONIBLE";
+    setNuevoEstado(value);
   };
 
   const handleConfirmEstado = async () => {
@@ -55,7 +62,9 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
   return (
     <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
       <div className="flex items-center">
-        <div className={`h-16 w-4 m-0 rounded-full ${estadoColor[estado]}`}></div>
+        <div
+          className={`h-16 w-4 m-0 rounded-full ${estadoColor[estado]}`}
+        ></div>
         <span className="font-semibold mr-4">{}</span>
       </div>
       <div className="ml-4 mr-4">
@@ -108,7 +117,9 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
           <div className="bg-white p-4 rounded-lg shadow-lg w-80">
             <h2 className="text-lg font-bold mb-2">Programar Mantenimiento</h2>
             <div className="mb-3">
-              <label className="block text-sm font-semibold mb-1">Descripción</label>
+              <label className="block text-sm font-semibold mb-1">
+                Descripción
+              </label>
               <input
                 type="text"
                 className="w-full p-1 border rounded text-sm"
