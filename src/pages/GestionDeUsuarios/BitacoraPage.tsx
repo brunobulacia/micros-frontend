@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuthStore } from "../store/auth";
-import { bitacoraRequest } from "../api/auth";
+import { useAuthStore } from "@/store/auth";
+import { bitacoraRequest } from "@/api/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,

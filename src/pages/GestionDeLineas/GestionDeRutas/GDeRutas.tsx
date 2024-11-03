@@ -1,8 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Send, Menu, User, Bus } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Menu,
+  CircleArrowLeft,
+  OctagonMinus,
+  Map,
+  Route,
+  User,
+} from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -12,7 +19,7 @@ import { useAuthStore } from "@/store/auth";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "@/types";
 
-export default function Dashboard() {
+export default function GDeRutas() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
@@ -45,10 +52,30 @@ export default function Dashboard() {
             variant="ghost"
             className="w-full justify-start text-base py-3"
             aria-label="View profile"
-            onClick={() => navigate("/usuarios")}
+            onClick={() => navigate("/lineas/grutas/rutas")}
           >
-            <User className="mr-3 h-5 w-5" />
-            GESTIONAR USUARIOS
+            <Route className="mr-3 h-5 w-5" />
+            RUTAS
+          </Button>
+          {role === "Operador" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              aria-label="View lines"
+              onClick={() => navigate("/lineas/grutas/paradas")}
+            >
+              <OctagonMinus className="mr-3 h-5 w-5" />
+              PARADAS
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-base py-3"
+            aria-label="View lines"
+            onClick={() => navigate("/lineas/grutas/mapas")}
+          >
+            <Map className="mr-3 h-5 w-5" />
+            MAPAS
           </Button>
           <Button
             variant="ghost"
@@ -56,20 +83,9 @@ export default function Dashboard() {
             aria-label="View lines"
             onClick={() => navigate("/lineas")}
           >
-            <Bus className="mr-3 h-5 w-5" />
-            GESTIONAR LINEAS
+            <CircleArrowLeft className="mr-3 h-5 w-5" />
+            ATRAS
           </Button>
-          {role === "Operador" && (
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-base py-3"
-              aria-label="View lines"
-              onClick={() => navigate("/feed")}
-            >
-              <Send className="mr-3 h-5 w-5" />
-              GEST. COMUNICACION
-            </Button>
-          )}
         </nav>
       </div>
       <div className="mt-auto">

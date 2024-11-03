@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { BusFront } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { rutasLineasResponse } from "../api/rutas";
+import { rutasLineasResponse } from "@/api/rutas";
 import { handleAxiosError } from "@/utils/handleErrors";
 import { Line } from "@/types";
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { initMap, dibujarParadas } from "../lib/map"; // Asegúrate de importar correctamente las funciones del archivo donde se encuentran
+import { initMap, dibujarParadas } from "@/lib/map";
 import { paradas } from "@/api/rutas";
 import { useLocation } from "react-router-dom";
-import { DecodedToken, Stop } from "../types";
+import { DecodedToken, Stop } from "@/types";
 import { useAuthStore } from "@/store/auth";
 import { jwtDecode } from "jwt-decode";
 import { handleAxiosError } from "@/utils/handleErrors";

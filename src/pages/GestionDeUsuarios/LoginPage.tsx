@@ -18,6 +18,7 @@ import { LoginData } from "@/types";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Cambiado aquí
   const {
     register,
     handleSubmit,
@@ -31,14 +32,23 @@ const LoginPage = () => {
     if (userData) {
       console.log("Datos del usuario:", userData); // Mostrar datos por consola
     }
-  }, [userData]); // Se ejecuta cada vez que `userData` cambia
+  }, [userData]); // Se ejecuta cada vez que `userData`
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null); // Limpiar el error después de 3 segundos
+      }, 3000);
+      return () => clearTimeout(timer); // Limpiar el temporizador si el componente se desmonta o si el error cambia
+    }
+  }, [error]);
   const onSubmit: SubmitHandler<LoginData> = async (data) => {
     setLoading(true); // Habilita el loading
     try {
       const res = await loginRequest(data);
       console.log(res);
       setToken(res.data.token);
-      navigate("/dashboard/perfil");
+      navigate("/dashboard");
       setUserData({
         usuario: res.data.datos.usuario,
         nombre: res.data.datos.nombre,
@@ -50,6 +60,7 @@ const LoginPage = () => {
         carnet: res.data.datos.carnet,
       });
     } catch (error) {
+      setError(error.response.data.message);
       console.error(error);
     } finally {
       setLoading(false); // Deshabilita el loading cuando la petición termina
@@ -86,7 +97,7 @@ const LoginPage = () => {
               )}
             </div>
             <div className="space-y-1">
-              <Label htmlFor="contraseña" className="text-base font-medium">
+              <Label htmlFor="contraseña" className="text-base font-medium ">
                 Contraseña
               </Label>
               <Input
@@ -100,6 +111,11 @@ const LoginPage = () => {
                 })}
               />
             </div>
+            {error && (
+              <p className="bg-red-400 text-center text-white p-2 font-medium">
+                {error}
+              </p>
+            )}
             <Button
               className="w-full h-10 text-base"
               type="submit"
