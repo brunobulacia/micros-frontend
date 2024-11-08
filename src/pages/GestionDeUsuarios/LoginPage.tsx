@@ -48,7 +48,7 @@ const LoginPage = () => {
       const res = await loginRequest(data);
       console.log(res);
       setToken(res.data.token);
-      navigate("/dashboard");
+      navigate("/usuarios/perfil");
       setUserData({
         usuario: res.data.datos.usuario,
         nombre: res.data.datos.nombre,

@@ -1,6 +1,4 @@
 "use client";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
 import { updateUserRequest } from "@/api/auth";
@@ -10,10 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserData } from "@/types";
 import { UpdatePassword } from "@/components/UpdatePassword";
+import { DialogEliminarCuenta } from "@/components/EliminarCuenta";
 
-function PerfilPage() {
+export default function PerfilPage() {
   const { userData, token, setUserData } = useAuthStore();
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, setValue } = useForm<UserData>({
     defaultValues: {
       usuario: "",
       contraseña: "",
@@ -66,20 +65,20 @@ function PerfilPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl mb-6 font-semibold text-center sm:text-left">
-        ACTUALIZAR DATOS
-      </h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md"
-      >
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-2/3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md"
+        >
+          <h1 className="text-xl sm:text-2xl mb-6 font-semibold text-center text-zinc-700 sm:text-left">
+            Actualizar Datos
+          </h1>
+          <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label
                   htmlFor="nombre"
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
                 >
                   Nombre
                 </Label>
@@ -87,14 +86,13 @@ function PerfilPage() {
                   id="nombre"
                   {...register("nombre")}
                   placeholder="Ingresa tu nombre"
-                  className="dark:bg-gray-700 dark:text-white"
+                  className="text-sm sm:text-base dark:bg-gray-700 dark:text-white"
                 />
               </div>
-
               <div className="space-y-2">
                 <Label
                   htmlFor="apellido"
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
                 >
                   Apellido
                 </Label>
@@ -102,62 +100,61 @@ function PerfilPage() {
                   id="apellido"
                   {...register("apellido")}
                   placeholder="Ingrese su apellido"
-                  className="dark:bg-gray-700 dark:text-white"
+                  className="text-sm sm:text-base dark:bg-gray-700 dark:text-white"
                 />
               </div>
-
-              <div className="space-y-2">
-                <Label
-                  htmlFor="correo"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  Correo
-                </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
-                  {userData?.correo}
-                </p>
-              </div>
-
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="correo"
+                className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
+              >
+                Correo
+              </Label>
+              <p className="text-sm sm:text-base dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
+                {userData?.correo}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label
                   htmlFor="fecha_de_nacimiento"
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
                 >
                   Fecha de nacimiento
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="text-sm sm:text-base dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.fecha_de_nacimiento}
                 </p>
               </div>
-
               <div className="space-y-2">
                 <Label
                   htmlFor="carnet"
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
                 >
                   Carnet
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="text-sm sm:text-base dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.carnet}
                 </p>
               </div>
-
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label
                   htmlFor="sexo"
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
                 >
                   Sexo
                 </Label>
-                <p className="dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
+                <p className="text-sm sm:text-base dark:bg-gray-700 bg-gray-100 dark:text-white p-2 rounded border border-gray-300 dark:border-gray-600">
                   {userData?.sexo === "M" ? "Masculino" : "Femenino"}
                 </p>
               </div>
-
-              <div className="space-y-2 sm:col-span-2">
+              <div className="space-y-2">
                 <Label
                   htmlFor="direccion"
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
                 >
                   Dirección
                 </Label>
@@ -165,36 +162,29 @@ function PerfilPage() {
                   id="direccion"
                   {...register("direccion")}
                   placeholder="Ingrese su dirección"
-                  className="dark:bg-gray-700 dark:text-white w-full sm:w-3/4 md:w-1/2"
+                  className="text-sm sm:text-base dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-1/3 flex flex-col items-center justify-start">
-            <p className="mb-2 text-gray-700 dark:text-gray-300 text-lg font-semibold">
-              Foto de perfil
-            </p>
-            <Avatar className="h-32 w-32 mb-4">
-              <AvatarImage
-                src="/placeholder.svg?height=128&width=128"
-                alt="Profile picture"
-              />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-            <Button variant="outline" size="lg" className="w-full sm:w-auto">
-              Editar
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            className="mt-6 w-full text-base sm:text-lg text-zinc-100 dark:text-zinc-200"
+          >
+            Actualizar información
+          </Button>
+        </form>
+        <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md">
+          <UpdatePassword />
         </div>
-        <Button type="submit" className="w-full sm:w-auto mt-6">
-          Actualizar información
-        </Button>
-      </form>
+      </div>
       <div className="mt-8">
-        <UpdatePassword />
+        <DialogEliminarCuenta
+          usuario={userData?.usuario}
+          correo={userData?.correo}
+        />
+        {/* Pasa el nombre de usuario */}
       </div>
     </div>
   );
 }
-
-export default PerfilPage;

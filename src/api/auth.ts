@@ -11,6 +11,15 @@ export const verifyTokenRequest = () => axios.get("/verify");
 export const updateUserRequest = async (user: any) =>
   axios.put("/usuarios/update", user);
 
+interface deleteUserRequest {
+  token: string;
+  usuario: string | undefined;
+  correo: string | undefined;
+  telefono: string | undefined;
+}
+export const deleteUserRequest = async (data: deleteUserRequest) =>
+  axios.post("/usuarios/borrarCuenta", data);
+
 export const bitacoraRequest = async (token: string) =>
   axios.post("/usuarios/bitacora", {
     token,

@@ -1,4 +1,4 @@
-// SancionesPage.tsx
+// RolesPage.tsx
 import { useEffect, useState } from "react";
 import {
   useReactTable,
@@ -9,74 +9,68 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 import { useAuthStore } from "@/store/auth";
-import { choferRes } from "@/api/chofer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Search } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DialogDemo } from "@/components/FichaSancionForm";
+import { getSanciones } from "@/api/sancion";
 
-interface ChoferItem {
-  usuario: string;
-  licencia_categoria: string;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  sexo: string;
-  carnet: string;
-  telefonos: [string];
+interface FichaItem {
+  id_ficha: string;
+  fecha: string;
+  hora: string;
+  monto: string;
+  estado: string;
+  descripcion: string;
+  usuario_chofer: string;
+  usuario_operador: string;
+  id_sancion: string;
 }
 
-const columnHelper = createColumnHelper<ChoferItem>();
+const columnHelper = createColumnHelper<FichaItem>();
 
-export default function SancionesPage() {
+export default function HistorialSancPage() {
   const { token } = useAuthStore();
-  const [chofer, setChofer] = useState<ChoferItem[]>([]);
+  const [ficha, setFicha] = useState<FichaItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filtering, setFiltering] = useState("");
-  const [showDialog, setShowDialog] = useState(false); // State to control dialog visibility
-  const [selectedChofer, setSelectedChofer] = useState<ChoferItem | null>(null); // State to store selected chofer data
 
   const columns = [
-    columnHelper.accessor("carnet", {
-      header: "Carnet",
+    columnHelper.accessor("fecha", {
+      header: "Fecha",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("licencia_categoria", {
-      header: "Licencia",
+    columnHelper.accessor("hora", {
+      header: "Hora",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("nombre", {
-      header: "Nombre",
+    columnHelper.accessor("monto", {
+      header: "Monto",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("apellido", {
-      header: "Apellido",
+    columnHelper.accessor("estado", {
+      header: "Estado",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("correo", {
-      header: "Correo",
+    columnHelper.accessor("descripcion", {
+      header: "Descripcion",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.display({
-      id: "sancionar",
-      header: "Sancionar",
-      cell: ({ row }) => (
-        <Button
-          className="bg-zinc-800 hover:bg-red-600 text-white w-full"
-          onClick={() => handleMultar(row.original)}
-        >
-          Multar
-        </Button>
-      ),
+    columnHelper.accessor("usuario_chofer", {
+      header: "Chofer",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("usuario_operador", {
+      header: "Operador",
+      cell: (info) => info.getValue(),
     }),
   ];
 
   const table = useReactTable({
-    data: chofer,
+    data: ficha,
     columns,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
@@ -86,18 +80,12 @@ export default function SancionesPage() {
     },
   });
 
-  const handleMultar = (chofer: ChoferItem) => {
-    console.log("Multar chofer:", chofer);
-    setSelectedChofer(chofer); // Set the selected chofer
-    setShowDialog(true); // Show the dialog
-  };
-
   useEffect(() => {
-    async function traerChoferes() {
+    async function traerFichas() {
       try {
-        const choferResponse = await choferRes(token);
-        setChofer(choferResponse.data.listaDeChoferes);
-        console.log(choferResponse.data.listaDeChoferes);
+        const fichaResponse = await getSanciones(token);
+        setFicha(fichaResponse.data);
+        console.log(fichaResponse.data);
       } catch (error) {
         setError("Failed to fetch bitacora data. Please try again later.");
         console.error(error);
@@ -106,7 +94,7 @@ export default function SancionesPage() {
       }
     }
 
-    traerChoferes();
+    traerFichas();
   }, [token]);
 
   return (
@@ -130,7 +118,7 @@ export default function SancionesPage() {
       <Card className="max-w-4xl mx-auto border-zinc-200 shadow-md">
         <CardHeader className="border-b border-zinc-200 bg-zinc-100">
           <CardTitle className="text-2xl font-bold text-center text-zinc-800">
-            Choferes
+            Gestion de Roles
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-6">
@@ -202,14 +190,6 @@ export default function SancionesPage() {
           )}
         </CardContent>
       </Card>
-
-      {/* Dialog component */}
-      {showDialog && selectedChofer && (
-        <DialogDemo
-          chofer={selectedChofer}
-          onClose={() => setShowDialog(false)}
-        />
-      )}
     </div>
   );
 }

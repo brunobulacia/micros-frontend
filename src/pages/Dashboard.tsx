@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Send, Menu, User, Bus } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -57,7 +57,7 @@ export default function Dashboard() {
             onClick={() => navigate("/lineas")}
           >
             <Bus className="mr-3 h-5 w-5" />
-            GESTIONAR LINEAS
+            GESTIONAR LINEA
           </Button>
           {role === "Operador" && (
             <Button

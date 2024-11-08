@@ -4,13 +4,14 @@ import PerfilPage from "../PerfilPage";
 import SancionesPage from "../SancionesPage";
 import HistorialSancPage from "../HistorialSancPage";
 import BitacoraPage from "../BitacoraPage";
-
+import RolesPage from "../RolesPage";
 function RoutesGUsuarios() {
   return (
     <Routes>
       {/* PAQUETE DE GESTION DE USUARIOS */}
       <Route path="/" element={<GestionDeUsuarios />}>
         <Route path="perfil" element={<PerfilPage />} />
+        <Route path="roles" element={<RolesPage />} />
         <Route path="sanciones" element={<SancionesPage />} />
         <Route path="historial-sanciones" element={<HistorialSancPage />} />
         <Route path="bitacora" element={<BitacoraPage />} />

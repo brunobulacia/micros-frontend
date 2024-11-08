@@ -8,6 +8,7 @@ import {
   CircleArrowLeft,
   OctagonAlert,
   NotebookText,
+  UserCog,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,17 @@ export default function GestionDeUsuarios() {
             >
               <FileUser className="mr-3 h-5 w-5" />
               BITACORA
+            </Button>
+          )}
+          {role === "Operador" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              aria-label="View lines"
+              onClick={() => navigate("/usuarios/roles")}
+            >
+              <UserCog className="mr-3 h-5 w-5" />
+              GESTIONAR ROLES
             </Button>
           )}
           <Button
