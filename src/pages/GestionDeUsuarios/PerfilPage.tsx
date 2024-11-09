@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserData } from "@/types";
 import { UpdatePassword } from "@/components/UpdatePassword";
-import { DialogEliminarCuenta } from "@/components/EliminarCuenta";
+import { DialogEliminarCuenta } from "@/components/dialogs/EliminarCuenta";
 
 export default function PerfilPage() {
   const { userData, token, setUserData } = useAuthStore();

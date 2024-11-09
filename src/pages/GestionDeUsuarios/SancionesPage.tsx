@@ -16,7 +16,7 @@ import { AlertCircle, Search } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DialogDemo } from "@/components/FichaSancionForm";
+import { DialogDemo } from "@/components/dialogs/FichaSancionForm";
 
 interface ChoferItem {
   usuario: string;
@@ -99,7 +99,7 @@ export default function SancionesPage() {
         setChofer(choferResponse.data.listaDeChoferes);
         console.log(choferResponse.data.listaDeChoferes);
       } catch (error) {
-        setError("Failed to fetch bitacora data. Please try again later.");
+        setError("No se pudo obtener la informacion de los choferes.");
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -197,6 +197,7 @@ export default function SancionesPage() {
                 {table.getCanNextPage() && (
                   <Button onClick={() => table.nextPage()}>Siguiente</Button>
                 )}
+                <Button onClick={() => table.lastPage()}>Ultima Pagina</Button>
               </div>
             </div>
           )}

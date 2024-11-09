@@ -91,7 +91,7 @@ export default function HistorialSancPage() {
         setFicha(fichaResponse.data);
         console.log(fichaResponse.data);
       } catch (error) {
-        setError("Failed to fetch bitacora data. Please try again later.");
+        setError("No se pudo extraer el historial de fichas.");
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -189,6 +189,7 @@ export default function HistorialSancPage() {
                 {table.getCanNextPage() && (
                   <Button onClick={() => table.nextPage()}>Siguiente</Button>
                 )}
+                <Button onClick={() => table.lastPage()}>Ultima Pagina</Button>
               </div>
             </div>
           )}

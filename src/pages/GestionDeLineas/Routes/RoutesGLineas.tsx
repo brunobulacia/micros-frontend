@@ -8,7 +8,7 @@ import GDeMicros from "../GestionDeMicros/GDeMicros";
 import TempMicros from "../GestionDeMicros/TempMicros";
 import TempMant from "../GestionDeMicros/TempMant";
 import TempEstado from "../GestionDeMicros/TempEstado";
-import TempRevision from "../GestionDeMicros/TempRevision";
+import TempRevision from "../GestionDeMicros/RevisionTecn";
 import GDeRutas from "../GestionDeRutas/GDeRutas";
 import TempRutas from "../GestionDeRutas/TempRutas";
 import TempParadas from "../GestionDeRutas/TempParadas";
