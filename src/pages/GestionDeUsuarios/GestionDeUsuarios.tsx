@@ -10,7 +10,7 @@ import {
   NotebookText,
   UserCog,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -40,11 +40,9 @@ export default function GestionDeUsuarios() {
       <div>
         <div className="flex items-center justify-center mb-8">
           <Avatar className="h-20 w-20">
-            <AvatarImage
-              src="/placeholder.svg?height=80&width=80"
-              alt="User avatar"
-            />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarFallback>
+              <User className="h-10 w-10 text-gray-500" />{" "}
+            </AvatarFallback>
           </Avatar>
         </div>
         <div className="text-center mb-8">
@@ -131,7 +129,7 @@ export default function GestionDeUsuarios() {
   }
 
   return (
-    <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+    <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200 bg-cover bg-center bg-[url('../../../public/micro.jpg')]">
       <div className="w-full flex flex-col md:flex-row">
         <aside className="hidden h-screen md:flex md:flex-col w-80 bg-white dark:bg-gray-800 p-8 shadow-md">
           <Sidebar />
@@ -148,7 +146,7 @@ export default function GestionDeUsuarios() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6" />
+                    <Menu className="h-6 w-6 text-white" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">

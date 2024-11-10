@@ -15,7 +15,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { LoginData } from "@/types";
-
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null); // Cambiado aquí
@@ -68,11 +67,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300">
-      <h1 className="text-4xl font-bold mb-10 text-center">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[url('../../../public/micro.jpg')] bg-cover bg-center">
+      <h1 className="text-4xl font-bold mb-10 text-center bg-zinc-300 p-3 rounded-lg opacity-75">
         TRANSPORTE PUBLICO
       </h1>
-      <Card className="w-full max-w-sm bg-white">
+      <h1 className="text-3xl font-bold mb-10 text-center bg-zinc-300 rounded-lg p-3  opacity-75">
+        SANTA CRUZ DE LA SIERRA
+      </h1>
+      <Card className="w-full max-w-sm bg-zinc-300">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold text-center">
             Inicio de sesion
@@ -89,7 +91,7 @@ const LoginPage = () => {
                 type="text"
                 placeholder="Ingresa tu usuario"
                 required
-                className="h-10 text-base"
+                className="h-10 text-base bg-white"
                 {...register("usuario", { required: "Usuario es requerido" })}
               />
               {errors.usuario && (
@@ -105,14 +107,14 @@ const LoginPage = () => {
                 type="password"
                 placeholder="Ingresa tu contraseña"
                 required
-                className="h-10 text-base"
+                className="h-10 text-base bg-white"
                 {...register("contraseña", {
                   required: "Contraseña es requerida",
                 })}
               />
             </div>
             {error && (
-              <p className="bg-red-400 text-center text-white p-2 font-medium">
+              <p className="bg-red-500 text-center text-white p-2 font-medium">
                 {error}
               </p>
             )}

@@ -77,8 +77,8 @@ export default function RegisterPage() {
   const password = watch("contraseña"); //comprueba si las contras son iguales
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-300">
-      <Card className="w-full max-w-xl mt-6 px-4 ">
+    <div className="flex items-center justify-center min-h-screen bg-[url('../../../public/micro.jpg')] bg-cover bg-center">
+      <Card className="w-full max-w-xl mt-6 px-4 bg-zinc-300">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-bold text-center">
             Registro
@@ -96,7 +96,7 @@ export default function RegisterPage() {
                   {...register("nombre", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.nombre && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -111,9 +111,9 @@ export default function RegisterPage() {
                 <Input
                   id="apellido"
                   {...register("apellido", {
-                    required: "Este campo es requerido",
+                    required: "Este campo es requerido ",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.apellido && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -133,7 +133,7 @@ export default function RegisterPage() {
                   {...register("usuario", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.usuario && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -151,7 +151,7 @@ export default function RegisterPage() {
                   {...register("correo", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.correo && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -172,7 +172,7 @@ export default function RegisterPage() {
                   {...register("contraseña", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.contraseña && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -195,7 +195,7 @@ export default function RegisterPage() {
                     validate: (value) =>
                       value === password || "Las contraseñas no coinciden",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.confirmar_contraseña && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -219,7 +219,7 @@ export default function RegisterPage() {
                   {...register("fecha_de_nacimiento", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base w-full"
+                  className="h-8 text-base sm:text-base w-full bg-white"
                 />
                 {errors.fecha_de_nacimiento && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -232,7 +232,7 @@ export default function RegisterPage() {
                   Sexo
                 </Label>
                 <Select onValueChange={(value) => setValue("sexo", value)}>
-                  <SelectTrigger className="h-8 text-base sm:text-base">
+                  <SelectTrigger className="h-8 text-base sm:text-base bg-white">
                     <SelectValue placeholder="Selecciona  " />
                   </SelectTrigger>
                   <SelectContent>
@@ -256,7 +256,7 @@ export default function RegisterPage() {
                   {...register("telefonos", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.telefonos && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -276,7 +276,7 @@ export default function RegisterPage() {
                   {...register("direccion", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.direccion && (
                   <p className="text-xs sm:text-base text-red-500">
@@ -293,7 +293,7 @@ export default function RegisterPage() {
                   {...register("carnet", {
                     required: "Este campo es requerido",
                   })}
-                  className="h-8 text-base sm:text-base"
+                  className="h-8 text-base sm:text-base bg-white"
                 />
                 {errors.carnet && (
                   <p className="text-xs sm:text-base text-red-500">

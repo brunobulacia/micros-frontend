@@ -313,11 +313,11 @@ export default function Revision() {
   }, [token]);
 
   return (
-    <div className="p-6 bg-white min-h-screen">
+    <div className="p-6 bg-slate-300 rounded-lg min-h-screen">
       {/* Search and filter input */}
       <div className="flex items-center">
         <Input
-          className="mb-6 ml-3 w-[50%] text-lg"
+          className="mb-6 ml-3 w-[50%] text-lg bg-white"
           placeholder="Filtrar Datos..."
           type="text"
           value={filtering}
@@ -330,8 +330,8 @@ export default function Revision() {
       </div>
 
       {/* Table card */}
-      <Card className="max-w-4xl mx-auto border-zinc-200 shadow-md">
-        <CardHeader className="border-b border-zinc-200 bg-zinc-100">
+      <Card className="max-w-4xl mx-auto border-zinc-200 shadow-md rounded-lg">
+        <CardHeader className="border-b border-zinc-200 bg-zinc-100 rounded-lg">
           <CardTitle className="text-2xl font-bold text-center text-zinc-800">
             Revision Tecnica de Micros 🚌
           </CardTitle>

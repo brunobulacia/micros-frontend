@@ -63,7 +63,9 @@ export function DialogEliminarCuenta({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="destructive">Eliminar Cuenta</Button>
+        <div className="bg-white pt-3 pb-3 pl-4 pr-4 rounded-lg inline-block">
+          <Button variant="destructive">Eliminar Cuenta</Button>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

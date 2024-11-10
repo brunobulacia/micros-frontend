@@ -108,7 +108,7 @@ export default function GDeRutas() {
   }
 
   return (
-    <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+    <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200 bg-cover bg-center bg-[url('../../../public/micro.jpg')]">
       <div className="w-full flex flex-col md:flex-row">
         <aside className="hidden h-screen md:flex md:flex-col w-80 bg-white dark:bg-gray-800 p-8 shadow-md">
           <Sidebar />
@@ -125,7 +125,7 @@ export default function GDeRutas() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6" />
+                    <Menu className="h-6 w-6 text-white" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
