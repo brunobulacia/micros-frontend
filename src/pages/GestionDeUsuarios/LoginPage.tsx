@@ -67,11 +67,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[url('../../../public/micro.jpg')] bg-cover bg-center">
-      <h1 className="text-4xl font-bold mb-10 text-center bg-zinc-300 p-3 rounded-lg opacity-75">
+    // ASI O MAS DESIGNER UI?
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[url('https://estaticos-noticias.unitel.bo/binrepository/1129x636/0c64/1024d512/none/125450566/LYQY/imagen-1cd2c200-8341-44f5-8e87-b33bfbeca4ee_101-7189893_20231009124724.jpg')] bg-cover bg-center">
+      <h1 className="text-4xl font-bold mb-10 text-center bg-zinc-300 p-3 rounded-lg opacity-90">
         TRANSPORTE PUBLICO
       </h1>
-      <h1 className="text-3xl font-bold mb-10 text-center bg-zinc-300 rounded-lg p-3  opacity-75">
+      <h1 className="text-3xl font-bold mb-10 text-center bg-zinc-300 rounded-lg p-3  opacity-90">
         SANTA CRUZ DE LA SIERRA
       </h1>
       <Card className="w-full max-w-sm bg-zinc-300">
