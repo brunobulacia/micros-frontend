@@ -18,40 +18,40 @@ import { useNavigate } from "react-router-dom";
 
 interface DialogEliminarCuentaProps {
   usuario: string | undefined;
-  correo: string | undefined;
 }
 
-export function DialogEliminarCuenta({
-  usuario,
-  correo,
-}: DialogEliminarCuentaProps) {
+interface Data {
+  token: string;
+  usuario: string | undefined;
+}
+
+export function DialogEliminarCuenta({ usuario }: DialogEliminarCuentaProps) {
   const [inputValue, setInputValue] = useState("");
-  const [token, setToken] = useState<string | undefined>();
   const navigate = useNavigate();
-  const { token: authToken } = useAuthStore();
+  const { token } = useAuthStore();
   const logout = useAuthStore((state) => state.logout);
 
-  useEffect(() => {
-    // Guardamos el token en un estado local para asegurar que esté definido.
-    setToken(authToken);
-  }, [authToken]);
-
+  const [data, setData] = useState<Data>({ token: "", usuario: undefined });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
+  // Guardamos el token en un estado local para asegurar que esté definido.
   const handleDelete = async () => {
-    if (!token || !usuario || !correo) {
+    if (!token || !usuario) {
       alert(
         "No se pudo obtener la información necesaria para eliminar la cuenta."
       );
       return;
     }
-
+    setData({ token: token, usuario: usuario });
     if (inputValue === `borrar/${usuario}`) {
       // Llamamos a la API solo si el token y el usuario están disponibles.
-      const res = await deleteUserRequest({ token, usuario, correo });
-      console.log(res);
+      const res = await deleteUserRequest({ token, usuario });
+      if (!res) {
+        alert("Error al eliminar la cuenta.");
+        return;
+      }
       alert("Cuenta eliminada con éxito.");
       logout();
       navigate("/");

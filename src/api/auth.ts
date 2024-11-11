@@ -14,8 +14,6 @@ export const updateUserRequest = async (user: any) =>
 interface deleteUserRequest {
   token: string;
   usuario: string | undefined;
-  correo: string | undefined;
-  telefono: string | undefined;
 }
 export const deleteUserRequest = async (data: deleteUserRequest) =>
   axios.post("/usuarios/borrarCuenta", data);

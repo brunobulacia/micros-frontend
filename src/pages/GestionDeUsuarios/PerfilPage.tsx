@@ -179,11 +179,7 @@ export default function PerfilPage() {
         </div>
       </div>
       <div className="mt-8">
-        <DialogEliminarCuenta
-          usuario={userData?.usuario}
-          correo={userData?.correo}
-        />
-        {/* Pasa el nombre de usuario */}
+        <DialogEliminarCuenta usuario={userData?.usuario} />
       </div>
     </div>
   );

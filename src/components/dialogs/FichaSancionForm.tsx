@@ -54,8 +54,7 @@ interface tipoSanc {
 }
 
 export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
-  const { register, handleSubmit, setValue, watch, reset } =
-    useForm<FormData>();
+  const { register, handleSubmit, setValue, reset } = useForm<FormData>();
   const { token } = useAuthStore();
   const [tiposSancion, setTiposSancion] = useState<tipoSanc[]>([]);
   useEffect(() => {
