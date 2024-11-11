@@ -25,6 +25,7 @@ interface BitacoraItem {
   accion: string;
   fecha: string;
   hora: string;
+  ip: string;
 }
 
 const columnHelper = createColumnHelper<BitacoraItem>();
@@ -54,6 +55,10 @@ const columns = [
     header: "Hora",
     cell: (info) => info.getValue(),
   }),
+  columnHelper.accessor("ip", {
+    header: "IP",
+    cell: (info) => info.getValue(),
+  }),
 ];
 
 export default function BitacoraPage() {
@@ -62,7 +67,6 @@ export default function BitacoraPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filtering, setFiltering] = useState("");
-
   const table = useReactTable({
     data: bitacora,
     columns,
@@ -81,7 +85,7 @@ export default function BitacoraPage() {
         setBitacora(bitacoraRes.data);
         console.log(bitacoraRes);
       } catch (error) {
-        setError("Failed to fetch bitacora data. Please try again later.");
+        setError("Error al traer la bitácora.");
         console.error(error);
       } finally {
         setIsLoading(false);

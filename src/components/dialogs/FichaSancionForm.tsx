@@ -20,7 +20,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthStore } from "@/store/auth";
-import { crearSancion } from "@/api/sancion";
+import { crearSancion, getTiposSancion } from "@/api/sancion";
+import { useEffect, useState } from "react";
+
 interface ChoferItem {
   usuario: string;
   licencia_categoria: string;
@@ -46,22 +48,40 @@ interface FormData {
   token: string;
 }
 
+interface tipoSanc {
+  id: number;
+  tipo: string;
+}
+
 export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<FormData>();
   const { token } = useAuthStore();
-  // Manejador de envío del formulario
+  const [tiposSancion, setTiposSancion] = useState<tipoSanc[]>([]);
+  useEffect(() => {
+    async function fetchTiposSancion() {
+      try {
+        const tipos = await getTiposSancion(token);
+        setTiposSancion(tipos.data);
+        console.log("tipos de sanción recibidos:", tiposSancion);
+      } catch (error) {
+        console.error("Error al cargar los tipos de sanción:", error);
+      }
+    }
+    console.log(tiposSancion);
+    fetchTiposSancion();
+  }, [token]);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data); // Mostrar los datos en consola
     try {
       data.token = token;
       data.chofer = chofer.usuario;
-      console.log(data);
+      console.log("Datos del formulario:", data);
       const fichaRes = await crearSancion(data);
       if (fichaRes) {
-        alert("Ficha creada con exito");
-        reset(); // Resetear el formulario después de enviar los datos
-        onClose(); // Cerrar el diálogo
+        alert("Ficha creada con éxito");
+        reset();
+        onClose();
       } else {
         alert("Error al crear la ficha");
       }
@@ -70,8 +90,6 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
     }
   };
 
-  // Registrar cambios en el campo 'tipo' para el select personalizado
-  const tipoSeleccionado = watch("tipo");
   const handleTipoChange = (value: string) => {
     setValue("tipo", value);
   };
@@ -88,7 +106,6 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
-            {/* Campo Monto */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="monto" className="text-right">
                 Monto
@@ -101,7 +118,6 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
                 {...register("monto", { required: true, valueAsNumber: true })}
               />
             </div>
-            {/* Campo Estado */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="estado" className="text-right">
                 Estado
@@ -114,7 +130,6 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
                 {...register("estado", { required: true })}
               />
             </div>
-            {/* Campo Descripción */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="descripcion" className="text-right">
                 Descripcion
@@ -127,7 +142,6 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
                 {...register("descripcion", { required: true })}
               />
             </div>
-            {/* Campo Tipo */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="tipo" className="text-right">
                 Ficha
@@ -139,19 +153,11 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Tipos</SelectLabel>
-                    <SelectItem value="Velocidad">Velocidad</SelectItem>
-                    <SelectItem value="Revisión técnica pendiente">
-                      Revisión técnica pendiente
-                    </SelectItem>
-                    <SelectItem value="Retraso en hora de llegada">
-                      Retraso en hora de llegada
-                    </SelectItem>
-                    <SelectItem value="Exceso de velocidad">
-                      Exceso de velocidad
-                    </SelectItem>
-                    <SelectItem value="Estacionamiento incorrecto">
-                      Estacionamiento incorrecto
-                    </SelectItem>
+                    {tiposSancion.map((tipo) => (
+                      <SelectItem key={tipo.id} value={tipo.tipo}>
+                        {tipo.tipo}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>

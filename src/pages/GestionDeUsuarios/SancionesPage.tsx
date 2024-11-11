@@ -17,6 +17,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DialogDemo } from "@/components/dialogs/FichaSancionForm";
+import { DialogCrearTipo } from "@/components/dialogs/CrearSancion";
 
 interface ChoferItem {
   usuario: string;
@@ -39,6 +40,7 @@ export default function SancionesPage() {
   const [filtering, setFiltering] = useState("");
   const [showDialog, setShowDialog] = useState(false); // State to control dialog visibility
   const [selectedChofer, setSelectedChofer] = useState<ChoferItem | null>(null); // State to store selected chofer data
+  const [showDialogCrear, setShowDialogCrear] = useState(false);
 
   const columns = [
     columnHelper.accessor("carnet", {
@@ -90,6 +92,11 @@ export default function SancionesPage() {
     console.log("Multar chofer:", chofer);
     setSelectedChofer(chofer); // Set the selected chofer
     setShowDialog(true); // Show the dialog
+  };
+
+  const crearSancion = () => {
+    console.log("hola");
+    setShowDialogCrear(true);
   };
 
   useEffect(() => {
@@ -199,6 +206,9 @@ export default function SancionesPage() {
                 )}
                 <Button onClick={() => table.lastPage()}>Ultima Pagina</Button>
               </div>
+              <Button className="mt-4 bg-green-800" onClick={crearSancion}>
+                Registrar Sancion
+              </Button>
             </div>
           )}
         </CardContent>
@@ -210,6 +220,10 @@ export default function SancionesPage() {
           chofer={selectedChofer}
           onClose={() => setShowDialog(false)}
         />
+      )}
+
+      {showDialogCrear && (
+        <DialogCrearTipo onClose={() => setShowDialogCrear(false)} />
       )}
     </div>
   );

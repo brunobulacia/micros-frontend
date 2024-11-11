@@ -11,7 +11,7 @@ import {
 import { useAuthStore } from "@/store/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle, Search } from "lucide-react";
+import { AlertCircle, Search, SquarePen } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -70,6 +70,15 @@ export default function HistorialSancPage() {
     columnHelper.accessor("usuario_operador", {
       header: "Operador",
       cell: (info) => info.getValue(),
+    }),
+    columnHelper.display({
+      id: "editar",
+      header: "Editar",
+      cell: ({ row }) => (
+        <Button className="bg-zinc-600 hover:bg-green-600 text-white w-">
+          <SquarePen />
+        </Button>
+      ),
     }),
   ];
 
