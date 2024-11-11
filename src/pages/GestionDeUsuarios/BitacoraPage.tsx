@@ -82,8 +82,25 @@ export default function BitacoraPage() {
     async function fetchBitacora() {
       try {
         const bitacoraRes = await bitacoraRequest(token);
-        setBitacora(bitacoraRes.data);
-        console.log(bitacoraRes);
+
+        // Ordena por fecha y luego por hora, ambas de forma descendente
+        const sortedData = bitacoraRes.data.sort(
+          (a: BitacoraItem, b: BitacoraItem) => {
+            // Primero, ordena por fecha en orden descendente
+            const dateComparison =
+              new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
+
+            if (dateComparison === 0) {
+              // Si las fechas son iguales, compara por hora en orden descendente
+              return b.hora.localeCompare(a.hora);
+            }
+
+            return dateComparison;
+          }
+        );
+
+        setBitacora(sortedData);
+        console.log(sortedData);
       } catch (error) {
         setError("Error al traer la bitácora.");
         console.error(error);
