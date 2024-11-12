@@ -1,5 +1,3 @@
-// EditarSancion.tsx
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,91 +6,100 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthStore } from "@/store/auth";
-import { deleteUserRequest } from "@/api/auth";
-import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { updateEstadoFicha } from "@/api/sancion";
 
-interface DialogEliminarCuentaProps {
-  usuario: string | undefined;
-  correo: string | undefined;
+interface DialogUpdateFichaProps {
+  ficha: string;
+  estado: string;
+  token: string;
+  onClose: () => void;
 }
 
-export function DialogEliminarCuenta({
-  usuario,
-  correo,
-}: DialogEliminarCuentaProps) {
-  const [inputValue, setInputValue] = useState("");
-  const [token, setToken] = useState<string | undefined>();
-  const navigate = useNavigate();
-  const { token: authToken } = useAuthStore();
-  const logout = useAuthStore((state) => state.logout);
+export function DialogUpdateFicha({
+  ficha,
+  estado,
+  token,
+  onClose,
+}: DialogUpdateFichaProps) {
+  const { handleSubmit, setValue, reset } = useForm({
+    defaultValues: {
+      ficha,
+      estado,
+    },
+  });
 
-  useEffect(() => {
-    // Guardamos el token en un estado local para asegurar que esté definido.
-    setToken(authToken);
-  }, [authToken]);
+  // Estado local para manejar el valor del Select
+  const [selectedEstado, setSelectedEstado] = useState(estado);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  // Función para manejar el cambio de valor en el Select
+  const handleEstadoChange = (value: any) => {
+    setSelectedEstado(value);
+    setValue("estado", value); // `setValue` para actualizar el valor en el formulario
   };
 
-  const handleDelete = async () => {
-    if (!token || !usuario || !correo) {
-      alert(
-        "No se pudo obtener la información necesaria para eliminar la cuenta."
-      );
-      return;
+  const onSubmit = async (data: any) => {
+    const payload = {
+      ficha: data.ficha,
+      estado: data.estado,
+      token,
+    };
+    const res = await updateEstadoFicha(payload);
+    console.log("Payload:", payload);
+    if (res) {
+      alert("Ficha actualizada con éxito");
     }
-
-    if (inputValue === `borrar/${usuario}`) {
-      // Llamamos a la API solo si el token y el usuario están disponibles.
-      const res = await deleteUserRequest({ token, usuario, correo });
-      console.log(res);
-      alert("Cuenta eliminada con éxito.");
-      logout();
-      navigate("/");
-    } else {
-      alert("La entrada no coincide. Por favor, intente de nuevo.");
-    }
+    reset();
+    window.location.reload();
+    onClose();
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div className="bg-white pt-3 pb-3 pl-4 pr-4 rounded-lg inline-block">
-          <Button variant="destructive">Eliminar Cuenta</Button>
-        </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="md:max-w-lg bg-slate-200 rounded-lg w-3/4">
         <DialogHeader>
-          <DialogTitle>Eliminar Cuenta</DialogTitle>
-          <DialogDescription>
-            Para confirmar, escriba "borrar/{usuario}" en la caja de abajo.
+          <DialogTitle className="text-xl">Editar Ficha</DialogTitle>
+          <DialogDescription className="text-base">
+            Actualiza el estado de la ficha seleccionada.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="confirm" className="text-right">
-              Confirmación
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-4">
+            <Label htmlFor="estado" className="text-lg">
+              Estado
             </Label>
-            <Input
-              id="confirm"
-              placeholder={`borrar/${usuario}`}
-              value={inputValue}
-              onChange={handleInputChange}
-              className="col-span-3"
-            />
+            <Select value={selectedEstado} onValueChange={handleEstadoChange}>
+              <SelectTrigger className="bg-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Estado</SelectLabel>
+                  <SelectItem value="Pagada">Pagada</SelectItem>
+                  <SelectItem value="Pendiente">Pendiente</SelectItem>
+                  <SelectItem value="Anulada">Anulada</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
-        </div>
-        <DialogFooter>
-          <Button variant="destructive" onClick={handleDelete}>
-            Confirmar eliminación
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit" className="mt-4">
+              Actualizar
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -2,18 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import { useLocation } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { getMicros } from "@/api/micros";
 import { Micro } from "@/types";
 import { handleAxiosError } from "@/utils/handleErrors";
-import { MicroCard } from "@/components/MicroCard";
+import { MicroCard } from "@/components/cards/MicroCard";
 
 export default function MicrosPage() {
   const { token } = useAuthStore();
-  const location = useLocation();
-  const { state } = location;
-  const id_linea = state?.id_linea || "";
   const [microsList, setMicrosList] = useState<Micro[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("TODOS");
@@ -21,7 +17,7 @@ export default function MicrosPage() {
   useEffect(() => {
     async function fetchMicros() {
       try {
-        const resMicros = await getMicros(token, id_linea);
+        const resMicros = await getMicros(token);
         setMicrosList(resMicros.data);
       } catch (error) {
         handleAxiosError(error);
@@ -29,7 +25,7 @@ export default function MicrosPage() {
     }
 
     fetchMicros();
-  }, [token, id_linea]);
+  }, [token]);
 
   const filteredMicros = microsList.filter((micro) => {
     const matchesSearchTerm =
@@ -44,9 +40,7 @@ export default function MicrosPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        MICROS DE LA LÍNEA {state.nombre_linea?.toUpperCase()}
-      </h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">MICROS</h1>
 
       <div className="mb-8 relative">
         <input
@@ -72,11 +66,12 @@ export default function MicrosPage() {
           <option value="NO DISPONIBLE">NO DISPONIBLE</option>
         </select>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {filteredMicros.map((micro) => (
-          <MicroCard key={micro.id_micro} micro={micro} token={token} />
-        ))}
+      <div className="max-h-[500px] overflow-y-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {filteredMicros.map((micro) => (
+            <MicroCard key={micro.id_micro} micro={micro} token={token} />
+          ))}
+        </div>
       </div>
     </div>
   );

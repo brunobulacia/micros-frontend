@@ -66,17 +66,15 @@ export default function GDeComunicacion() {
             <MessageCircleQuestion className="mr-3 h-5 w-5" />
             RETROALIMENTACION
           </Button>
-          {role === "Operador" && (
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-base py-3"
-              aria-label="View lines"
-              onClick={() => navigate("/feed/comunicacion")}
-            >
-              <MessageCircle className="mr-3 h-5 w-5" />
-              COMUNICACION INTERNA
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-base py-3"
+            aria-label="View lines"
+            onClick={() => navigate("/feed/comunicacion")}
+          >
+            <MessageCircle className="mr-3 h-5 w-5" />
+            COMUNICACION INTERNA
+          </Button>
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3"
@@ -108,7 +106,7 @@ export default function GDeComunicacion() {
   }
 
   return (
-    <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+    <div className="flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200 bg-cover bg-center {{bg-[url('../../../public/santacruz_noche.jpg')]}}">
       <div className="w-full flex flex-col md:flex-row">
         <aside className="hidden h-screen md:flex md:flex-col w-80 bg-white dark:bg-gray-800 p-8 shadow-md">
           <Sidebar />

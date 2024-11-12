@@ -1,4 +1,3 @@
-// HistorialSancionesPage.tsx
 import { useEffect, useState } from "react";
 import {
   useReactTable,
@@ -16,6 +15,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getSanciones } from "@/api/sancion";
+import { DialogUpdateFicha } from "@/components/dialogs/EditarSancion";
 
 interface FichaItem {
   id_ficha: string;
@@ -29,6 +29,12 @@ interface FichaItem {
   id_sancion: string;
 }
 
+interface editarFicha {
+  ficha: string;
+  estado: string;
+  token: string;
+}
+
 const columnHelper = createColumnHelper<FichaItem>();
 
 export default function HistorialSancPage() {
@@ -37,12 +43,9 @@ export default function HistorialSancPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filtering, setFiltering] = useState("");
+  const [updateFicha, setUpdateFicha] = useState<editarFicha | null>(null);
 
   const columns = [
-    /*  columnHelper.accessor("id_ficha", {
-      header: "Ficha",
-      cell: (info) => info.getValue(),
-    }), */
     columnHelper.accessor("fecha", {
       header: "Fecha",
       cell: (info) => info.getValue(),
@@ -75,12 +78,19 @@ export default function HistorialSancPage() {
       id: "editar",
       header: "Editar",
       cell: ({ row }) => (
-        <Button className="bg-zinc-600 hover:bg-green-600 text-white w-">
+        <Button
+          className="bg-blue-800 hover:bg-black text-white"
+          onClick={() => handleEditar(row.original)}
+        >
           <SquarePen />
         </Button>
       ),
     }),
   ];
+
+  const handleEditar = (ficha: FichaItem) => {
+    setUpdateFicha({ ficha: ficha.id_ficha, estado: ficha.estado, token });
+  };
 
   const table = useReactTable({
     data: ficha,
@@ -98,7 +108,6 @@ export default function HistorialSancPage() {
       try {
         const fichaResponse = await getSanciones(token);
         setFicha(fichaResponse.data);
-        console.log(fichaResponse.data);
       } catch (error) {
         setError("No se pudo extraer el historial de fichas.");
         console.error(error);
@@ -112,7 +121,6 @@ export default function HistorialSancPage() {
 
   return (
     <div className="p-6 bg-slate-300 min-h-screen rounded-lg">
-      {/* Search and filter input */}
       <div className="flex items-center">
         <Input
           className="mb-6 ml-3 w-[50%] text-lg bg-white"
@@ -127,8 +135,7 @@ export default function HistorialSancPage() {
         </label>
       </div>
 
-      {/* Table card */}
-      <Card className="max-w-4xl mx-auto border-zinc-200 shadow-md rounded-lg">
+      <Card className="max-w-4xl mx-auto border-zinc-200 shadow-md rounded-lg ">
         <CardHeader className="border-b border-zinc-200 bg-zinc-100 rounded-lg">
           <CardTitle className="text-2xl font-bold text-center text-zinc-800">
             Historial de Sanciones
@@ -198,12 +205,28 @@ export default function HistorialSancPage() {
                 {table.getCanNextPage() && (
                   <Button onClick={() => table.nextPage()}>Siguiente</Button>
                 )}
-                <Button onClick={() => table.lastPage()}>Ultima Pagina</Button>
+                {table.getPageCount() > 1 && (
+                  <Button
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  >
+                    Última Página
+                  </Button>
+                )}
               </div>
             </div>
           )}
         </CardContent>
       </Card>
+
+      {/* Renderiza el diálogo solo si updateFicha tiene datos */}
+      {updateFicha && (
+        <DialogUpdateFicha
+          ficha={updateFicha.ficha}
+          estado={updateFicha.estado}
+          token={updateFicha.token}
+          onClose={() => setUpdateFicha(null)}
+        />
+      )}
     </div>
   );
 }

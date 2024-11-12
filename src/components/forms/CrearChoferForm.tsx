@@ -9,6 +9,7 @@ function CrearChoferFrom() {
   const [newDriver, setNewDriver] = useState({
     usuario: "",
     licencia_categoria: "",
+    estado: "",
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDriver({
@@ -24,6 +25,7 @@ function CrearChoferFrom() {
         {
           usuario: newDriver.usuario,
           licencia: newDriver.licencia_categoria,
+          estado: newDriver.estado,
         },
         token
       );
@@ -57,11 +59,20 @@ function CrearChoferFrom() {
             className="p-2 border rounded-lg w-full"
             required
           />
+          <input
+            type="text"
+            name="estado"
+            placeholder="Estado"
+            value={newDriver.estado}
+            onChange={handleInputChange}
+            className="p-2 border rounded-lg w-full"
+            required
+          />
           <button
             type="submit"
-            className="bg-black text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center"
+            className=" text-white p-2 rounded-lg hover:bg-gray-600 flex items-center justify-center bg-blue-900"
           >
-            <UserPlus className="w-6 h-6 mr-2" />
+            <UserPlus className="w-6 h-6 mr-2 " />
             <span>Agregar Chofer</span>
           </button>
         </form>

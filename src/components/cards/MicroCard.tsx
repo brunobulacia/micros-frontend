@@ -69,50 +69,50 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
         <span className="font-semibold mr-4">{}</span>
       </div>
       <div className="flex flex-col md:flex-row ml-auto h-full">
-      <div className="ml-4 mr-4">
-        <h3 className="font-bold">{micro.modelo}</h3>
-        <p>
-          <b>Placa:</b> {micro.placa}
-        </p>
-        <p>
-          <b>Interno:</b> {micro.interno}
-        </p>
-        <p>
-          <b>Modelo:</b> {micro.modelo}
-        </p>
-        <p>
-          <b>Año:</b> {micro.año}
-        </p>
-        <p>
-          <b>Seguro:</b> {micro.seguro}
-        </p>
-      </div>
-      <div className="ml-auto flex flex-col space-y-2 items-end">
-        <div className="flex flex-row items-center space-x-2">
-          <select
-            className="w-full mt-6 inline-flex items-center justify-start whitespace-nowrap text-left rounded-md text-xs md:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-900 bg-zinc-50 text-zinc-900 shadow hover:bg-zinc-200/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 border-2 border-gray-950"
-            value={nuevoEstado}
-            onChange={handleEstadoChange}
-          >
-            <option value="DISPONIBLE">DISPONIBLE</option>
-            <option value="TRABAJANDO">TRABAJANDO</option>
-            <option value="INCIDENTE">INCIDENTE</option>
-            <option value="NO DISPONIBLE">NO DISPONIBLE</option>
-          </select>
+        <div className="ml-4 mr-4">
+          <h3 className="font-bold">{micro.modelo}</h3>
+          <p>
+            <b>Placa:</b> {micro.placa}
+          </p>
+          <p>
+            <b>Interno:</b> {micro.interno}
+          </p>
+          <p>
+            <b>Modelo:</b> {micro.modelo}
+          </p>
+          <p>
+            <b>Año:</b> {micro.año}
+          </p>
+          <p>
+            <b>Seguro:</b> {micro.seguro}
+          </p>
+        </div>
+        <div className="ml-auto flex flex-col space-y-2 items-end">
+          <div className="flex flex-row items-center space-x-2">
+            <select
+              className="w-full mt-6 inline-flex items-center justify-start whitespace-nowrap text-left rounded-md text-xs md:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-900 bg-zinc-50 text-zinc-900 shadow hover:bg-zinc-200/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 border-2 border-gray-950"
+              value={nuevoEstado}
+              onChange={handleEstadoChange}
+            >
+              <option value="DISPONIBLE">DISPONIBLE</option>
+              <option value="TRABAJANDO">TRABAJANDO</option>
+              <option value="INCIDENTE">INCIDENTE</option>
+              <option value="NO DISPONIBLE">NO DISPONIBLE</option>
+            </select>
+            <button
+              className="ml-auto w-1/3 mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
+              onClick={handleConfirmEstado}
+            >
+              <Check />
+            </button>
+          </div>
           <button
-            className="ml-auto w-1/3 mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
-            onClick={handleConfirmEstado}
+            className="w-full mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center"
+            onClick={() => setMantenimientoModal(true)}
           >
-            <Check />
+            <Wrench />
           </button>
         </div>
-        <button
-          className="w-full mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center"
-          onClick={() => setMantenimientoModal(true)}
-        >
-            <Wrench />
-        </button>
-      </div>
       </div>
       {mantenimientoModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">

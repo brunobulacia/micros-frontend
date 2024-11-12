@@ -197,7 +197,13 @@ export default function BitacoraPage() {
                 {table.getCanNextPage() && (
                   <Button onClick={() => table.nextPage()}>Siguiente</Button>
                 )}
-                <Button onClick={() => table.lastPage()}>Ultima Pagina</Button>
+                {table.getPageCount() > 1 && (
+                  <Button
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  >
+                    Última Página
+                  </Button>
+                )}
               </div>
             </div>
           )}

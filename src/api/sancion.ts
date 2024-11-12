@@ -27,3 +27,12 @@ export const crearTipoSancion = async (data: tipoSancion) =>
 
 export const getTiposSancion = async (token: string) =>
   axios.post("/sanciones/", { token });
+
+interface updateFicha {
+  token: string;
+  ficha: string;
+  estado: string;
+}
+
+export const updateEstadoFicha = async (data: updateFicha) =>
+  axios.put("/sanciones/updateEstado", data);

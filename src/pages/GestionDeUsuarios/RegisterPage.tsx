@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -32,8 +31,7 @@ export default function RegisterPage() {
     setValue,
     watch,
   } = useForm<UserData>();
-  // const error = useState<string | null>(null);
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -46,6 +44,15 @@ export default function RegisterPage() {
       console.log("Datos del usuario:", userData); // Mostrar datos por consola
     }
   }, [userData]); // Se ejecuta cada vez que `userData` cambia
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null); // Limpiar el error después de 3 segundos
+      }, 3000);
+      return () => clearTimeout(timer); // Limpiar el temporizador si el componente se desmonta o si el error cambia
+    }
+  }, [error]);
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
     setLoading(true); // Habilita el loading
@@ -68,7 +75,8 @@ export default function RegisterPage() {
         carnet: res.data.datos.carnet,
       });
     } catch (error) {
-      console.error(error);
+      setError(error.response.data.message);
+      console.log(error);
     } finally {
       setLoading(false); // Deshabilita el loading cuando la petición termina
     }
@@ -77,7 +85,7 @@ export default function RegisterPage() {
   const password = watch("contraseña"); //comprueba si las contras son iguales
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[url('../../../public/micro.jpg')] bg-cover bg-center">
+    <div className="flex items-center justify-center min-h-screen bg-cover bg- bg-[url('../../../public/santacruz_noche.jpg')]">
       <Card className="w-full max-w-xl mt-6 px-4 bg-zinc-300">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-bold text-center">
@@ -302,7 +310,11 @@ export default function RegisterPage() {
                 )}
               </div>
             </div>
-
+            {error && (
+              <p className="bg-red-500 text-center text-white p-2 font-medium">
+                {error}
+              </p>
+            )}
             <div className="flex justify-center mt-6">
               <Button
                 type="submit"

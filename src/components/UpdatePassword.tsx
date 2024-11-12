@@ -38,7 +38,7 @@ export function UpdatePassword() {
       setSuccess(true);
       reset();
     } catch (error) {
-      setError(handleAxiosError(error));
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }

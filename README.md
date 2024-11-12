@@ -1,52 +1,13 @@
+NOS FALTA VOLVER A LLAMAR EL COMPONENTE DEL MAPA Y PONERLO EN LA RUTA DONDE PERTENECE
 
+TAMBIEN NOS FALTA SI EL USUARIO ENTRA COMO NO OPERADOR QUE CAMBIEN EL NOMBRE
+DE ALGUNOS BOTONES DEL SIDEBAR, POR EJEMPLO: GESTIONAR USUARIOS -> PERFIL DE USUARIO
+COSITAS ASI XD
 
-# React + TypeScript + Vite
+EEEEEEE TAMBIEN EL CONTROLLER DE FRECUENCIA NO ESTA FUNCIONANDO
+BIEN CON LA TABLA DE TURNOS, LA FRECUENCIA SOLO AGARRA CHOFERES QUE ESTAN EN UN TURNO PERO SI LA TABLA DE TURNOS ESTA VACIA, (OSEA NO HAY NADIE CHAMBEANDO)
+LA FRECUENCIA NO DESIGNA NINGUN TURNO A NADIE, SIENDO QUE NADIE ESTA TRABAJANDO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+LAS CARPETAS ESTAN ORDENADAS POR PAQUETES COMO EL DOCUMENTO NOMAS
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+JOEL NORMALIZO TELEFONOS (NUNCA OLVIDAR ESA MIERDA) DE TANTAS COSAS QUE SE PODIAN NORMALIZAR

@@ -89,6 +89,10 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
     }
   };
 
+  const handleEstadoChange = (value: string) => {
+    setValue("estado", value);
+  };
+
   const handleTipoChange = (value: string) => {
     setValue("tipo", value);
   };
@@ -118,16 +122,21 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="estado" className="text-right">
+              <Label htmlFor="tipo" className="text-right">
                 Estado
               </Label>
-              <Input
-                id="estado"
-                placeholder="Ingrese el estado"
-                className="col-span-3"
-                type="text"
-                {...register("estado", { required: true })}
-              />
+              <Select onValueChange={handleEstadoChange}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Seleccione un tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Estados</SelectLabel>
+                    <SelectItem value="Pagada">Pagada</SelectItem>
+                    <SelectItem value="Pendiente">Pendiente</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="descripcion" className="text-right">

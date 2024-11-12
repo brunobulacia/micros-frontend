@@ -204,9 +204,15 @@ export default function SancionesPage() {
                 {table.getCanNextPage() && (
                   <Button onClick={() => table.nextPage()}>Siguiente</Button>
                 )}
-                <Button onClick={() => table.lastPage()}>Ultima Pagina</Button>
+                {table.getPageCount() > 1 && (
+                  <Button
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  >
+                    Última Página
+                  </Button>
+                )}
               </div>
-              <Button className="mt-4 bg-green-800" onClick={crearSancion}>
+              <Button className="mt-4 bg-blue-800" onClick={crearSancion}>
                 Registrar Sancion
               </Button>
             </div>

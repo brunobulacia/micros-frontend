@@ -5,7 +5,7 @@ import TurnosPage from "../TurnosPage";
 import FrecMicrosPage from "../FrecMicrosPage";
 import CargarHorPage from "../CargarHorPage";
 import GDeMicros from "../GestionDeMicros/GDeMicros";
-import TempMicros from "../GestionDeMicros/TempMicros";
+import TempMicros from "../GestionDeMicros/MicrosPage";
 import TempMant from "../GestionDeMicros/TempMant";
 import TempEstado from "../GestionDeMicros/TempEstado";
 import TempRevision from "../GestionDeMicros/RevisionTecn";

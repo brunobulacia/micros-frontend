@@ -1,3 +1,9 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -8,16 +14,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/api/auth";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 import { LoginData } from "@/types";
+
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null); // Cambiado aquí
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,24 +29,25 @@ const LoginPage = () => {
   } = useForm<LoginData>();
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
-  const { userData } = useAuthStore();
-  const { setUserData } = useAuthStore();
+  const { userData, setUserData } = useAuthStore();
+
   useEffect(() => {
     if (userData) {
-      console.log("Datos del usuario:", userData); // Mostrar datos por consola
+      console.log("Datos del usuario:", userData);
     }
-  }, [userData]); // Se ejecuta cada vez que `userData`
+  }, [userData]);
 
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        setError(null); // Limpiar el error después de 3 segundos
+        setError(null);
       }, 3000);
-      return () => clearTimeout(timer); // Limpiar el temporizador si el componente se desmonta o si el error cambia
+      return () => clearTimeout(timer);
     }
   }, [error]);
+
   const onSubmit: SubmitHandler<LoginData> = async (data) => {
-    setLoading(true); // Habilita el loading
+    setLoading(true);
     try {
       const res = await loginRequest(data);
       console.log(res);
@@ -62,21 +67,21 @@ const LoginPage = () => {
       setError(error.response.data.message);
       console.error(error);
     } finally {
-      setLoading(false); // Deshabilita el loading cuando la petición termina
+      setLoading(false);
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    // ASI O MAS DESIGNER UI?
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[url('https://estaticos-noticias.unitel.bo/binrepository/1129x636/0c64/1024d512/none/125450566/LYQY/imagen-1cd2c200-8341-44f5-8e87-b33bfbeca4ee_101-7189893_20231009124724.jpg')] bg-cover bg-center">
-      <h1 className="text-4xl font-bold mb-10 text-center bg-zinc-300 p-3 rounded-lg opacity-90">
-        TRANSPORTE PUBLICO
-      </h1>
-      <h1 className="text-3xl font-bold mb-10 text-center bg-zinc-300 rounded-lg p-3  opacity-90">
-        SANTA CRUZ DE LA SIERRA
-      </h1>
+    <div className="flex items-center justify-center min-h-screen bg-cover bg-[url('../../../public/santacruz_noche.jpg')]">
       <Card className="w-full max-w-sm bg-zinc-300">
         <CardHeader>
+          <h1 className="md:text-4xl font-bold mb-10 text-center bg-zinc-300 p-1 rounded-lg opacity-90 text-3xl">
+            TRANSPORTE PUBLICO
+          </h1>
           <CardTitle className="text-2xl font-semibold text-center">
             Inicio de sesion
           </CardTitle>
@@ -100,19 +105,37 @@ const LoginPage = () => {
               )}
             </div>
             <div className="space-y-1">
-              <Label htmlFor="contraseña" className="text-base font-medium ">
+              <Label htmlFor="contraseña" className="text-base font-medium">
                 Contraseña
               </Label>
-              <Input
-                id="contraseña"
-                type="password"
-                placeholder="Ingresa tu contraseña"
-                required
-                className="h-10 text-base bg-white"
-                {...register("contraseña", {
-                  required: "Contraseña es requerida",
-                })}
-              />
+              <div className="relative">
+                <Input
+                  id="contraseña"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Ingresa tu contraseña"
+                  required
+                  className="h-10 text-base bg-white pr-10"
+                  {...register("contraseña", {
+                    required: "Contraseña es requerida",
+                  })}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-2"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-6 w-6" />
+                  ) : (
+                    <Eye className="h-6 w-6" />
+                  )}
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
+                </Button>
+              </div>
             </div>
             {error && (
               <p className="bg-red-500 text-center text-white p-2 font-medium">
