@@ -37,7 +37,7 @@ export const TurnoCard = ({ turno }: { turno: Turno }) => {
 
   return (
     <div className="w-full  ">
-      <div className="border rounded-lg p-4 mb-4 flex flex-col sm:flex-row items-center justify-between w-full bg-white">
+      <div className="border rounded-lg p-4 mb-4 flex flex-col sm:flex-row items-center justify-between w-full bg-slate-200 shadow-inner">
         <div className="flex flex-col sm:flex-row items-center w-full sm:w-auto mb-4 sm:mb-0">
           <CircleUserRound className="w-16 h-16 mb-4 sm:mb-0 sm:mr-4" />
           <div className="flex flex-col sm:flex-row text-center sm:text-left">

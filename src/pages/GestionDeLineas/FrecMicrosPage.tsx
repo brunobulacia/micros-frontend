@@ -55,9 +55,11 @@ function FrecMicrosPage() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto shadow-lg p-6">
       <CardHeader>
-        <CardTitle>Actualizar Frecuencia de Micros</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          Actualizar Frecuencia de Micros
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

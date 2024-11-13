@@ -76,7 +76,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-cover bg-[url('../../../public/santacruz_noche.jpg')]">
+    <div className="flex items-center justify-center min-h-screen bg-cover bg-[url('../../../public/santacruz_noche.jpg')]}}">
       <Card className="w-full max-w-sm bg-zinc-300">
         <CardHeader>
           <h1 className="md:text-4xl font-bold mb-10 text-center bg-zinc-300 p-1 rounded-lg opacity-90 text-3xl">
