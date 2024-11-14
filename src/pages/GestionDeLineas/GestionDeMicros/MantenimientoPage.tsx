@@ -185,7 +185,7 @@ export default function Mantenimiento() {
             <Button className="w-full md:w-auto bg-blue-800">
               <PDFDownloadLink
                 document={<MantPDFDocument mantFiltrados={mantFiltrado} />}
-                fileName="reporte_sanciones.pdf"
+                fileName="reporte_mantenimientos.pdf"
               >
                 <Button className="w-full md:w-auto bg-blue-800">
                   Descargar Reporte

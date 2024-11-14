@@ -241,7 +241,7 @@ export default function Revision() {
             <Button className="w-full md:w-auto bg-blue-800">
               <PDFDownloadLink
                 document={<RevisionPDF revFiltradas={revFiltradas} />}
-                fileName="reporte_sanciones.pdf"
+                fileName="reporte_revision.pdf"
               >
                 <Button className="w-full md:w-auto bg-blue-800">
                   Descargar Reporte

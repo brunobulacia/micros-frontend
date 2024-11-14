@@ -172,9 +172,7 @@ export function DialogDemo({ chofer, onClose }: DialogDemoProps) {
             </div>
           </div>
           <DialogFooter>
-            <Button className=" mt-4" onClick={onClose}>
-              Cancelar
-            </Button>
+            <Button onClick={onClose}>Cancelar</Button>
             <Button type="submit">Guardar</Button>
           </DialogFooter>
         </form>

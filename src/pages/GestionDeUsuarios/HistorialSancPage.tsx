@@ -73,7 +73,7 @@ function FiltrarFichaForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="monto" className="text-right">
           Monto
@@ -81,6 +81,7 @@ function FiltrarFichaForm({
         <Input
           id="monto"
           type="number"
+          className="w-[180px]"
           {...register("monto", { required: "Este campo es requerido" })}
         />
         {errors.monto && (
