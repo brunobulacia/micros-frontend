@@ -1,16 +1,21 @@
-import * as React from "react";
+// hooks/use-toast.ts
 
-import type { ToastActionElement, ToastProps } from "@/hooks/use-toast";
+import * as React from "react";
+import { ToastActionElement, ToastProps } from "@/types"; // Importar desde un archivo de tipos separado
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
 type ToasterToast = ToastProps & {
   id: string;
+  open?: boolean; // Propiedad `open` para el estado del toast
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
+  onOpenChange?: (open: boolean) => void; // Agregar la propiedad `onOpenChange` de tipo función
 };
+
+// Resto del código...
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -87,8 +92,6 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
@@ -151,8 +154,9 @@ function toast({ ...props }: Toast) {
     toast: {
       ...props,
       id,
-      open: true,
-      onOpenChange: (open: any) => {
+      open: true, // La propiedad `open` se puede usar aquí
+      onOpenChange: (open: boolean) => {
+        // Ahora se puede usar la propiedad `onOpenChange`
         if (!open) dismiss();
       },
     },

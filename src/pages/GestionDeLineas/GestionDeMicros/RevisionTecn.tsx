@@ -73,44 +73,47 @@ function FiltrarFichaForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="año" className="text-right">
+      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+        <Label htmlFor="año" className="md:text-right">
           Año
         </Label>
         <Input
           id="año"
           type="text"
           {...register("año", { required: "Este campo es requerido" })}
+          className="col-span-3 w-full"
         />
         {errors.año && (
-          <span className="text-red-500 text-sm">{errors.año.message}</span>
+          <span className="text-red-500 text-sm col-span-4 md:col-start-2">
+            {errors.año.message}
+          </span>
         )}
       </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="modelo" className="text-right">
+      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+        <Label htmlFor="modelo" className="md:text-right">
           Modelo
         </Label>
         <Input
           id="modelo"
           placeholder="Ingrese el modelo"
-          className="col-span-3"
           type="text"
           {...register("modelo", { required: true })}
+          className="col-span-3 w-full"
         />
       </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="Seguro" className="text-right">
+      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+        <Label htmlFor="seguro" className="md:text-right">
           Seguro
         </Label>
         <Input
           id="seguro"
           placeholder="Ingrese el seguro"
-          className="col-span-3"
           type="text"
           {...register("seguro", { required: true })}
+          className="col-span-3 w-full"
         />
       </div>
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full md:w-auto">
         Filtrar
       </Button>
     </form>
@@ -240,17 +243,17 @@ export default function Revision() {
                 document={<RevisionPDF revFiltradas={revFiltradas} />}
                 fileName="reporte_sanciones.pdf"
               >
-                {({ loading }) => (
-                  <Button className="w-full md:w-auto bg-blue-800">
-                    {loading ? "Generando PDF..." : "Descargar Reporte"}
-                  </Button>
-                )}
+                <Button className="w-full md:w-auto bg-blue-800">
+                  Descargar Reporte
+                </Button>
               </PDFDownloadLink>
             </Button>
           )}
-          <DialogContent>
+          <DialogContent className="w-full max-w-md mx-auto p-6 md:max-w-lg">
             <DialogHeader>
-              <DialogTitle>Generar Reporte</DialogTitle>
+              <DialogTitle className="text-xl md:text-2xl font-semibold text-gray-800">
+                Generar Reporte
+              </DialogTitle>
             </DialogHeader>
             <FiltrarFichaForm onSubmit={handleFiltrar} />
           </DialogContent>

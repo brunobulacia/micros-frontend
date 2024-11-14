@@ -1,3 +1,10 @@
+export type ToastActionElement = React.ReactNode;
+export interface ToastProps {
+  title: React.ReactNode;
+  description: React.ReactNode;
+  action?: ToastActionElement;
+}
+
 interface Coords {
   lon: number;
   lat: number;

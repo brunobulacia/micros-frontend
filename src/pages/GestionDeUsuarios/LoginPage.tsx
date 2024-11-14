@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { loginRequest } from "@/api/auth";
 import { useAuthStore } from "@/store/auth";
 import { LoginData } from "@/types";
+import { AxiosError } from "axios"; // Si usas Axios, por ejemplo
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -63,8 +64,12 @@ const LoginPage = () => {
         direccion: res.data.datos.direccion,
         carnet: res.data.datos.carnet,
       });
-    } catch (error) {
-      setError(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message || "Error al iniciar sesión");
+      } else {
+        setError("Ha ocurrido un error desconocido");
+      }
       console.error(error);
     } finally {
       setLoading(false);

@@ -16,8 +16,6 @@ import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
 //LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/types";
 
 export default function GDeRutas() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -25,10 +23,6 @@ export default function GDeRutas() {
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
-
-  const { token } = useAuthStore();
-  const decoded = jwtDecode(token) as DecodedToken;
-  const { role } = decoded;
 
   useEffect(() => {
     setMounted(true);
@@ -123,7 +117,7 @@ export default function GDeRutas() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6 text-white" />
+                    <Menu className="h-6 w-6 text-black" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">

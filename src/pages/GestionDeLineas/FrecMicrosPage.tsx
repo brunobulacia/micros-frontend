@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { AxiosError } from "axios"; // Si usas Axios, por ejemplo
 
 interface FrecuenciaMicrosData {
   token: string;
@@ -42,13 +43,13 @@ function FrecMicrosPage() {
         description: "La frecuencia de micros ha sido actualizada.",
       });
       console.log(res);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Hubo un problema al actualizar la frecuencia de micros.",
-        variant: "destructive",
-      });
-      setError(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message || "Error al iniciar sesión");
+      } else {
+        setError("Ha ocurrido un error desconocido");
+      }
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }

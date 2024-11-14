@@ -1,6 +1,6 @@
+// FichaPDF.tsx
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
-// Estilos para el PDF
 const styles = StyleSheet.create({
   page: {
     padding: 30,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   tableColHeader: {
-    width: "14.28%", // Divide el ancho en 7 columnas iguales
+    width: "14.28%",
     fontSize: 10,
     fontWeight: "bold",
     textAlign: "center",
@@ -44,12 +44,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export const FichaPDFDocument = ({ fichasFiltradas: any }) => (
+interface FichaPDFProps {
+  fichasFiltradas: {
+    fecha: string;
+    hora: string;
+    monto: string;
+    estado: string;
+    descripcion: string;
+    usuario_chofer: string;
+    usuario_operador: string;
+  }[];
+}
+
+export const FichaPDFDocument = ({ fichasFiltradas }: FichaPDFProps) => (
   <Document>
     <Page style={styles.page}>
       <Text style={styles.title}>Reporte de Sanciones</Text>
       <View style={styles.table}>
-        {/* Encabezado de la tabla */}
         <View style={styles.tableRowHeader}>
           <Text style={styles.tableColHeader}>Fecha</Text>
           <Text style={styles.tableColHeader}>Hora</Text>
@@ -59,8 +70,9 @@ export const FichaPDFDocument = ({ fichasFiltradas: any }) => (
           <Text style={styles.tableColHeader}>Chofer</Text>
           <Text style={styles.tableColHeader}>Operador</Text>
         </View>
-        {/* Filas de datos */}
-        {fichasFiltradas.map((ficha: any, index: any) => (
+
+        {/* Iterar sobre fichasFiltradas para mostrar las filas */}
+        {fichasFiltradas.map((ficha, index) => (
           <View key={index} style={styles.tableRow}>
             <Text style={styles.tableCol}>{ficha.fecha}</Text>
             <Text style={styles.tableCol}>{ficha.hora}</Text>

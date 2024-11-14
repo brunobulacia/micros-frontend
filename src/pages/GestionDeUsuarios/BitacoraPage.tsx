@@ -148,7 +148,7 @@ export default function BitacoraPage() {
             </div>
           ) : (
             <div>
-              <div className="rounded-md border border-zinc-200 overflow-hidden">
+              <div className="rounded-md border border-zinc-200 overflow-hidden overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     {table.getHeaderGroups().map((headerGroup) => (

@@ -15,10 +15,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
-//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/types";
-
 export default function GDeComunicacion() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -26,8 +22,6 @@ export default function GDeComunicacion() {
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
 
-  const { token } = useAuthStore();
-  const decoded = jwtDecode(token) as DecodedToken;
   useEffect(() => {
     setMounted(true);
   }, []);

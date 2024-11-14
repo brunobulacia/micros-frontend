@@ -34,7 +34,7 @@ export default function TurnosPage() {
     fetchData();
   }, [token]);
 
-  const currentDate = new Date().toISOString().split("T")[0];
+  // const currentDate = new Date().toISOString().split("T")[0];
 
   const filteredTurnos = turnosList
     .filter(

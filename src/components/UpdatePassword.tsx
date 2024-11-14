@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { updatePasswordData } from "@/types";
+import { AxiosError } from "axios"; // Si usas Axios, por ejemplo
 
 export function UpdatePassword() {
   const [loading, setLoading] = useState(false);
@@ -32,13 +33,18 @@ export function UpdatePassword() {
       await updatePassword(data.contraseña, data.nueva_contraseña, token);
       setSuccess(true);
       reset();
-    } catch (error) {
-      setError(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setError(
+          error.response?.data.message || "Error al actualizar la contraseña"
+        );
+      } else {
+        setError("Ha ocurrido un error desconocido");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   const password = watch("nueva_contraseña");
 
   return (

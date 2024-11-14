@@ -22,6 +22,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { signupRequest } from "@/api/auth";
 import { useAuthStore } from "@/store/auth";
 import { UserData } from "@/types";
+import { AxiosError } from "axios"; // Si usas Axios, por ejemplo
 
 export default function RegisterPage() {
   const {
@@ -57,7 +58,7 @@ export default function RegisterPage() {
   const onSubmit: SubmitHandler<UserData> = async (data) => {
     setLoading(true); // Habilita el loading
     try {
-      //PARA CONVERTIR LOS TELEFONOS A UN ARRAY
+      // PARA CONVERTIR LOS TELEFONOS A UN ARRAY
       if (!Array.isArray(data.telefonos) && data.telefonos) {
         data.telefonos = [data.telefonos];
       }
@@ -74,8 +75,13 @@ export default function RegisterPage() {
         direccion: res.data.datos.direccion,
         carnet: res.data.datos.carnet,
       });
-    } catch (error) {
-      setError(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        // Manejar el error cuando es una instancia de AxiosError
+        setError(error.response?.data.message || "Error en el registro");
+      } else {
+        setError("Ha ocurrido un error desconocido");
+      }
       console.log(error);
     } finally {
       setLoading(false); // Deshabilita el loading cuando la petición termina

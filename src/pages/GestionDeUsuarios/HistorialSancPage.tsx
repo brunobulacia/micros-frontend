@@ -268,11 +268,9 @@ export default function HistorialSancPage() {
                 }
                 fileName="reporte_sanciones.pdf"
               >
-                {({ loading }) => (
-                  <Button className="w-full md:w-auto bg-blue-800">
-                    {loading ? "Generando PDF..." : "Descargar Reporte"}
-                  </Button>
-                )}
+                <Button className="w-full md:w-auto bg-blue-800">
+                  Descargar Reporte
+                </Button>
               </PDFDownloadLink>
             </Button>
           )}

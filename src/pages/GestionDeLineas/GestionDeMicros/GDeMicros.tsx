@@ -16,19 +16,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
-//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/types";
-
 export default function GDeMicros() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
-
-  const { token } = useAuthStore();
-  const decoded = jwtDecode(token) as DecodedToken;
 
   useEffect(() => {
     setMounted(true);
@@ -132,7 +125,7 @@ export default function GDeMicros() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6 text-white" />
+                    <Menu className="h-6 w-6 text-black" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">

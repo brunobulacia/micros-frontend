@@ -155,7 +155,7 @@ export default function GestionDeLineas() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6 text-white" />
+                    <Menu className="h-6 w-6 text-black" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">

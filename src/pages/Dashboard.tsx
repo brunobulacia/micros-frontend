@@ -8,9 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
-//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/types";
+//LIBRERIAS PARA VERIFICAR EL TKEN DEL USUARIO Y OBTENER SUS DATOS
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,9 +16,6 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
-
-  const { token } = useAuthStore();
-  const decoded = jwtDecode(token) as DecodedToken;
 
   useEffect(() => {
     setMounted(true);
@@ -106,7 +101,7 @@ export default function Dashboard() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6 text-white" />
+                    <Menu className="h-6 w-6 text-black" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
