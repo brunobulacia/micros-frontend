@@ -3,9 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken, Turno } from "@/types";
-import { handleAxiosError } from "@/utils/handleErrors";
+import { Turno } from "@/types";
 import { turnos } from "@/api/turno";
 import { TurnoCard } from "@/components/cards/TurnoCard";
 import { CrearTurno } from "@/components/forms/CrearTurno";
@@ -14,7 +12,6 @@ import { Input } from "@/components/ui/input";
 
 export default function TurnosPage() {
   const { token } = useAuthStore();
-  const decoded = jwtDecode(token) as DecodedToken;
 
   const [turnosList, setTurnosList] = useState<Turno[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,36 +19,28 @@ export default function TurnosPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const { role } = decoded;
-      try {
-        if (role === "Operador") {
-          const resTurnos = await turnos(token);
-          console.log(resTurnos.data);
+      const resTurnos = await turnos(token);
+      console.log(resTurnos.data);
 
-          const sortedTurnos = resTurnos.data.sort((a, b) => {
-            const horaA = new Date(`1970-01-01T${a.hora_salida}Z`);
-            const horaB = new Date(`1970-01-01T${b.hora_salida}Z`);
-            return horaB.getTime() - horaA.getTime();
-          });
+      const sortedTurnos = resTurnos.data.sort((a: any, b: any) => {
+        const horaA = new Date(`1970-01-01T${a.hora_salida}Z`);
+        const horaB = new Date(`1970-01-01T${b.hora_salida}Z`);
+        return horaB.getTime() - horaA.getTime();
+      });
 
-          setTurnosList(sortedTurnos);
-        }
-      } catch (error) {
-        handleAxiosError(error);
-      }
+      setTurnosList(sortedTurnos);
     }
 
     fetchData();
-  }, [token, decoded.role]);
+  }, [token]);
 
   const currentDate = new Date().toISOString().split("T")[0];
 
   const filteredTurnos = turnosList
     .filter(
       (turno) =>
-        turno.fecha_horario === currentDate &&
-        (turno.chofer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          turno.interno.toLowerCase().includes(searchTerm.toLowerCase()))
+        turno.chofer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        turno.interno.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
       const horaA = new Date(`1970-01-01T${a.hora_salida}Z`);

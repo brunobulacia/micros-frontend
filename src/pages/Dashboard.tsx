@@ -21,7 +21,6 @@ export default function Dashboard() {
 
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
-  const { role } = decoded;
 
   useEffect(() => {
     setMounted(true);
@@ -43,7 +42,7 @@ export default function Dashboard() {
         <nav className="space-y-3">
           <Button
             variant="ghost"
-            className="w-full justify-start text-base py-3"
+            className="w-full justify-start text-base py-3 hover:bg-gray-300"
             aria-label="View profile"
             onClick={() => navigate("/usuarios")}
           >
@@ -52,7 +51,7 @@ export default function Dashboard() {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start text-base py-3"
+            className="w-full justify-start text-base py-3 hover:bg-gray-300"
             aria-label="View lines"
             onClick={() => navigate("/lineas")}
           >
@@ -61,7 +60,7 @@ export default function Dashboard() {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start text-base py-3"
+            className="w-full justify-start text-base py-3 hover:bg-gray-300"
             aria-label="View lines"
             onClick={() => navigate("/feed")}
           >

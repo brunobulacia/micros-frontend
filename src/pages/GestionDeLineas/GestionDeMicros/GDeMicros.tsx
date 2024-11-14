@@ -29,7 +29,6 @@ export default function GDeMicros() {
 
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
-  const { role } = decoded;
 
   useEffect(() => {
     setMounted(true);

@@ -16,13 +16,35 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getMicros } from "@/api/micros";
 import { DialogDemo } from "../../../components/dialogs/AgregarRevTec";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { RevisionPDF } from "@/pages/GestionDeLineas/GestionDeMicros/reportes/RevisionPDF";
 
+// Interfaces
 interface Estado {
   id_estado: string;
   estado: string;
   fecha: string;
   hora: string;
   id_micro: string;
+}
+
+interface InformacionesPersonales {
+  nombre: string;
+}
+
+interface Dueño {
+  id: string;
+  id_informacion: string;
+  informaciones_personale: InformacionesPersonales;
 }
 
 interface MicroItem {
@@ -35,6 +57,64 @@ interface MicroItem {
   id_dueño: string;
   id_linea: string;
   estados: Estado[];
+  dueño: Dueño;
+}
+
+function FiltrarFichaForm({
+  onSubmit,
+}: {
+  onSubmit: (data: MicroItem) => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<MicroItem>();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="año" className="text-right">
+          Año
+        </Label>
+        <Input
+          id="año"
+          type="text"
+          {...register("año", { required: "Este campo es requerido" })}
+        />
+        {errors.año && (
+          <span className="text-red-500 text-sm">{errors.año.message}</span>
+        )}
+      </div>
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="modelo" className="text-right">
+          Modelo
+        </Label>
+        <Input
+          id="modelo"
+          placeholder="Ingrese el modelo"
+          className="col-span-3"
+          type="text"
+          {...register("modelo", { required: true })}
+        />
+      </div>
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="Seguro" className="text-right">
+          Seguro
+        </Label>
+        <Input
+          id="seguro"
+          placeholder="Ingrese el seguro"
+          className="col-span-3"
+          type="text"
+          {...register("seguro", { required: true })}
+        />
+      </div>
+      <Button type="submit" className="w-full">
+        Filtrar
+      </Button>
+    </form>
+  );
 }
 
 const columnHelper = createColumnHelper<MicroItem>();
@@ -46,6 +126,8 @@ export default function Revision() {
   const [error, setError] = useState<string | null>(null);
   const [filtering, setFiltering] = useState("");
   const [selectedMicro, setSelectedMicro] = useState<MicroItem | null>(null);
+  const [revFiltradas, setrevFiltradas] = useState<MicroItem[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const columns = [
     columnHelper.accessor("placa", {
@@ -68,7 +150,7 @@ export default function Revision() {
       header: "Seguro",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("id_dueño", {
+    columnHelper.accessor("dueño.informaciones_personale.nombre", {
       header: "Dueño",
       cell: (info) => info.getValue(),
     }),
@@ -104,7 +186,7 @@ export default function Revision() {
         setMicro(microResponse.data);
         console.log(microResponse.data);
       } catch (error) {
-        setError("Failed to fetch bitacora data. Please try again later.");
+        setError("No existen revisiones.");
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -114,24 +196,67 @@ export default function Revision() {
     traerMicros();
   }, [token]);
 
+  const handleFiltrar = async (data: MicroItem) => {
+    try {
+      console.log(data);
+      const revFiltradas = micro.filter(
+        (item) =>
+          (!data.año || item.año === data.año) &&
+          (!data.modelo || item.modelo.includes(data.modelo)) &&
+          (!data.seguro || item.seguro.includes(data.seguro))
+      );
+      setrevFiltradas(revFiltradas);
+      setIsDialogOpen(false);
+      console.log(revFiltradas);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="p-6 bg-slate-300 rounded-lg min-h-screen">
-      {/* Search and filter input */}
-      <div className="flex items-center">
-        <Input
-          className="mb-6 ml-3 w-[50%] text-lg bg-white"
-          placeholder="Filtrar Datos..."
-          type="text"
-          value={filtering}
-          onChange={(e) => setFiltering(e.target.value)}
-          id="search"
-        />
-        <label htmlFor="search">
-          <Search className="mb-6 ml-3" />
-        </label>
+      <div className="max-w-4xl mx-auto flex mb-8 flex-col md:flex-row items-center justify-between gap-5">
+        <div className="flex items-center w-full">
+          <div className="relative w-full bg-slate-300">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Buscar..."
+              className="w-full pl-10 bg-white"
+              value={filtering}
+              onChange={(e) => setFiltering(e.target.value)}
+            />
+          </div>
+        </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="w-full md:w-auto bg-blue-800">
+              Generar Reporte
+            </Button>
+          </DialogTrigger>
+          {revFiltradas.length > 0 && (
+            <Button className="w-full md:w-auto bg-blue-800">
+              <PDFDownloadLink
+                document={<RevisionPDF revFiltradas={revFiltradas} />}
+                fileName="reporte_sanciones.pdf"
+              >
+                {({ loading }) => (
+                  <Button className="w-full md:w-auto bg-blue-800">
+                    {loading ? "Generando PDF..." : "Descargar Reporte"}
+                  </Button>
+                )}
+              </PDFDownloadLink>
+            </Button>
+          )}
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Generar Reporte</DialogTitle>
+            </DialogHeader>
+            <FiltrarFichaForm onSubmit={handleFiltrar} />
+          </DialogContent>
+        </Dialog>
       </div>
 
-      {/* Table card */}
       <Card className="max-w-4xl mx-auto border-zinc-200 shadow-md rounded-lg">
         <CardHeader className="border-b border-zinc-200 bg-zinc-100 rounded-lg">
           <CardTitle className="text-2xl font-bold text-center text-zinc-800">
@@ -202,7 +327,7 @@ export default function Revision() {
                 {table.getCanNextPage() && (
                   <Button onClick={() => table.nextPage()}>Siguiente</Button>
                 )}
-                {table.getPageCount() > 1 && (
+                {table.getPageCount() > 1 && table.getCanNextPage() && (
                   <Button
                     onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                   >

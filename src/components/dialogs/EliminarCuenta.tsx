@@ -1,5 +1,5 @@
 // EliminarCuenta.tsx
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -45,7 +45,7 @@ export function DialogEliminarCuenta({ usuario }: DialogEliminarCuentaProps) {
       return;
     }
     setData({ token: token, usuario: usuario });
-    if (inputValue === `borrar/${usuario}`) {
+    if (inputValue === `borrar/${usuario}` && data) {
       // Llamamos a la API solo si el token y el usuario están disponibles.
       const res = await deleteUserRequest({ token, usuario });
       if (!res) {

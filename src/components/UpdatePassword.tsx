@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useAuthStore } from "@/store/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { updatePassword } from "@/api/auth";
-import { handleAxiosError } from "@/utils/handleErrors";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -30,11 +29,7 @@ export function UpdatePassword() {
     setError(null);
     setSuccess(false);
     try {
-      const res = await updatePassword(
-        data.contraseña,
-        data.nueva_contraseña,
-        token
-      );
+      await updatePassword(data.contraseña, data.nueva_contraseña, token);
       setSuccess(true);
       reset();
     } catch (error) {

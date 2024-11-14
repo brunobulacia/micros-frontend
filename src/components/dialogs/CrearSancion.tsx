@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store/auth";
 import { crearTipoSancion } from "@/api/sancion";
-import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface tipoSancion {
@@ -49,7 +48,7 @@ export function DialogCrearTipo({ onClose }: DialogCrearProps) {
     }
     data.token = token;
     console.log(data);
-    const res = await crearTipoSancion(data);
+    await crearTipoSancion(data);
     alert("Tipo de sanción creado con exito");
     onClose();
   };

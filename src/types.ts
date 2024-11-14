@@ -83,10 +83,10 @@ export interface Turno {
   interno: string;
   placa: string;
   id_horario: string;
-  fecha_horario: string;
   hora_salida: string;
-  hora_llegada: string;
-  punto_salida: string;
+  hora_llegada?: string; // Es posible que la hora de llegada sea opcional
+  fecha: string; // Nueva propiedad
+  punto_de_salida: string; // Nueva propiedad
 }
 
 export interface TurnoData {

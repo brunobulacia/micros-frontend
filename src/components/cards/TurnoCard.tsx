@@ -6,7 +6,7 @@ import { Turno } from "@/types";
 import { handleAxiosError } from "@/utils/handleErrors";
 import { finalizarTurno } from "@/api/turno";
 
-const handleStopConfirmation = async (turno: Turno, token: string) => {
+const handleStopConfirmation = async (turno: string, token: string) => {
   const isConfirmed = window.confirm(
     "¿Estás seguro de que quieres terminar este turno?"
   );
@@ -16,12 +16,12 @@ const handleStopConfirmation = async (turno: Turno, token: string) => {
   }
 };
 
-const StopTurno = async (turno: Turno, token: string) => {
-  const id_horario = turno.id_horario;
+const StopTurno = async (turno: string, token: string) => {
+  const id_turno = turno;
   try {
-    if (id_horario) {
-      console.log(id_horario);
-      await finalizarTurno(id_horario, token);
+    if (id_turno) {
+      console.log(id_turno);
+      await finalizarTurno(id_turno, token);
       alert("Turno terminado con éxito");
       window.location.reload();
     } else {
@@ -36,7 +36,7 @@ export const TurnoCard = ({ turno }: { turno: Turno }) => {
   const { token } = useAuthStore();
 
   return (
-    <div className="w-full  ">
+    <div className="w-full">
       <div className="border rounded-lg p-4 mb-4 flex flex-col sm:flex-row items-center justify-between w-full bg-slate-200 shadow-inner">
         <div className="flex flex-col sm:flex-row items-center w-full sm:w-auto mb-4 sm:mb-0">
           <CircleUserRound className="w-16 h-16 mb-4 sm:mb-0 sm:mr-4" />
@@ -60,7 +60,10 @@ export const TurnoCard = ({ turno }: { turno: Turno }) => {
                 {turno.hora_llegada ?? "No hay hora de llegada"}
               </p>
               <p>
-                <b>Fecha:</b> {turno.fecha_horario}
+                <b>Fecha:</b> {turno.fecha}
+              </p>
+              <p>
+                <b>Punto de salida:</b> {turno.punto_de_salida}
               </p>
             </div>
           </div>
@@ -68,7 +71,7 @@ export const TurnoCard = ({ turno }: { turno: Turno }) => {
         <button
           className="h-10 w-10 rounded-md bg-white hover:bg-red-500 transition-colors duration-200 flex items-center justify-center"
           onClick={() => {
-            handleStopConfirmation(turno, token);
+            handleStopConfirmation(turno.id_turno, token);
           }}
         >
           <OctagonMinus className="h-6 w-6 text-red-500 hover:text-white" />
