@@ -123,3 +123,17 @@ export interface Micro {
   id_linea: string;
   estados: Estado[];
 }
+
+export interface DecodedToken {
+  id: string;
+  role: string;
+  id_linea: number;
+}
+
+export interface Mensaje {
+    emisor: string;
+    receptor: string;
+    rol: string;
+    contenido: string;
+    id_linea: number;
+}
