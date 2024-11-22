@@ -9,7 +9,6 @@ import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
 //LIBRERIAS PARA VERIFICAR EL TKEN DEL USUARIO Y OBTENER SUS DATOS
-
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -60,7 +59,7 @@ export default function Dashboard() {
             onClick={() => navigate("/feed")}
           >
             <Send className="mr-3 h-5 w-5" />
-            GEST. COMUNICACION
+            GESTIONAR LINEA
           </Button>
         </nav>
       </div>

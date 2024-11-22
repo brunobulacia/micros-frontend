@@ -8,7 +8,7 @@ import ProtectedRoute from "./ProtectedRoute.tsx";
 // PAQUETES
 import Usuarios from "@/pages/GestionDeUsuarios/Routes/RoutesGUsuarios.tsx";
 import Lineas from "@/pages/GestionDeLineas/Routes/RoutesGLineas.tsx";
-import Comunicacion from "@/pages/GestionDeComunicacion/Routes/RoutesGCom.tsx";
+import Comunicacion from "@/pages/GestionDeComunicacion/Routes/ComRoutes.tsx";
 function App() {
   const isAuth = useAuthStore((state) => state.isAuth);
   return (

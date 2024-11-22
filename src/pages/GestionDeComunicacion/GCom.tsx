@@ -1,21 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  MessageCircle,
-  Menu,
-  CircleArrowLeft,
-  MessageCircleQuestion,
-  Bell,
-  User,
-} from "lucide-react";
+import { Send, Menu, User, Bus, CircleArrowLeft } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
-export default function GDeComunicacion() {
+//LIBRERIAS PARA VERIFICAR EL TKEN DEL USUARIO Y OBTENER SUS DATOS
+export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
@@ -42,30 +36,29 @@ export default function GDeComunicacion() {
         <nav className="space-y-3">
           <Button
             variant="ghost"
-            className="w-full justify-start text-base py-3"
+            className="w-full justify-start text-base py-3 hover:bg-gray-300"
             aria-label="View profile"
             onClick={() => navigate("/feed/notificaciones")}
           >
-            <Bell className="mr-3 h-5 w-5" />
-            NOTIFICACIONES
+            GESTIONAR NOTIFICACIONES
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/feed/feedback")}
+            className="w-full justify-start text-base py-3 hover:bg-gray-300"
+            aria-label="View profile"
+            onClick={() => navigate("/feed/retroalimentacion")}
           >
-            <MessageCircleQuestion className="mr-3 h-5 w-5" />
-            RETROALIMENTACION
+            {/* FALTA ICONO ACA PRIMO */}
+            GESTIONAR RETROALIMENTACION
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
+            className="w-full justify-start text-base py-3 hover:bg-gray-300"
+            aria-label="View profile"
             onClick={() => navigate("/feed/comunicacion")}
           >
-            <MessageCircle className="mr-3 h-5 w-5" />
-            COMUNICACION INTERNA
+            {/* YA USTEDES PONGAN LOS ICONOS QUE QUIERAN */}
+            <Send className="mr-3 h-5 w-5" /> COMUNICACION INT.
           </Button>
           <Button
             variant="ghost"
@@ -115,7 +108,7 @@ export default function GDeComunicacion() {
                     className="md:hidden mr-2"
                     aria-label="Open menu"
                   >
-                    <Menu className="h-6 w-6" />
+                    <Menu className="h-6 w-6 text-black" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
@@ -123,8 +116,8 @@ export default function GDeComunicacion() {
                 </SheetContent>
               </Sheet>
             </div>
-            <Outlet />
           </div>
+          <Outlet />
         </main>
       </div>
     </div>
