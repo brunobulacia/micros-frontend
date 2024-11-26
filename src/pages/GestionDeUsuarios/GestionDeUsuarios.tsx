@@ -30,6 +30,7 @@ export default function GestionDeUsuarios() {
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
   const { role } = decoded;
+  console.log(role);
 
   useEffect(() => {
     setMounted(true);
@@ -52,17 +53,15 @@ export default function GestionDeUsuarios() {
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3"
-            aria-label="View profile"
             onClick={() => navigate("/usuarios/perfil")}
           >
             <User className="mr-3 h-5 w-5" />
-            PERFIL
+            {role !== "Operador" ? "DATOS PERSONALES" : "GESTIONAR USUARIOS"}
           </Button>
           {role === "Operador" && (
             <Button
               variant="ghost"
               className="w-full justify-start text-base py-3"
-              aria-label="View lines"
               onClick={() => navigate("/usuarios/bitacora")}
             >
               <FileUser className="mr-3 h-5 w-5" />
@@ -73,35 +72,35 @@ export default function GestionDeUsuarios() {
             <Button
               variant="ghost"
               className="w-full justify-start text-base py-3"
-              aria-label="View lines"
               onClick={() => navigate("/usuarios/roles")}
             >
               <UserCog className="mr-3 h-5 w-5" />
               GESTIONAR ROLES
             </Button>
           )}
+          {(role === "Operador" || role === "Chofer") && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              onClick={() => navigate("/usuarios/sanciones")}
+            >
+              <OctagonAlert className="mr-3 h-5 w-5" />
+              {role === "Operador" ? "GESTIONAR SANCIONES" : "SANCIONES"}
+            </Button>
+          )}
+          {(role === "Operador" || role === "Chofer") && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              onClick={() => navigate("/usuarios/historial-sanciones")}
+            >
+              <NotebookText className="mr-3 h-5 w-5" />
+              HISTORIAL SANCIONES
+            </Button>
+          )}
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/usuarios/sanciones")}
-          >
-            <OctagonAlert className="mr-3 h-5 w-5" />
-            GESTIONAR SANCIONES
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/usuarios/historial-sanciones")}
-          >
-            <NotebookText className="mr-3 h-5 w-5" />
-            HISTORIAL SANCIONES
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
             onClick={() => navigate("/dashboard/")}
           >
             <CircleArrowLeft className="mr-3 h-5 w-5" />

@@ -1,13 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Send, Menu, User, Bus, CircleArrowLeft } from "lucide-react";
+import {
+  Send,
+  Menu,
+  User,
+  BellRing,
+  CircleArrowLeft,
+  MessageCircleQuestion,
+} from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
 
+//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/types";
 //LIBRERIAS PARA VERIFICAR EL TKEN DEL USUARIO Y OBTENER SUS DATOS
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -15,6 +25,11 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
+
+  const { token } = useAuthStore();
+  const decoded = jwtDecode(token) as DecodedToken;
+  const { role } = decoded;
+  console.log(role);
 
   useEffect(() => {
     setMounted(true);
@@ -37,37 +52,40 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3 hover:bg-gray-300"
-            aria-label="View profile"
-            onClick={() => navigate("/feed/notificaciones")}
           >
-            GESTIONAR NOTIFICACIONES
+            <BellRing className="mr-3 h-5 w-5" />
+            <Link to="/feed/notificaciones" className="w-full text-start">
+              NOTIFICACIONES
+            </Link>
           </Button>
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3 hover:bg-gray-300"
-            aria-label="View profile"
-            onClick={() => navigate("/feed/retroalimentacion")}
           >
-            {/* FALTA ICONO ACA PRIMO */}
-            GESTIONAR RETROALIMENTACION
+            <MessageCircleQuestion className="mr-3 h-5 w-5" />
+            <Link to="/feed/retroalimentacion" className="w-full text-start">
+              RETROALIMENTACION
+            </Link>
           </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3 hover:bg-gray-300"
-            aria-label="View profile"
-            onClick={() => navigate("/feed/comunicacion")}
-          >
-            {/* YA USTEDES PONGAN LOS ICONOS QUE QUIERAN */}
-            <Send className="mr-3 h-5 w-5" /> COMUNICACION INT.
-          </Button>
+          {role !== "Pasajero" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3 hover:bg-gray-300"
+            >
+              <Send className="mr-3 h-5 w-5" />
+              <Link to="/feed/comunicacion" className="w-full text-start">
+                COMUNICACION INT.
+              </Link>
+            </Button>
+          )}
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/dashboard/")}
           >
             <CircleArrowLeft className="mr-3 h-5 w-5" />
-            ATRAS
+            <Link to="/dashboard/" className="w-full text-start">
+              ATRAS
+            </Link>
           </Button>
         </nav>
       </div>

@@ -13,8 +13,16 @@ import GDeRutas from "../GestionDeRutas/GDeRutas";
 import TempRutas from "../GestionDeRutas/TempRutas";
 import TempParadas from "../GestionDeRutas/TempParadas";
 import TempMapas from "../GestionDeRutas/TempMapas";
+import { useAuthStore } from "@/store/auth";
 
+//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/types";
 function RoutesGLineas() {
+  const { token } = useAuthStore();
+  const decoded = jwtDecode(token) as DecodedToken;
+  const { role } = decoded;
+  console.log(role);
   return (
     <Routes>
       {/* PAQUETE DE GESTION DE LINEAS */}
@@ -24,6 +32,7 @@ function RoutesGLineas() {
         <Route path="frecuencia-micros" element={<FrecMicrosPage />} />
         <Route path="carga-horaria" element={<CargarHorPage />} />
       </Route>
+
       <Route path="gmicros" element={<GDeMicros />}>
         <Route path="micros" element={<TempMicros />} />
         <Route path="mantenimiento" element={<TempMant />} />

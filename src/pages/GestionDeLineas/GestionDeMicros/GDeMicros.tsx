@@ -15,14 +15,19 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
-
+//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/types";
 export default function GDeMicros() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { userData } = useAuthStore();
-
+  const { token } = useAuthStore();
+  const decoded = jwtDecode(token) as DecodedToken;
+  const { role } = decoded;
+  console.log(role);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -50,6 +55,7 @@ export default function GDeMicros() {
             <Bus className="mr-3 h-5 w-5" />
             MICROS
           </Button>
+
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3"

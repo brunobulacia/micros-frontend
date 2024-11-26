@@ -32,7 +32,7 @@ export default function GestionDeLineas() {
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
   const { role } = decoded;
-
+  console.log(role);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -51,53 +51,66 @@ export default function GestionDeLineas() {
           <h2 className="text-2xl font-semibold">{userData?.nombre}</h2>
         </div>
         <nav className="space-y-3">
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View profile"
-            onClick={() => navigate("/lineas/horarios")}
-          >
-            <CalendarCheck className="mr-3 h-5 w-5" />
-            HORARIOS
-          </Button>
-          {role === "Operador" && (
+          {role !== "Pasajero" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              aria-label="View profile"
+              onClick={() => navigate("/lineas/horarios")}
+            >
+              <CalendarCheck className="mr-3 h-5 w-5" />
+              HORARIOS
+            </Button>
+          )}
+
+          {role === "Operador" ||
+            (role === "Chofer" && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-base py-3"
+                aria-label="View lines"
+                onClick={() => navigate("/lineas/turnos")}
+              >
+                <CarFront className="mr-3 h-5 w-5" />
+                TURNOS
+              </Button>
+            ))}
+          {role === "Operador" ||
+            (role === "Chofer" && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-base py-3"
+                aria-label="View lines"
+                onClick={() => navigate("/lineas/frecuencia-micros")}
+              >
+                <ChartNoAxesCombined className="mr-3 h-5 w-5" />
+                FRECUENCIA DE MICROS
+              </Button>
+            ))}
+          {role === "Operador" ||
+            (role === "Chofer" && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-base py-3"
+                aria-label="View lines"
+                onClick={() => navigate("/lineas/carga-horaria")}
+              >
+                <CalendarCheck2 className="mr-3 h-5 w-5" />
+                CARGA HORARIA
+              </Button>
+            ))}
+          {role !== "Pasajero" && (
             <Button
               variant="ghost"
               className="w-full justify-start text-base py-3"
               aria-label="View lines"
-              onClick={() => navigate("/lineas/turnos")}
+              onClick={() => navigate("/lineas/gmicros")}
             >
-              <CarFront className="mr-3 h-5 w-5" />
-              TURNOS
+              <Bus className="mr-3 h-5 w-5" />
+              {role !== "Operador" ? "VER MICROS" : "GESTIONAR MICROS"}
             </Button>
           )}
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/lineas/frecuencia-micros")}
-          >
-            <ChartNoAxesCombined className="mr-3 h-5 w-5" />
-            FRECUENCIA DE MICROS
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/lineas/carga-horaria")}
-          >
-            <CalendarCheck2 className="mr-3 h-5 w-5" />
-            CARGA HORARIA
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base py-3"
-            aria-label="View lines"
-            onClick={() => navigate("/lineas/gmicros")}
-          >
-            <Bus className="mr-3 h-5 w-5" />
-            GESTIONAR MICROS
-          </Button>
+
           <Button
             variant="ghost"
             className="w-full justify-start text-base py-3"
@@ -105,7 +118,7 @@ export default function GestionDeLineas() {
             onClick={() => navigate("/lineas/grutas")}
           >
             <Route className="mr-3 h-5 w-5" />
-            GESTIONAR RUTAS
+            {role !== "Operador" ? "VER RUTAS" : "GESTIONAR RUTAS"}
           </Button>
           <Button
             variant="ghost"

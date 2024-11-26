@@ -54,20 +54,20 @@ const Chat = () => {
           <MessageCard key={index} mensaje={msg} />
         ))}
       </div>
-        <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex items-center">
-          <input
-            value={mensaje}
-            onChange={(e) => setMensaje(e.target.value)}
-            placeholder="Escribe un mensaje"
-            className="flex-1 mr-2 p-2 border rounded-lg"
-          />
-          <button
-            className="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            onClick={enviarMensaje}
-          >
-            Enviar
-          </button>
-        </div>
+      <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t flex items-center">
+        <input
+          value={mensaje}
+          onChange={(e) => setMensaje(e.target.value)}
+          placeholder="Escribe un mensaje"
+          className="flex-1 mr-2 p-2 border rounded-lg"
+        />
+        <button
+          className="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+          onClick={enviarMensaje}
+        >
+          Enviar
+        </button>
+      </div>
     </div>
   );
 };
