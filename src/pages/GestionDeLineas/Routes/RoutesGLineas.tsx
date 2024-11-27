@@ -13,6 +13,7 @@ import GDeRutas from "../GestionDeRutas/GDeRutas";
 import TempRutas from "../GestionDeRutas/TempRutas";
 import TempParadas from "../GestionDeRutas/TempParadas";
 import TempMapas from "../GestionDeRutas/TempMapas";
+import IncidentesPage from "../GestionDeMicros/IncidentesPage";
 import { useAuthStore } from "@/store/auth";
 
 //LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
@@ -38,6 +39,7 @@ function RoutesGLineas() {
         <Route path="mantenimiento" element={<TempMant />} />
         <Route path="estado" element={<TempEstado />} />
         <Route path="revision-tecnica" element={<TempRevision />} />
+        <Route path="incidentes" element={<IncidentesPage />} />
       </Route>
       <Route path="grutas" element={<GDeRutas />}>
         <Route path="rutas" element={<TempRutas />} />

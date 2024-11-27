@@ -1,9 +1,7 @@
-import { CircleUserRound } from "lucide-react";
 import { Mensaje } from "@/types";
-import { useEffect } from "react";
 import { useAuthStore } from "@/store/auth";
 import { jwtDecode } from "jwt-decode";
-import { DecodedToken }from "@/types";
+import { DecodedToken } from "@/types";
 
 export const MessageCard = ({ mensaje }: { mensaje: Mensaje }) => {
   const { token } = useAuthStore();

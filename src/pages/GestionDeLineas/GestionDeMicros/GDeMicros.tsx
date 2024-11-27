@@ -9,6 +9,7 @@ import {
   CircleArrowLeft,
   BookMarked,
   User,
+  TriangleAlert,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -82,6 +83,15 @@ export default function GDeMicros() {
           >
             <Wrench className="mr-3 h-5 w-5" />
             REVISION TECNICA
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-base py-3"
+            aria-label="View lines"
+            onClick={() => navigate("/lineas/gmicros/incidentes")}
+          >
+            <TriangleAlert className="mr-3 h-5 w-5" />
+            INCIDENTES
           </Button>
           <Button
             variant="ghost"

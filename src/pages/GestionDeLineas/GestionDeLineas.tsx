@@ -75,30 +75,28 @@ export default function GestionDeLineas() {
                 TURNOS
               </Button>
             ))}
-          {role === "Operador" ||
-            (role === "Chofer" && (
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-base py-3"
-                aria-label="View lines"
-                onClick={() => navigate("/lineas/frecuencia-micros")}
-              >
-                <ChartNoAxesCombined className="mr-3 h-5 w-5" />
-                FRECUENCIA DE MICROS
-              </Button>
-            ))}
-          {role === "Operador" ||
-            (role === "Chofer" && (
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-base py-3"
-                aria-label="View lines"
-                onClick={() => navigate("/lineas/carga-horaria")}
-              >
-                <CalendarCheck2 className="mr-3 h-5 w-5" />
-                CARGA HORARIA
-              </Button>
-            ))}
+          {role !== "Pasajero" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              aria-label="View lines"
+              onClick={() => navigate("/lineas/frecuencia-micros")}
+            >
+              <ChartNoAxesCombined className="mr-3 h-5 w-5" />
+              FRECUENCIA DE MICROS
+            </Button>
+          )}
+          {role !== "Pasajero" && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-base py-3"
+              aria-label="View lines"
+              onClick={() => navigate("/lineas/carga-horaria")}
+            >
+              <CalendarCheck2 className="mr-3 h-5 w-5" />
+              CARGA HORARIA
+            </Button>
+          )}
           {role !== "Pasajero" && (
             <Button
               variant="ghost"

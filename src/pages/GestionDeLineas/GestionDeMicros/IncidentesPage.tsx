@@ -25,83 +25,85 @@ import {
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-interface ComentarioItem {
-  id_comentario: string;
-  titulo: string;
+interface IncidenteItem {
+  id_incidente: string;
+  hora: string;
   descripcion: string;
-  fecha: string;
-  tipo_comentario: string;
-  usuario: string;
-  id_linea: string;
+  tipo: string;
+  estado: string;
+  turno: string;
 }
 
-interface CrearComentario {
+interface CrearIncidente {
   token: string;
-  titulo: string;
+  hora: string;
   descripcion: string;
-  tipo_comentario: string;
-  usuario: string;
-  id_linea: string;
+  tipo: string;
+  estado: string;
+  turno: string;
 }
 
-const columnHelper = createColumnHelper<ComentarioItem>();
+const columnHelper = createColumnHelper<IncidenteItem>();
 
 const columns = [
-  columnHelper.accessor("titulo", {
-    header: "Titulo",
+  columnHelper.accessor("hora", {
+    header: "Hora",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("descripcion", {
     header: "Descripcion",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("fecha", {
-    header: "Fecha",
+  columnHelper.accessor("tipo", {
+    header: "Tipo",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("tipo_comentario", {
-    header: "Tipo de comentario",
+  columnHelper.accessor("estado", {
+    header: "Estado",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("id_linea", {
-    header: "Linea",
+  columnHelper.accessor("turno", {
+    header: "Turno",
     cell: (info) => info.getValue(),
   }),
 ];
 
-function CrearComentarioForm({
+function CrearIncidenteForm({
   onSubmit,
 }: {
-  onSubmit: (data: CrearComentario) => void;
+  onSubmit: (data: CrearIncidente) => void;
 }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CrearComentario>();
+  } = useForm<CrearIncidente>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <Label htmlFor="titulo">Titulo</Label>
+        <Label htmlFor="hora">Hora</Label>
         <Input
-          id="titulo"
-          type="text"
-          {...register("titulo", { required: "Este campo es requerido" })}
+          id="hora"
+          type="time"
+          {...register("hora", { required: "Este campo es requerido" })}
         />
-        {errors.titulo && (
-          <span className="text-red-500 text-sm">{errors.titulo.message}</span>
+        {errors.hora && (
+          <span className="text-red-500 text-sm">{errors.hora.message}</span>
         )}
       </div>
-
+      <div>
+        <Label htmlFor="tipo">Tipo</Label>
+        <Input
+          id="tipo"
+          type="text"
+          {...register("tipo", { required: "Este campo es requerido" })}
+        />
+        {errors.tipo && (
+          <span className="text-red-500 text-sm">{errors.tipo.message}</span>
+        )}
+      </div>
       <div>
         <Label htmlFor="descripcion">Contenido</Label>
         <Textarea
@@ -115,40 +117,27 @@ function CrearComentarioForm({
         )}
       </div>
       <div>
-        <Label htmlFor="tipo_comentario">Tipo</Label>
-        <Select
-          {...register("tipo_comentario", {
-            required: "Este campo es requerido",
-          })}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Seleccione un destinatario" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Elogio">Elogio</SelectItem>
-            <SelectItem value="Queja">Queja</SelectItem>
-          </SelectContent>
-        </Select>
-        {errors.tipo_comentario && (
-          <span className="text-red-500 text-sm">
-            {errors.tipo_comentario.message}
-          </span>
+        <Label htmlFor="estado">Estado</Label>
+        <Input
+          id="estado"
+          type="text"
+          {...register("estado", { required: "Este campo es requerido" })}
+        />
+        {errors.estado && (
+          <span className="text-red-500 text-sm">{errors.estado.message}</span>
         )}
       </div>
       <div>
-        <Label htmlFor="id_linea">Linea</Label>
+        <Label htmlFor="turno">Turno</Label>
         <Input
-          id="id_linea"
+          id="turno"
           type="text"
-          {...register("id_linea", { required: "Este campo es requerido" })}
+          {...register("turno", { required: "Este campo es requerido" })}
         />
-        {errors.id_linea && (
-          <span className="text-red-500 text-sm">
-            {errors.id_linea.message}
-          </span>
+        {errors.turno && (
+          <span className="text-red-500 text-sm">{errors.turno.message}</span>
         )}
       </div>
-
       <Button type="submit" className="w-full">
         Registrar
       </Button>
@@ -156,16 +145,16 @@ function CrearComentarioForm({
   );
 }
 
-export default function RetroPage() {
+export default function IncidentesPage() {
   const { token } = useAuthStore();
-  const [comentario, setComentario] = useState<ComentarioItem[]>([]);
+  const [incidente, setIncidente] = useState<IncidenteItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filtering, setFiltering] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const table = useReactTable({
-    data: comentario,
+    data: incidente,
     columns,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
@@ -176,23 +165,23 @@ export default function RetroPage() {
   });
 
   useEffect(() => {
-    async function traerComentarios() {
+    async function traerIncidentes() {
       try {
         const incidenteRes = null;
         // setNotificacion(notificacionRes.data);
         console.log(incidenteRes);
       } catch (error) {
-        setError("Error al mostrar los mensajes.");
+        setError("Error al mostrar los incidentes.");
         console.error(error);
       } finally {
         setIsLoading(false);
       }
     }
 
-    traerComentarios();
+    traerIncidentes();
   }, [token]);
 
-  const handleCrearComentario = async (data: CrearComentario) => {
+  const handleCrearIncidente = async (data: CrearIncidente) => {
     try {
       data.token = token;
       // const res = await crearHorario(data);
@@ -222,14 +211,14 @@ export default function RetroPage() {
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button className="w-full sm:w-auto bg-blue-800">
-                Contactar
+                Registrar
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Contactate con nosotros</DialogTitle>
+                <DialogTitle>Registrar nuevo incidente</DialogTitle>
               </DialogHeader>
-              <CrearComentarioForm onSubmit={handleCrearComentario} />
+              <CrearIncidenteForm onSubmit={handleCrearIncidente} />
             </DialogContent>
           </Dialog>
         </div>
@@ -237,7 +226,7 @@ export default function RetroPage() {
         <Card className="border-zinc-200 shadow-md rounded-lg overflow-hidden">
           <CardHeader className="border-b border-zinc-200 bg-zinc-100">
             <CardTitle className="text-xl sm:text-2xl font-bold text-center text-zinc-800">
-              Lista de mensajes
+              Lista de incidentes
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:p-6">

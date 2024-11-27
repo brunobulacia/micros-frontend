@@ -6,7 +6,6 @@ import ComunicacionPage from "../ComunicacionIntPage";
 import { useAuthStore } from "@/store/auth";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "@/types";
-import { ProtectedRouteOpChof } from "@/ProtectedRoutesRoles";
 function RoutesGComunicacion() {
   const { token } = useAuthStore();
   const decoded = jwtDecode(token) as DecodedToken;
@@ -18,9 +17,7 @@ function RoutesGComunicacion() {
       <Route path="/" element={<GComunicacion />}>
         <Route path="notificaciones" element={<NotificacionesPage />} />
         <Route path="retroalimentacion" element={<RetroalimentacionPage />} />
-        <Route element={<ProtectedRouteOpChof role={role} />}>
-          <Route path="comunicacion" element={<ComunicacionPage />} />
-        </Route>
+        <Route path="comunicacion" element={<ComunicacionPage />} />
       </Route>
     </Routes>
   );
