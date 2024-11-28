@@ -23,25 +23,43 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/types";
+import { getIncidentes, crearIncidente } from "@/api/incidentes";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { turnos } from "@/api/turno";
 interface IncidenteItem {
   id_incidente: string;
   hora: string;
   descripcion: string;
   tipo: string;
   estado: string;
-  turno: string;
+  id_turno: string;
 }
 
 interface CrearIncidente {
   token: string;
-  hora: string;
   descripcion: string;
   tipo: string;
-  estado: string;
-  turno: string;
+  id_turno: string;
+}
+
+interface TurnoItem {
+  id_turno: string;
+  hora_salida: string;
+  hora_llegada: string;
+  fecha: string;
+  punto_de_salida: string;
+  interno: string;
+  placa: string;
 }
 
 const columnHelper = createColumnHelper<IncidenteItem>();
@@ -63,10 +81,6 @@ const columns = [
     header: "Estado",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("turno", {
-    header: "Turno",
-    cell: (info) => info.getValue(),
-  }),
 ];
 
 function CrearIncidenteForm({
@@ -77,22 +91,33 @@ function CrearIncidenteForm({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CrearIncidente>();
 
+  const [turnoItem, setTurnoItem] = useState<TurnoItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { token } = useAuthStore();
+
+  useEffect(() => {
+    async function traerTurnos() {
+      try {
+        const turnosItem = await turnos(token);
+        setTurnoItem(turnosItem.data);
+      } catch (error) {
+        setError("Error al cargar los turnos.");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    traerTurnos();
+  }, [token]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <Label htmlFor="hora">Hora</Label>
-        <Input
-          id="hora"
-          type="time"
-          {...register("hora", { required: "Este campo es requerido" })}
-        />
-        {errors.hora && (
-          <span className="text-red-500 text-sm">{errors.hora.message}</span>
-        )}
-      </div>
       <div>
         <Label htmlFor="tipo">Tipo</Label>
         <Input
@@ -116,26 +141,42 @@ function CrearIncidenteForm({
           </span>
         )}
       </div>
+
       <div>
-        <Label htmlFor="estado">Estado</Label>
-        <Input
-          id="estado"
-          type="text"
-          {...register("estado", { required: "Este campo es requerido" })}
+        <Label htmlFor="id_turno">Turno</Label>
+        <Controller
+          name="id_turno"
+          control={control}
+          rules={{ required: "Este campo es requerido" }}
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccione un turno" />
+              </SelectTrigger>
+              <SelectContent>
+                {isLoading ? (
+                  <SelectItem value="loading" disabled>
+                    Cargando turnos...
+                  </SelectItem>
+                ) : turnoItem.length > 0 ? (
+                  turnoItem.map((turno) => (
+                    <SelectItem key={turno.id_turno} value={turno.id_turno}>
+                      {turno.interno}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="no-turnos" disabled>
+                    No hay turnos disponibles
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          )}
         />
-        {errors.estado && (
-          <span className="text-red-500 text-sm">{errors.estado.message}</span>
-        )}
-      </div>
-      <div>
-        <Label htmlFor="turno">Turno</Label>
-        <Input
-          id="turno"
-          type="text"
-          {...register("turno", { required: "Este campo es requerido" })}
-        />
-        {errors.turno && (
-          <span className="text-red-500 text-sm">{errors.turno.message}</span>
+        {errors.id_turno && (
+          <span className="text-red-500 text-sm">
+            {errors.id_turno.message}
+          </span>
         )}
       </div>
       <Button type="submit" className="w-full">
@@ -167,9 +208,14 @@ export default function IncidentesPage() {
   useEffect(() => {
     async function traerIncidentes() {
       try {
-        const incidenteRes = null;
-        // setNotificacion(notificacionRes.data);
-        console.log(incidenteRes);
+        const decoded = jwtDecode(token) as DecodedToken;
+        const { id_linea } = decoded;
+        console.log(id_linea);
+        const turnosItem = await turnos(token);
+        console.log(turnosItem);
+        const incidenteRes = await getIncidentes(token, id_linea);
+        setIncidente(incidenteRes.data);
+        console.log(incidenteRes.data);
       } catch (error) {
         setError("Error al mostrar los incidentes.");
         console.error(error);
@@ -184,10 +230,13 @@ export default function IncidentesPage() {
   const handleCrearIncidente = async (data: CrearIncidente) => {
     try {
       data.token = token;
-      // const res = await crearHorario(data);
-      // console.log(res);
-      alert(JSON.stringify(data));
-      alert("Horario creado con exito");
+      const res = await crearIncidente(data);
+      console.log(res.data);
+      // alert(JSON.stringify(data));
+      if (res) {
+        alert("Incidente registrado con exito");
+        window.location.reload();
+      }
       setIsDialogOpen(false);
     } catch (error) {
       console.error(error);
