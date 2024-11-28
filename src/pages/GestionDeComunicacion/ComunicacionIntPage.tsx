@@ -23,9 +23,12 @@ const Chat = () => {
     const getMensajesResponse = async () => {
       const response = await getMensajes();
       setMensajes(response.data);
+      scrollToBottom();
     };
 
+
     getMensajesResponse();
+    
     setLinea(lineaId);
 
     // Configurar conexión única del socket
@@ -61,7 +64,6 @@ const Chat = () => {
     const nuevoMensaje = {
       id: Date.now().toString(), // Generar un ID único para el mensaje local
       emisor: usuario,
-      receptor: "chofer123",
       contenido: mensaje.trim(),
       id_linea: lineaId,
       rol,
