@@ -68,10 +68,10 @@ const columns = [
     header: "Tipo de comentario",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("id_linea", {
+  /* columnHelper.accessor("id_linea", {
     header: "Linea",
     cell: (info) => info.getValue(),
-  }),
+  }), */
 ];
 
 function CrearComentarioForm({
