@@ -136,4 +136,5 @@ export interface Mensaje {
     rol: string;
     contenido: string;
     id_linea: number;
+    id: string;
 }
