@@ -7,7 +7,7 @@ import CargarHorPage from "../CargarHorPage";
 import GDeMicros from "../GestionDeMicros/GDeMicros";
 import TempMicros from "../GestionDeMicros/MicrosPage";
 import TempMant from "../GestionDeMicros/MantenimientoPage";
-import TempEstado from "../GestionDeMicros/TempEstado";
+import TempEstado from "../GestionDeMicros/EstadoMicrosPage";
 import TempRevision from "../GestionDeMicros/RevisionTecn";
 import GDeRutas from "../GestionDeRutas/GDeRutas";
 import TempRutas from "../GestionDeRutas/TempRutas";

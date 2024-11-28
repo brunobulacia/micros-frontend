@@ -1,9 +1,20 @@
 import { useState } from "react";
 import { Micro } from "@/types";
-import { setEstado } from "@/api/estado";
 import { programarMantenimiento } from "@/api/mantenimiento";
 import { handleAxiosError } from "@/utils/handleErrors";
-import { Check, Wrench } from "lucide-react";
+import { Bus, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface MicroCardProps {
   micro: Micro;
@@ -11,39 +22,9 @@ interface MicroCardProps {
 }
 
 export const MicroCard = ({ micro, token }: MicroCardProps) => {
-  const [estado, setEstadoLocal] = useState(
-    micro.estados[0]?.estado || "NO DISPONIBLE"
-  );
-  const [nuevoEstado, setNuevoEstado] = useState(estado);
   const [mantenimientoModal, setMantenimientoModal] = useState(false);
   const [descripcion, setDescripcion] = useState("");
   const [fecha, setFecha] = useState("");
-
-  const estadoColor = {
-    DISPONIBLE: "bg-green-500",
-    TRABAJANDO: "bg-yellow-500",
-    INCIDENTE: "bg-red-500",
-    "NO DISPONIBLE": "bg-gray-500",
-  };
-
-  const handleEstadoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as
-      | "DISPONIBLE"
-      | "TRABAJANDO"
-      | "INCIDENTE"
-      | "NO DISPONIBLE";
-    setNuevoEstado(value);
-  };
-
-  const handleConfirmEstado = async () => {
-    try {
-      await setEstado({ estado: nuevoEstado, id_micro: micro.id_micro });
-      setEstadoLocal(nuevoEstado);
-      alert("Estado actualizado con éxito.");
-    } catch (error) {
-      handleAxiosError(error);
-    }
-  };
 
   const handleMantenimientoSubmit = async () => {
     try {
@@ -61,100 +42,79 @@ export const MicroCard = ({ micro, token }: MicroCardProps) => {
   };
 
   return (
-    <div className="border rounded-lg p-4 mb-4 flex items-center w-full bg-white">
-      <div className="flex items-center">
-        <div
-          className={`h-32 md:h-16 w-4 m-0 rounded-full ${estadoColor[estado]}`}
-        ></div>
-        <span className="font-semibold mr-4">{}</span>
-      </div>
-      <div className="flex flex-col md:flex-row ml-auto h-full">
-        <div className="ml-4 mr-4">
-          <h3 className="font-bold">{micro.modelo}</h3>
-          <p>
-            <b>Placa:</b> {micro.placa}
-          </p>
-          <p>
-            <b>Interno:</b> {micro.interno}
-          </p>
-          <p>
-            <b>Modelo:</b> {micro.modelo}
-          </p>
-          <p>
-            <b>Año:</b> {micro.año}
-          </p>
-          <p>
-            <b>Seguro:</b> {micro.seguro}
-          </p>
-        </div>
-        <div className="ml-auto flex flex-col space-y-2 items-end">
-          <div className="flex flex-row items-center space-x-2">
-            <select
-              className="w-full mt-6 inline-flex items-center justify-start whitespace-nowrap text-left rounded-md text-xs md:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-900 bg-zinc-50 text-zinc-900 shadow hover:bg-zinc-200/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 border-2 border-gray-950"
-              value={nuevoEstado}
-              onChange={handleEstadoChange}
-            >
-              <option value="DISPONIBLE">DISPONIBLE</option>
-              <option value="TRABAJANDO">TRABAJANDO</option>
-              <option value="INCIDENTE">INCIDENTE</option>
-              <option value="NO DISPONIBLE">NO DISPONIBLE</option>
-            </select>
-            <button
-              className="ml-auto w-1/3 mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center "
-              onClick={handleConfirmEstado}
-            >
-              <Check />
-            </button>
-          </div>
-          <button
-            className="w-full mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-300 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90 h-9 px-4 py-2 text-center"
-            onClick={() => setMantenimientoModal(true)}
-          >
-            <Wrench />
-          </button>
-        </div>
-      </div>
-      {mantenimientoModal && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-80">
-            <h2 className="text-lg font-bold mb-2">Programar Mantenimiento</h2>
-            <div className="mb-3">
-              <label className="block text-sm font-semibold mb-1">
-                Descripción
-              </label>
-              <input
-                type="text"
-                className="w-full p-1 border rounded text-sm"
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
-              />
+    <Card className="w-full mb-4">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center space-x-2">
+          <Bus className="h-6 w-6" />
+          <span>{micro.modelo}</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center space-x-4">
+          <div className="flex-grow grid grid-cols-2 gap-2">
+            <div>
+              <p className="text-sm font-medium">Placa: {micro.placa}</p>
+              <p className="text-sm font-medium">Interno: {micro.interno}</p>
+              <p className="text-sm font-medium">Año: {micro.año}</p>
             </div>
-            <div className="mb-3">
-              <label className="block text-sm font-semibold mb-1">Fecha</label>
-              <input
-                type="date"
-                className="w-full p-1 border rounded text-sm"
-                value={fecha}
-                onChange={(e) => setFecha(e.target.value)}
-              />
-            </div>
-            <div className="flex justify-end space-x-2">
-              <button
-                className="px-2 py-1 bg-gray-300 rounded text-xs hover:bg-gray-400"
-                onClick={() => setMantenimientoModal(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-                onClick={handleMantenimientoSubmit}
-              >
-                Programar
-              </button>
+            <div>
+              <p className="text-sm font-medium">Modelo: {micro.modelo}</p>
+              <p className="text-sm font-medium">Seguro: {micro.seguro}</p>
             </div>
           </div>
+          <div className="flex flex-col space-y-2">
+            <Dialog
+              open={mantenimientoModal}
+              onOpenChange={setMantenimientoModal}
+            >
+              <DialogTrigger asChild>
+                <Button variant="outline" className="w-full">
+                  <Calendar className="mr-2 h-4 w-4" /> Mantenimiento
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Programar Mantenimiento</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="descripcion" className="text-right">
+                      Descripción
+                    </Label>
+                    <Input
+                      id="descripcion"
+                      value={descripcion}
+                      onChange={(e) => setDescripcion(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="fecha" className="text-right">
+                      Fecha
+                    </Label>
+                    <Input
+                      id="fecha"
+                      type="date"
+                      value={fecha}
+                      onChange={(e) => setFecha(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setMantenimientoModal(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button onClick={handleMantenimientoSubmit}>Programar</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
-      )}
-    </div>
+      </CardContent>
+    </Card>
   );
 };
