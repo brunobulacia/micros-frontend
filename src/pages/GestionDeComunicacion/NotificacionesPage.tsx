@@ -25,25 +25,21 @@ import {
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
+import { crearNotificacion, getNotificaciones } from "@/api/notificaciones";
 
 interface NotificacionItem {
   id_notificacion: string;
   tipo: string;
   contenido: string;
+  hora: string;
+  fecha: string;
 }
 
 interface CrearNotificacion {
   token: string;
   tipo: string;
   contenido: string;
-  destinatario: string;
 }
 
 const columnHelper = createColumnHelper<NotificacionItem>();
@@ -95,26 +91,7 @@ function CrearNotificacionForm({
           </span>
         )}
       </div>
-      <div>
-        <Label htmlFor="destinatario">Destinatario</Label>
-        <Select
-          {...register("destinatario", { required: "Este campo es requerido" })}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Seleccione un destinatario" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Choferes">Choferes</SelectItem>
-            <SelectItem value="Usuarios">Usuarios</SelectItem>
-            <SelectItem value="Todos">Todos</SelectItem>
-          </SelectContent>
-        </Select>
-        {errors.destinatario && (
-          <span className="text-red-500 text-sm">
-            {errors.destinatario.message}
-          </span>
-        )}
-      </div>
+
       <Button type="submit" className="w-full">
         Enviar Notificación
       </Button>
@@ -144,11 +121,11 @@ export default function NotificacionesPage() {
   useEffect(() => {
     async function traerNotificaciones() {
       try {
-        const notificacionRes = null;
-        // setNotificacion(notificacionRes.data);
+        const notificacionRes = await getNotificaciones(token);
+        setNotificacion(notificacionRes.data);
         console.log(notificacionRes);
       } catch (error) {
-        setError("Error al traer la bitácora.");
+        setError("Error al traer las notificaciones.");
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -161,10 +138,11 @@ export default function NotificacionesPage() {
   const handleCrearNotificacion = async (data: CrearNotificacion) => {
     try {
       data.token = token;
-      // const res = await crearHorario(data);
-      // console.log(res);
-      alert(JSON.stringify(data));
-      alert("Horario creado con exito");
+      const res = await crearNotificacion(data);
+      if (res) {
+        alert("Notificacion enviada con exito");
+        window.location.reload();
+      }
       setIsDialogOpen(false);
     } catch (error) {
       console.error(error);

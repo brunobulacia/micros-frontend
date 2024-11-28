@@ -36,6 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { turnos } from "@/api/turno";
+
 interface IncidenteItem {
   id_incidente: string;
   hora: string;
@@ -99,7 +100,7 @@ function CrearIncidenteForm({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { token } = useAuthStore();
-
+  error && console.error(error);
   useEffect(() => {
     async function traerTurnos() {
       try {

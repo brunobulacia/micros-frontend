@@ -25,13 +25,11 @@ import {
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
+//LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/types";
+import { getComentarios, crearComentario } from "@/api/comentarios";
 
 interface ComentarioItem {
   id_comentario: string;
@@ -48,8 +46,7 @@ interface CrearComentario {
   titulo: string;
   descripcion: string;
   tipo_comentario: string;
-  usuario: string;
-  id_linea: string;
+  id_linea: number;
 }
 
 const columnHelper = createColumnHelper<ComentarioItem>();
@@ -71,10 +68,10 @@ const columns = [
     header: "Tipo de comentario",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("id_linea", {
+  /* columnHelper.accessor("id_linea", {
     header: "Linea",
     cell: (info) => info.getValue(),
-  }),
+  }), */
 ];
 
 function CrearComentarioForm({
@@ -115,20 +112,14 @@ function CrearComentarioForm({
         )}
       </div>
       <div>
-        <Label htmlFor="tipo_comentario">Tipo</Label>
-        <Select
+        <Label htmlFor="tipo_comentario">Tipo comentario</Label>
+        <Input
+          id="tipo_comentario"
+          type="text"
           {...register("tipo_comentario", {
             required: "Este campo es requerido",
           })}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Seleccione un destinatario" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Elogio">Elogio</SelectItem>
-            <SelectItem value="Queja">Queja</SelectItem>
-          </SelectContent>
-        </Select>
+        />
         {errors.tipo_comentario && (
           <span className="text-red-500 text-sm">
             {errors.tipo_comentario.message}
@@ -163,6 +154,8 @@ export default function RetroPage() {
   const [error, setError] = useState<string | null>(null);
   const [filtering, setFiltering] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const decoded = jwtDecode(token) as DecodedToken;
+  const { id_linea } = decoded;
 
   const table = useReactTable({
     data: comentario,
@@ -178,11 +171,11 @@ export default function RetroPage() {
   useEffect(() => {
     async function traerComentarios() {
       try {
-        const incidenteRes = null;
-        // setNotificacion(notificacionRes.data);
-        console.log(incidenteRes);
+        const comentarioRes = await getComentarios(token, id_linea);
+        setComentario(comentarioRes.data);
+        console.log(comentarioRes);
       } catch (error) {
-        setError("Error al mostrar los mensajes.");
+        setError("Error al mostrar los comentarios.");
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -195,10 +188,12 @@ export default function RetroPage() {
   const handleCrearComentario = async (data: CrearComentario) => {
     try {
       data.token = token;
-      // const res = await crearHorario(data);
-      // console.log(res);
-      alert(JSON.stringify(data));
-      alert("Horario creado con exito");
+      const res = await crearComentario(data);
+      console.log(data);
+      if (res) {
+        alert("Comentario enviado con exito");
+        window.location.reload();
+      }
       setIsDialogOpen(false);
     } catch (error) {
       console.error(error);
