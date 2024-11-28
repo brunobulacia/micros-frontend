@@ -25,13 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 //LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "@/types";
@@ -194,12 +188,12 @@ export default function RetroPage() {
   const handleCrearComentario = async (data: CrearComentario) => {
     try {
       data.token = token;
-      // const res = await crearComentario(data);
+      const res = await crearComentario(data);
       console.log(data);
-      /* if (res) {
+      if (res) {
         alert("Comentario enviado con exito");
         window.location.reload();
-      } */
+      }
       setIsDialogOpen(false);
     } catch (error) {
       console.error(error);

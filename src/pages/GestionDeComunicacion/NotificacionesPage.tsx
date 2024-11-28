@@ -26,11 +26,7 @@ import {
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 
-import {
-  crearNotificacion,
-  eliminarNotificacion,
-  getNotificaciones,
-} from "@/api/notificaciones";
+import { crearNotificacion, getNotificaciones } from "@/api/notificaciones";
 
 interface NotificacionItem {
   id_notificacion: string;

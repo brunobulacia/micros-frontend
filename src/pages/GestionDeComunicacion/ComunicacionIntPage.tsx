@@ -3,7 +3,7 @@ import io, { Socket } from "socket.io-client";
 import { useAuthStore } from "@/store/auth";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken, Mensaje } from "@/types";
-import { MessageCard } from "@/components/cards/messageCard.tsx";
+import { MessageCard } from "@/components/cards/MessageCard.tsx";
 import { getMensajes } from "../../api/mensajes.ts";
 
 const Chat = () => {
@@ -84,13 +84,14 @@ const Chat = () => {
   const scrollToBottom = () => {
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 200)
-    
+    }, 200);
   };
 
   return (
     <div className="p-4 sm:p-6">
-      <h1 className="text-2xl font-bold mb-4 text-center">CHAT LINEA {linea}</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        CHAT LINEA {linea}
+      </h1>
       <div className="w-full bottom-0 mb-8">
         <div className="bg-slate-300 rounded-lg p-4 border-t flex items-center">
           <input

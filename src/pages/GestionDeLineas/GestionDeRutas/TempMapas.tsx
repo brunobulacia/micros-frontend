@@ -1,31 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { initMap, dibujarParadas } from "../../../lib/map"; // Asegúrate de importar correctamente las funciones del archivo donde se encuentran
-import { paradas, rutas } from "@/api/rutas";
+import { rutas } from "@/api/rutas";
 import { useLocation } from "react-router-dom";
-import { DecodedToken, Stop, RouteType } from "../../../types";
-import { useAuthStore } from "@/store/auth";
-import { jwtDecode } from "jwt-decode";
 import { handleAxiosError } from "@/utils/handleErrors";
 
 //import { CreateStopForm } from "@/components/CreateStopForm";
 //import { StopCard } from "@/components/StopCard";
 
 function RutaPage() {
-  const [stops, setStops] = useState<Stop[]>([]);
   const location = useLocation();
   const { id_linea } = location.state;
-  console.log(location)
-  const { token } = useAuthStore();
-  const { role } = jwtDecode(token) as DecodedToken;
+  console.log(location);
 
   useEffect(() => {
     const startCoordinates = [-17.78373015039757, -63.18042200265567];
     const initializeMap = async () => {
       try {
-        const ruta = await rutas(id_linea)
-        const id_ruta = ruta.data[0].id_ruta
+        const ruta = await rutas(id_linea);
+        const id_ruta = ruta.data[0].id_ruta;
         initMap(startCoordinates);
         await dibujarParadas(id_ruta);
       } catch (error) {
@@ -80,4 +74,3 @@ function RutaPage() {
 }
 
 export default RutaPage;
-
