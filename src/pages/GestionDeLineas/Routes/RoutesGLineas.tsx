@@ -15,7 +15,7 @@ import TempParadas from "../GestionDeRutas/TempParadas";
 import TempMapas from "../GestionDeRutas/TempMapas";
 import IncidentesPage from "../GestionDeMicros/IncidentesPage";
 import { useAuthStore } from "@/store/auth";
-
+import LineasPage from "../GestionDeRutas/LineasPage";
 //LIBRERIAS PARA VERIFICAR EL TOKEN DEL USUARIO Y OBTENER SUS DATOS
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "@/types";
@@ -45,6 +45,7 @@ function RoutesGLineas() {
         <Route path="rutas" element={<TempRutas />} />
         <Route path="paradas" element={<TempParadas />} />
         <Route path="mapas" element={<TempMapas />} />
+        <Route path="lineasP" element={<LineasPage />} />
       </Route>
     </Routes>
   );

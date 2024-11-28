@@ -46,7 +46,11 @@ export default function GDeRutas() {
             variant="ghost"
             className="w-full justify-start text-base py-3"
             aria-label="View profile"
-            onClick={() => navigate("/lineas/grutas/rutas")}
+            onClick={() =>
+              navigate("lineasP", {
+                state: { pathname: "rutas" },
+              })
+            }
           >
             <Route className="mr-3 h-5 w-5" />
             RUTAS
@@ -55,7 +59,11 @@ export default function GDeRutas() {
             variant="ghost"
             className="w-full justify-start text-base py-3"
             aria-label="View lines"
-            onClick={() => navigate("/lineas/grutas/paradas")}
+            onClick={() =>
+              navigate("lineasP", {
+                state: { pathname: "paradas" },
+              })
+            }
           >
             <OctagonMinus className="mr-3 h-5 w-5" />
             PARADAS
@@ -64,7 +72,11 @@ export default function GDeRutas() {
             variant="ghost"
             className="w-full justify-start text-base py-3"
             aria-label="View lines"
-            onClick={() => navigate("/lineas/grutas/mapas")}
+            onClick={() =>
+              navigate("lineasP", {
+                state: { pathname: "mapas" },
+              })
+            }
           >
             <Map className="mr-3 h-5 w-5" />
             MAPAS
